@@ -1,0 +1,14 @@
+/* #root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+} */
+body {
+  font-family: "Minecraft";
+}
+
+@font-face {
+  font-family: "Minecraft";
+  src: url(./assets/font/Minecraft.ttf);
+}
