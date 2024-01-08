@@ -1,13 +1,14 @@
-import "./App.css";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import MainPage from "./pages/MainPage";
 
-function App() {
+const App = () => {
   return (
-    <>
-      <div className="flex justify-center items-center hover:bg-sky-700">
-        Next-Page
-      </div>
-    </>
+    <Router>
+      <Routes>
+        <Route path="/main" element={<MainPage />} />
+      </Routes>
+    </Router>
   );
-}
+};
 
 export default App;
