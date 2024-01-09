@@ -1,8 +1,17 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  content: ["./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      screens: {
+        md: "925px",
+        lg: "1210px",
+        xl: "1490px",
+      },
+    },
+    fontFamily: {
+      Minecraft: ["Minecraft"],
+    },
   },
   plugins: [],
 };
