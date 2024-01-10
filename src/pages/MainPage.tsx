@@ -1,6 +1,7 @@
-import Navbar from "@/component/Navbar";
-import Swiper from "@/component/Swiper";
 import React from "react";
+import Navbar from "@/components/Navbar";
+// import ScenarioModal from "@/components/ScenarioModal";
+import Swiper from "@/components/Swiper";
 
 const MainPage = () => {
   return (
