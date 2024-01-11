@@ -9,7 +9,7 @@ const ScenarioModal = () => {
       <div className="flex flex-col w-full h-[395px] justify-center items-center gap-[10px] bg-black border-2 border-white text-white">
         <div className="flex justify-center w-full h-[270px] gap-[80px]">
           <div className="w-[270px] bg-gray-500">이미지</div>
-          <div className="flex flex-col justify-center w-[300px] gap-[17px]">
+          <div className="flex flex-col justify-center w-[300px] gap-[17px] text-center">
             <div className="text-[18px] text-white">
               시나리오 시작하기(제목)
             </div>

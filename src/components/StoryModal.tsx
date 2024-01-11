@@ -5,27 +5,30 @@ const StoryModal = () => {
     <div className="flex flex-col w-[800px] h-[450px]">
       <div className="flex gap-[15px] w-full h-[55px] justify-center items-center bg-blue-800 border-2 border-gray-400 text-green-400 text-[33px] font-Minecraft">
         STORY
-        <div className="text-gray-300 text-[20px]">by 앤드류</div>
+        <div className="text-gray-400 text-[18px]">by 앤드류</div>
       </div>
-      <div className="flex flex-col w-full h-[395px] justify-center items-center gap-[10px] stone-50 border-2 border-gray-400 ">
-        <div className="flex justify-center w-full h-[270px] gap-[60px]">
+      <div className="flex flex-col w-full h-[395px] justify-center items-center gap-[10px] bg-stone-50 border-2 border-gray-400 ">
+        <div className="flex justify-center w-full h-[270px] gap-[80px]">
           <div className="w-[270px] bg-gray-500">이미지</div>
-          <div className="flex flex-col justify-center w-[360px] gap-[10px]">
-            <div className="flex items-center w-[360px] gap-[20px]">
-              <img className="flex w-[50px]" src="/asset/hand.svg" alt="손" />
-              <textarea className="w-[300px] h-[140px] p-[5px] border-dashed border-2 border-gray-500 bg-transparent ">
+          <div className="flex flex-col justify-center w-[300px] gap-[10px] text-center">
+            <div className="flex items-center w-[300px] gap-[20px]">
+              <div className="w-[300px] h-[120px] p-[5px] mb-[20px] border-dashed border-2 border-gray-500 bg-transparent ">
                 알렉스는 지역에서 유명한 폐허가 된 저택을 탐험하기로 결심한다.
                 이 저택은 오랫동안 불길한 소문이 돌아왔으며, 많은 사람들이
                 그곳에 가는 것을 꺼려합니다.
-              </textarea>
+              </div>
             </div>
-            <div className="flex items-center w-[360px] gap-[20px]">
-              <img className="flex w-[50px]" src="/asset/hand.svg" alt="손" />
-              <textarea className="w-[300px] h-[140px] p-[5px] border-dashed border-2 border-gray-500 bg-transparent ">
-                알렉스는 지역에서 유명한 폐허가 된 저택을 탐험하기로 결심한다.
-                이 저택은 오랫동안 불길한 소문이 돌아왔으며, 많은 사람들이
-                그곳에 가는 것을 꺼려합니다.
-              </textarea>
+            <div className="flex items-center w-[300px] gap-[20px] hover:scale-105 hover:border-2 border-dashed hover:border-blue-600">
+              <img className="flex w-[40px]" src="/asset/hand.svg" alt="손" />
+              <div className="w-[300px] h-[50px] p-[5px]">
+                포상금이 10억인걸 알았다. ...
+              </div>
+            </div>
+            <div className="flex items-center w-[300px] gap-[20px] hover:scale-105">
+              <img className="flex w-[40px]" src="/asset/hand.svg" alt="손" />
+              <div className="w-[300px] h-[50px] p-[5px] border-dashed  hover:border-2 hover:border-blue-600 bg-transparent ">
+                포상금이 5천만원 밖에 안...
+              </div>
             </div>
           </div>
         </div>
