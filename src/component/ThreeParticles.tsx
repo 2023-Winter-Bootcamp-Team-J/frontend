@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from 'react';
-import * as THREE from 'Three';
+import React, { useEffect, useRef } from "react";
+import * as THREE from "Three";
 
 const ParticleTutorial: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -14,12 +14,12 @@ const ParticleTutorial: React.FC = () => {
 
     const init = () => {
       camera = new THREE.PerspectiveCamera(
-        80,
+        100,
         window.innerWidth / window.innerHeight,
         1,
         4000
       );
-      camera.position.z = 1000;
+      camera.position.z = 2000;
 
       scene = new THREE.Scene();
       scene.add(camera);
@@ -34,8 +34,8 @@ const ParticleTutorial: React.FC = () => {
 
       makeParticles();
 
-      document.addEventListener('mousemove', onMouseMove, false);
-      setInterval(update, 1000 / 30);
+      document.addEventListener("mousemove", onMouseMove, false);
+      setInterval(update, 1000 / 50);
     };
 
     const update = () => {
@@ -47,7 +47,7 @@ const ParticleTutorial: React.FC = () => {
 
     const makeParticles = () => {
       const colors = [0x98adf9, 0x7aff8f, 0xffffff];
-      const distance = 2000;
+      const distance = 2200;
 
       for (let zpos = -distance; zpos < distance; zpos += 15) {
         const colorIndex = Math.floor(Math.random() * colors.length);
@@ -60,7 +60,7 @@ const ParticleTutorial: React.FC = () => {
           zpos,
         ];
         geometry.setAttribute(
-          'position',
+          "position",
           new THREE.Float32BufferAttribute(vertices, 3)
         );
 

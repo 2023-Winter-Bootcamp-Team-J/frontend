@@ -23,8 +23,12 @@ const MainPage = () => {
         <div className="flex justify-center">
           <Swiper />
         </div>
-        <div className="flex justify-end h-[50px] pb-[10px] pr-[50px]">
-          <img src="/asset/write.svg" alt="글버튼" />
+        <div className="flex justify-end h-[50px] pb-[10px] pr-[50px] ">
+          <img
+            className="hover:scale-125 hover:opacity-35"
+            src="/asset/write.svg"
+            alt="글버튼"
+          />
         </div>
         {/* <div className="w-[20px]"></div> */}
       </div>
