@@ -1,5 +1,5 @@
-import React from 'react';
-import ParticleTutorial from './ThreeParticles';
+import React from "react";
+import ParticleTutorial from "./ThreeParticles";
 
 const LandingPage = () => {
   return (
@@ -18,7 +18,7 @@ const LandingPage = () => {
             src="/asset/book.svg"
             alt="책 이미지"
           ></img>
-          <button className="flex absolute font-medium z-30 text-black w-1/6 h-1/6 text-4xl  bg-green-400 rounded-2xl font-['Minecraft'] justify-center items-center hover:bg-yellow-300">
+          <button className="flex absolute font-medium z-30 text-black w-1/6 h-1/6 text-4xl  bg-green-400 rounded-2xl font-['Minecraft'] justify-center items-center hover:bg-blue-500 hover:text-green-400">
             START
           </button>
         </div>
