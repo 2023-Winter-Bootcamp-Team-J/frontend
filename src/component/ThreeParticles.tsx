@@ -9,6 +9,7 @@ const ParticleTutorial: React.FC = () => {
   useEffect(() => {
     let camera: THREE.PerspectiveCamera;
     let scene: THREE.Scene;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     let mouseX = 0;
     let mouseY = 0;
 
@@ -22,6 +23,7 @@ const ParticleTutorial: React.FC = () => {
       camera.position.z = 2000;
 
       scene = new THREE.Scene();
+      scene.background = new THREE.Color(0x000720);
       scene.add(camera);
 
       const renderer = new THREE.WebGLRenderer();
