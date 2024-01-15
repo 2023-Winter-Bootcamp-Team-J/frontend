@@ -56,7 +56,7 @@ const SwiperComponent: React.FC = () => {
         </div>
         <div className="flex bg-center w-[400px] object-cover">
           <img
-            className="w-full block"
+            className="w-full block drop-shadow(3px 3px 5px #ffffffb6)"
             src="/asset/test2.jpeg"
             alt="슬라이드2"
           />
