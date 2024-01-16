@@ -1,5 +1,6 @@
 // NicknameModal.tsx
 import React, { useState, ChangeEvent, useRef, useEffect } from 'react';
+import axios, { AxiosError } from 'axios';
 
 interface NicknameModalProps {
   isOpen: boolean;
@@ -8,15 +9,41 @@ interface NicknameModalProps {
 
 const NicknameModal: React.FC<NicknameModalProps> = ({ isOpen, onClose }) => {
   const [nickname, setNickname] = useState<string>('');
+  const [error, setError] = useState<string | null>(null);
   const modalRef = useRef<HTMLDivElement>(null);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setNickname(e.target.value);
   };
 
-  const handleOkClick = () => {
-    console.log('Selected nickname:', nickname);
-    onClose();
+  // NicknameModal.tsx
+  const handleOkClick = async () => {
+    try {
+      // 사용자가 입력한 닉네임을 API에 전송
+      const response = await axios.post('/api/v1/nicknames/', { nickname });
+
+      // HTTP 상태 코드에 따라 처리
+      if (response.status === 201) {
+        // 성공
+        console.log('닉네임 생성에 성공했습니다.');
+        onClose();
+      }
+    } catch (error: any) {
+      // 실패 (HTTP 상태 코드 400) 또는 다른 예외 발생 시 에러 상태 업데이트
+      console.error('닉네임 생성 중에 오류가 발생했습니다.', error);
+
+      // AxiosError일 경우 더 자세한 정보를 로깅
+      if (axios.isAxiosError(error)) {
+        console.error('AxiosError:', error.toJSON());
+      }
+
+      // 실제 서버에서 반환한 오류 메시지가 어떤 내용인지 콘솔에 로깅
+      if (error.response && error.response.data) {
+        console.error('서버 응답 오류:', error.response.data);
+      }
+
+      setError('닉네임 생성 중에 오류가 발생했습니다. 다시 시도해주세요.');
+    }
   };
 
   // 모달 외부를 클릭했을 때 모달을 닫도록 하는 이벤트 처리
@@ -63,6 +90,11 @@ const NicknameModal: React.FC<NicknameModalProps> = ({ isOpen, onClose }) => {
             className="flex text-xl w-1/2 h-[35px] justify-center items-center text-center text-black font-Minecraft border-2 border-white"
             placeholder="Input Text"
           />
+          {error && (
+            <p className="text-gray-400 visible fixed bottom-[108px]">
+              {error}
+            </p>
+          )}
           <button
             className="flex w-[50px] justify-center items-center mt-[20px] bg-zinc-300 border-2 border-gray-500 font-Minecraft font-bold text-black text-[20px] hover:bg-blue-600 hover:text-green-400 hover:shadow-blue-600"
             onClick={handleOkClick}
