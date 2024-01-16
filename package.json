@@ -3,6 +3,12 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "proxy": {
+    "/api/v1": {
+      "target": "http://localhost:8000",
+      "changeOrigin": true
+    }
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -10,10 +16,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@types/axios": "^0.14.0",
     "@types/d3": "^7.4.3",
     "@types/swiper": "^6.0.0",
     "@types/three": "^0.160.0",
     "d3": "^7.8.5",
+    "http-proxy-middleware": "^2.0.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.21.1",

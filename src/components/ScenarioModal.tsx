@@ -1,4 +1,5 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
+import axios from "axios";
 import Carousel from "../components/ImgCarousel";
 
 interface ScenarioModalProps {
@@ -22,6 +23,42 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
     // 배경 클릭 시 모달 닫기\
     if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
       closeModal();
+    }
+  };
+  const [user_id, setUserIdValue] = useState(9);
+  const [content, setContentValue] = useState("");
+  const [parent_story, setParentValue] = useState(-1);
+  const CreateScenario = async () => {
+    type ErrorType = {
+      response: {
+        // data: ResponseType;
+        status: number;
+      };
+    };
+    try {
+      if (!content.trim()) {
+        // content가 공백인 경우 400에러 방지
+        console.log("문장을 입력하세요!");
+        alert("문장을 입력하세요!");
+        return;
+      }
+      const response = await axios.post(`/api/v1/stories/`, {
+        user_id,
+        content,
+        parent_story,
+      });
+
+      if (response.status === 201) {
+        console.log("성공!");
+        // 응답이 성공적인 경우 상태 업데이트
+        setContentValue(content);
+        setUserIdValue(user_id);
+        setParentValue(response.data);
+      }
+    } catch (error) {
+      console.error(error);
+      const errorObj = error as ErrorType;
+      console.log(errorObj.response.status);
     }
   };
 
@@ -62,14 +99,19 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
               <div className="text-[18px] text-white">
                 시나리오 시작하기 (제목)
               </div>
-              <textarea className="h-[140px] p-[5px] mb-[20px] border-dashed border-2 border-white bg-transparent text-white">
-                알렉스는 지역에서 유명한 폐허가 된 저택을 탐험하기로 결심한다.
-                이 저택은 오랫동안 불길한 소문이 돌아왔으며, 많은 사람들이
-                그곳에 가는 것을 꺼려합니다.
-              </textarea>
-              <div className="text-center w-full h-[30px] bg-green-400 border-2 border-gray-500 text-black hover:bg-blue-600 hover:text-white hover:shadow-blue-600">
+              <textarea
+                // type="text"
+                placeholder="문장을 입력하세요."
+                className="h-[140px] p-[5px] mb-[20px] border-dashed border-2 border-white bg-transparent text-white"
+                value={content}
+                onChange={(e) => setContentValue(e.target.value)}
+              ></textarea>
+              <button
+                className="text-center w-full h-[30px] bg-green-400 border-2 border-gray-500 text-black hover:bg-blue-600 hover:text-white hover:shadow-blue-600"
+                onClick={CreateScenario}
+              >
                 사진 생성하기
-              </div>
+              </button>
             </div>
           </div>
           <button

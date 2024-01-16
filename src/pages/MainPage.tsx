@@ -19,10 +19,7 @@ const MainPage = () => {
     <div>
       <ThreeParticles />
       <div className="flex w-[100vw] h-[100vh] flex-col justify-center items-center absolute top-1/2 left-1/2 z-1 bg-transparent -translate-x-1/2 -translate-y-1/2">
-        <div
-          className="flex flex-col w-full h-full gap-[50px]"
-          // onClick={handleBackgroundClick}
-        >
+        <div className="flex flex-col w-full h-full gap-[50px]">
           <Navbar />
           <div className="flex flex-col items-center">
             <hr className="border-white w-[600px]" />
