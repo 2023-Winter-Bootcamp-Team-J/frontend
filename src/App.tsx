@@ -1,8 +1,8 @@
-import MainPage from "./pages/MainPage";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import LandingPage from "./component/LandingPage";
-import ScenarioPage from "./pages/ScenarioPage";
-import ParticleTutorial from "./component/ThreeParticles";
+import MainPage from './pages/MainPage';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import LandingPage from './component/LandingPage';
+import ScenarioPage from './pages/ScenarioPage';
+import ParticleTutorial from './component/ThreeParticles';
 
 const App = () => {
   return (
