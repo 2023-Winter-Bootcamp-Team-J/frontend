@@ -1,10 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
-import Swiper from "@/components/Swiper";
+import SwiperComponent from "@/components/Swiper";
 import ScenarioModal from "@/components/ScenarioModal";
 import ThreeParticles from "@/component/ThreeParticles";
 
 const MainPage = () => {
+  // 선택된 슬라이드의 인덱스를 기억하는 상태
+  const [selectedSlideIndex, setSelectedSlideIndex] = useState<number | null>(
+    null
+  );
   const [modalOpen, setModalOpen] = useState(false);
 
   const closeModal = () => {
@@ -13,6 +17,17 @@ const MainPage = () => {
 
   const openModal = () => {
     setModalOpen(true);
+  };
+
+  useEffect(() => {
+    // selectedSlideIndex가 변경될 때마다 해당 값을 출력
+    console.log(selectedSlideIndex);
+  }, [selectedSlideIndex]);
+
+  // Swiper 슬라이드를 클릭할 때 모달을 열도록 하는 함수
+  const handleSlideClick = (index: number) => {
+    setSelectedSlideIndex(index);
+    openModal();
   };
 
   return (
@@ -34,7 +49,7 @@ const MainPage = () => {
             <hr className="border-white w-[600px]" />
           </div>
           <div className="flex justify-center">
-            <Swiper />
+            <SwiperComponent onSlideClick={handleSlideClick} />
           </div>
           <button className="flex justify-end pb-[10px] pr-[50px]">
             <img
@@ -48,7 +63,13 @@ const MainPage = () => {
             />
           </button>
           {modalOpen && (
-            <ScenarioModal isOpen={modalOpen} closeModal={closeModal} />
+            <ScenarioModal
+              isOpen={modalOpen}
+              closeModal={() => {
+                closeModal();
+                setSelectedSlideIndex(null);
+              }}
+            />
           )}
         </div>
       </div>

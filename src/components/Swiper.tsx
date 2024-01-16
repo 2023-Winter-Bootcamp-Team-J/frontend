@@ -11,7 +11,9 @@ import {
   Pagination,
 } from "swiper/modules";
 
-const SwiperComponent: React.FC = () => {
+const SwiperComponent: React.FC<{ onSlideClick: (index: number) => void }> = ({
+  onSlideClick,
+}) => {
   useEffect(() => {
     const swiper = new Swiper(".Myswiper", {
       loop: true,
@@ -43,16 +45,32 @@ const SwiperComponent: React.FC = () => {
       modules: [EffectCoverflow, Navigation, Mousewheel, Pagination],
     });
 
+    // 각 슬라이드에 클릭 이벤트 추가
+    swiper.slides.forEach((slide, index) => {
+      slide.addEventListener("click", () => onSlideClick(index));
+    });
     return () => {
+      // 컴포넌트 언마운트 시에 이벤트 리스너 제거
+      swiper.slides.forEach((slide, index) => {
+        slide.removeEventListener("click", () => onSlideClick(index));
+      });
+
       swiper.destroy();
     };
-  }, []);
+  }, [onSlideClick]);
 
   return (
     <div className="swiper-container w-[1100px] pt-[10px] pb-[50px] Myswiper overflow-hidden block">
       <div className="swiper-wrapper">
         <div className="swiper-slide w-[400px] flex bg-center object-cover">
-          <img className="w-full block" src="/asset/test.png" alt="슬라이드1" />
+          <img
+            className="w-full block"
+            src="/asset/test.png"
+            alt="슬라이드1"
+            style={{
+              filter: "drop-shadow(7px 1px 8px rgba(255, 252, 234, 0.759))",
+            }}
+          />
         </div>
         <div className="flex bg-center w-[400px] object-cover">
           <img
