@@ -6,10 +6,3 @@
   font-family: 'Minecraft';
   src: url(./../public/asset/font/Minecraft.ttf);
 }
-*::-webkit-scrollbar {
-  display: none;
-}
-* {
-  -ms-overflow-style: none; /* IE and 엣지 */
-  scrollbar-width: none; /* 파이어폭스 */
-}
