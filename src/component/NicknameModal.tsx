@@ -1,6 +1,7 @@
 // NicknameModal.tsx
 import React, { useState, ChangeEvent, useRef, useEffect } from 'react';
 import axios, { AxiosError } from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 interface NicknameModalProps {
   isOpen: boolean;
@@ -11,6 +12,7 @@ const NicknameModal: React.FC<NicknameModalProps> = ({ isOpen, onClose }) => {
   const [nickname, setNickname] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
   const modalRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setNickname(e.target.value);
@@ -27,6 +29,7 @@ const NicknameModal: React.FC<NicknameModalProps> = ({ isOpen, onClose }) => {
         // 성공
         console.log('닉네임 생성에 성공했습니다.');
         onClose();
+        navigate('/main');
       }
     } catch (error: any) {
       // 실패 (HTTP 상태 코드 400) 또는 다른 예외 발생 시 에러 상태 업데이트
