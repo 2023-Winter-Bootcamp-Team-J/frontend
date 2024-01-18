@@ -2,6 +2,8 @@
 import React, { useState, ChangeEvent, useRef, useEffect } from 'react';
 import axios, { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import { userState } from '../recoil/atoms';
 
 interface NicknameModalProps {
   isOpen: boolean;
@@ -9,25 +11,35 @@ interface NicknameModalProps {
 }
 
 const NicknameModal: React.FC<NicknameModalProps> = ({ isOpen, onClose }) => {
-  const [nickname, setNickname] = useState<string>('');
+  const [user, setUser] = useRecoilState(userState);
+  const [modalnickname, setmodalNickname] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
   const modalRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setNickname(e.target.value);
+    setmodalNickname(e.target.value);
   };
 
   // NicknameModal.tsx
   const handleOkClick = async () => {
+    const nickname = modalnickname;
     try {
       // 사용자가 입력한 닉네임을 API에 전송
-      const response = await axios.post('/api/v1/nicknames/', { nickname });
+      const response = await axios.post('/api/v1/nicknames/', {
+        nickname,
+      });
 
       // HTTP 상태 코드에 따라 처리
       if (response.status === 201) {
         // 성공
         console.log('닉네임 생성에 성공했습니다.');
+
+        // setUser 함수를 사용하여 user 정보 업데이트
+        setUser({
+          user_id: response.data.data.id,
+          nickname: response.data.data.nickname,
+        });
         onClose();
         navigate('/main');
       }
@@ -88,7 +100,7 @@ const NicknameModal: React.FC<NicknameModalProps> = ({ isOpen, onClose }) => {
           <div className="text-2xl text-white">닉네임을 입력하세요</div>
           <input
             type="text"
-            value={nickname}
+            value={modalnickname}
             onChange={handleInputChange}
             className="flex text-xl w-1/2 h-[35px] justify-center items-center text-center text-black font-Minecraft border-2 border-white"
             placeholder="Input Text"
