@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 interface NavbarProps {
   username: string;
@@ -18,7 +18,7 @@ const Navbar: React.FC<NavbarProps> = ({ username }) => {
           setNickname(response.data.data.nickname);
         }
       } catch (error) {
-        console.error('닉네임 불러오기 중에 오류가 발생했습니다.', error);
+        console.error("닉네임 불러오기 중에 오류가 발생했습니다.", error);
       }
     };
 
@@ -31,7 +31,7 @@ const Navbar: React.FC<NavbarProps> = ({ username }) => {
         Next-Page
       </div>
       <div className="mr-[30px] text-white">
-        {nickname ? `${nickname}님 환영합니다!` : '로딩 중...'}
+        {nickname ? `${nickname}님 환영합니다!` : "로딩 중..."}
       </div>
     </div>
   );
