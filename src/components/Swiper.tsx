@@ -75,14 +75,14 @@ const SwiperComponent: React.FC<{ onSlideClick: (index: number) => void }> = ({
         <div className="flex bg-center w-[400px] object-cover">
           <img
             className="w-full block drop-shadow(3px 3px 5px #ffffffb6)"
-            src="/asset/test2.jpeg"
+            src="/asset/test2.png"
             alt="슬라이드2"
           />
         </div>
         <div className="swiper-slide w-[400px] flex bg-center object-cover">
           <img
             className="w-full block"
-            src="/asset/test3.jpeg"
+            src="/asset/test3.png"
             alt="슬라이드3"
           />
         </div>
@@ -92,15 +92,22 @@ const SwiperComponent: React.FC<{ onSlideClick: (index: number) => void }> = ({
         <div className="swiper-slide w-[400px] flex bg-center object-cover">
           <img
             className="w-full block"
-            src="/asset/test2.jpeg"
-            alt="슬라이드2"
+            src="/asset/test4.png"
+            alt="슬라이드4"
           />
         </div>
         <button className="swiper-slide w-[400px] flex bg-center object-cover">
           <img
             className="w-full block"
-            src="/asset/test3.jpeg"
-            alt="슬라이드3"
+            src="/asset/test5.png"
+            alt="슬라이드5"
+          />
+        </button>
+        <button className="swiper-slide w-[400px] flex bg-center object-cover">
+          <img
+            className="w-full block"
+            src="/asset/test6.png"
+            alt="슬라이드6"
           />
         </button>
       </div>

@@ -1,5 +1,7 @@
 import React, { useRef, useEffect, useState, ChangeEvent } from "react";
 import axios from "axios";
+import { useRecoilValue } from "recoil";
+import { userState } from "../recoil/atoms";
 import Carousel from "../components/ImgCarousel";
 interface ScenarioModalProps {
   isOpen: boolean;
@@ -9,6 +11,7 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
   isOpen,
   closeModal,
 }) => {
+  const userId = useRecoilValue(userState).user_id;
   // 모달 외부를 클릭했을 때 모달을 닫도록 하는 이벤트 처리
   const handleBackgroundClick = (e: MouseEvent) => {
     // 배경 클릭 시 모달 닫기\
@@ -52,7 +55,7 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
         content,
       });
       if (response.status === 202) {
-        console.log("성공!");
+        console.log("요청 성공!");
         // 응답이 성공적인 경우 상태 업데이트
         setContentValue(content);
         setTaskID(response.data.task_id);
@@ -82,9 +85,8 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
             task_id: taskID,
           },
         });
-        console.log("Response:", response);
         if (response.status === 200) {
-          console.log("성공!");
+          console.log("이미지 생성 성공!");
           const newImageUrl = response.data.image_url.image_url;
 
           // 이전에 생성한 이미지 배열에 추가
@@ -101,12 +103,39 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
       } catch (error) {
         console.error(error);
       }
-
-      console.log(images);
     };
     return () => clearInterval(intervalId);
   }, [taskID]);
 
+  const handleClickOk = async () => {
+    const latestImageUrl = images.length > 0 ? images[images.length - 1] : "";
+    // Ok 버튼 클릭 시 /api/v1/stories/images에 GET 요청
+    try {
+      const storiesResponse = await axios.post(`/api/v1/stories/`, {
+        user_id: userId, // 사용자 ID (원하는 값으로 수정)
+        content,
+        image_url: latestImageUrl, // latestImageUrl은 어디서 가져오는지 확인 필요
+        parent_story: -1, // 부모 ID (원하는 값으로 수정, 필요에 따라 null로 남겨둘 수 있음)
+      });
+
+      // 성공적으로 응답을 받았을 때 처리
+      if (storiesResponse.status === 201) {
+        console.log("스토리 조회 성공!");
+        console.log(storiesResponse.data.data);
+        // TODO: 스토리 조회에 대한 추가 로직 수행
+      }
+    } catch (error) {
+      console.error("스토리 생성 중 에러 발생:", error);
+      console.log(userId);
+      console.log(content);
+      console.log(latestImageUrl);
+    }
+  };
+
+  const handleOkButtonClick = () => {
+    handleClickOk();
+    closeModal();
+  };
   useEffect(() => {
     if (isOpen) {
       // 모달이 열릴 때 외부 클릭 이벤트 리스너 등록
@@ -120,6 +149,7 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
       document.removeEventListener("mousedown", handleBackgroundClick);
     };
   }, [isOpen]);
+
   return (
     <div
       className={`fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 ${
@@ -164,7 +194,7 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
           </div>
           <button
             className="flex w-[50px] justify-center mt-[10px] bg-zinc-300 border-2 border-gray-500 font-Minecraft font-bold text-black text-[20px] hover:bg-blue-600 hover:text-green-400 hover:shadow-blue-600"
-            onClick={closeModal}
+            onClick={handleOkButtonClick}
           >
             OK
           </button>
