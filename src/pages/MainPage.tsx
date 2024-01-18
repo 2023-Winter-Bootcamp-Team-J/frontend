@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
-import Navbar from "@/components/Navbar";
-import SwiperComponent from "@/components/Swiper";
-import ScenarioModal from "@/components/ScenarioModal";
-import ThreeParticles from "@/component/ThreeParticles";
+import React, { useState, useEffect } from 'react';
+import Navbar from '@/components/Navbar';
+import SwiperComponent from '@/components/Swiper';
+import ScenarioModal from '@/components/ScenarioModal';
+import ThreeParticles from '@/component/ThreeParticles';
 
 const MainPage = () => {
   // 선택된 슬라이드의 인덱스를 기억하는 상태
@@ -35,7 +35,7 @@ const MainPage = () => {
       <ThreeParticles />
       <div className="flex w-[100vw] h-[100vh] flex-col justify-center items-center absolute top-1/2 left-1/2 z-1 bg-transparent -translate-x-1/2 -translate-y-1/2">
         <div className="flex flex-col w-full h-full gap-[50px]">
-          <Navbar username={""} />
+          <Navbar />
           <div className="flex flex-col items-center">
             <hr className="border-white w-[600px]" />
             <div className="flex items-center justify-between gap-[50px] px-[30px] py-[10px]">
@@ -55,7 +55,7 @@ const MainPage = () => {
             <img
               className="hover:scale-125 hover:opacity-35 h-[50px] drop-shadow"
               style={{
-                filter: "drop-shadow(7px 1px 8px rgba(255, 255, 255, 0.7))",
+                filter: 'drop-shadow(7px 1px 8px rgba(255, 255, 255, 0.7))',
               }}
               onClick={openModal}
               src="/asset/write.svg"
