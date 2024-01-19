@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import SwiperComponent from "@/components/Swiper";
 import ScenarioModal from "@/components/ScenarioModal";
+import StoryModal from "@/components/StoryModal";
 import ThreeParticles from "@/component/ThreeParticles";
 
 const MainPage = () => {
@@ -10,15 +11,22 @@ const MainPage = () => {
     null
   );
   const [modalOpen, setModalOpen] = useState(false);
-
+  const [storyOpen, setStoryOpen] = useState(false);
+  //시나리오 모달 관련 함수
   const closeModal = () => {
     setModalOpen(false);
   };
-
   const openModal = () => {
     setModalOpen(true);
   };
 
+  //스토리 모달 관련 함수
+  const closeStory = () => {
+    setStoryOpen(false);
+  };
+  const openStory = () => {
+    setStoryOpen(true);
+  };
   useEffect(() => {
     // selectedSlideIndex가 변경될 때마다 해당 값을 출력
     console.log(selectedSlideIndex);
@@ -27,9 +35,11 @@ const MainPage = () => {
   // Swiper 슬라이드를 클릭할 때 모달을 열도록 하는 함수
   const handleSlideClick = (index: number) => {
     setSelectedSlideIndex(index);
+    openStory();
+  };
+  const handleButtonClick = () => {
     openModal();
   };
-
   return (
     <div>
       <ThreeParticles />
@@ -51,7 +61,10 @@ const MainPage = () => {
           <div className="flex justify-center">
             <SwiperComponent onSlideClick={handleSlideClick} />
           </div>
-          <button className="flex justify-end pb-[10px] pr-[50px]">
+          <button
+            className="flex justify-end pb-[10px] pr-[50px]"
+            onClick={handleButtonClick}
+          >
             <img
               className="hover:scale-125 hover:opacity-35 h-[50px] drop-shadow"
               style={{
@@ -67,6 +80,15 @@ const MainPage = () => {
               isOpen={modalOpen}
               closeModal={() => {
                 closeModal();
+                setSelectedSlideIndex(null);
+              }}
+            />
+          )}
+          {storyOpen && (
+            <StoryModal
+              isOpen={storyOpen}
+              closeStory={() => {
+                closeStory();
                 setSelectedSlideIndex(null);
               }}
             />

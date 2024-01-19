@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import Swiper from "swiper";
 import "swiper/css";
 import "swiper/css/effect-coverflow";
@@ -11,10 +12,32 @@ import {
   Pagination,
 } from "swiper/modules";
 
-const SwiperComponent: React.FC<{ onSlideClick: (index: number) => void }> = ({
-  onSlideClick,
-}) => {
+interface SwiperComponentProps {
+  onSlideClick: (index: number, storyId: string) => void;
+}
+
+const SwiperComponent: React.FC<SwiperComponentProps> = ({ onSlideClick }) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [stories, setStories] = useState<any[]>([]);
+
   useEffect(() => {
+    const RootStory = async () => {
+      try {
+        const response = await axios.get(`/api/v1/stories/`);
+        if (response.status === 200) {
+          console.log(response.data.message);
+          const stories = response.data.data;
+          setStories(stories);
+        }
+      } catch (error) {
+        console.error("루트 스토리 조회 중 에러 발생");
+      }
+    };
+
+    if (stories.length === 0) {
+      RootStory();
+    }
+
     const swiper = new Swiper(".Myswiper", {
       loop: true,
       loopAdditionalSlides: 1,
@@ -47,69 +70,37 @@ const SwiperComponent: React.FC<{ onSlideClick: (index: number) => void }> = ({
 
     // 각 슬라이드에 클릭 이벤트 추가
     swiper.slides.forEach((slide, index) => {
-      slide.addEventListener("click", () => onSlideClick(index));
+      slide.addEventListener("click", () =>
+        onSlideClick(index, stories[index].story_id)
+      );
     });
     return () => {
       // 컴포넌트 언마운트 시에 이벤트 리스너 제거
       swiper.slides.forEach((slide, index) => {
-        slide.removeEventListener("click", () => onSlideClick(index));
+        slide.removeEventListener("click", () =>
+          onSlideClick(index, stories[index].story_id)
+        );
       });
 
       swiper.destroy();
     };
-  }, [onSlideClick]);
+  }, [onSlideClick, stories]);
 
   return (
     <div className="swiper-container w-[1100px] pt-[10px] pb-[50px] Myswiper overflow-hidden block">
       <div className="swiper-wrapper">
-        <div className="swiper-slide w-[400px] flex bg-center object-cover">
-          <img
-            className="w-full block"
-            src="/asset/test.png"
-            alt="슬라이드1"
-            style={{
-              filter: "drop-shadow(7px 1px 8px rgba(255, 252, 234, 0.759))",
-            }}
-          />
-        </div>
-        <div className="flex bg-center w-[400px] object-cover">
-          <img
-            className="w-full block drop-shadow(3px 3px 5px #ffffffb6)"
-            src="/asset/test2.png"
-            alt="슬라이드2"
-          />
-        </div>
-        <div className="swiper-slide w-[400px] flex bg-center object-cover">
-          <img
-            className="w-full block"
-            src="/asset/test3.png"
-            alt="슬라이드3"
-          />
-        </div>
-        <div className="swiper-slide w-[400px] flex bg-center object-cover">
-          <img className="w-full block" src="/asset/test.png" alt="슬라이드1" />
-        </div>
-        <div className="swiper-slide w-[400px] flex bg-center object-cover">
-          <img
-            className="w-full block"
-            src="/asset/test4.png"
-            alt="슬라이드4"
-          />
-        </div>
-        <button className="swiper-slide w-[400px] flex bg-center object-cover">
-          <img
-            className="w-full block"
-            src="/asset/test5.png"
-            alt="슬라이드5"
-          />
-        </button>
-        <button className="swiper-slide w-[400px] flex bg-center object-cover">
-          <img
-            className="w-full block"
-            src="/asset/test6.png"
-            alt="슬라이드6"
-          />
-        </button>
+        {stories.map((story, index) => (
+          <div className="swiper-slide w-[400px] flex bg-center object-cover">
+            <img
+              className="w-full block"
+              src={story.image_url}
+              alt={`슬라이드${index + 1}`}
+              style={{
+                filter: "drop-shadow(7px 1px 8px rgba(255, 252, 234, 0.759))",
+              }}
+            />
+          </div>
+        ))}
       </div>
       <div className="swiper-pagination bullet "></div>
     </div>
