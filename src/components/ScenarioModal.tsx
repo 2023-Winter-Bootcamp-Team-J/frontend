@@ -1,6 +1,8 @@
-import React, { useRef, useEffect, useState, ChangeEvent } from "react";
-import axios from "axios";
-import Carousel from "../components/ImgCarousel";
+import React, { useRef, useEffect, useState, ChangeEvent } from 'react';
+import axios from 'axios';
+import Carousel from '../components/ImgCarousel';
+import Lottie from 'lottie-react';
+import lottieData from '../assets/lottie.json';
 interface ScenarioModalProps {
   isOpen: boolean;
   closeModal: () => void;
@@ -17,11 +19,17 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
     }
   };
   const modalRef = useRef<HTMLDivElement>(null);
-  const [content, setContentValue] = useState("");
-  const [taskID, setTaskID] = useState("");
-  const [imageUrl, setImageUrl] = useState<string>("");
+  const [content, setContentValue] = useState('');
+  const [taskID, setTaskID] = useState('');
+  const [imageUrl, setImageUrl] = useState<string>('');
   const [images, setImages] = useState<string[]>([]);
   const [characterCount, setCharacterCount] = useState<number>(0);
+  const [isGenerating, setIsGenerating] = useState(false); // Lottie를 트리거
+  // Lottie 애니메이션 완료 시 호출되는 콜백
+  const handleLottieComplete = () => {
+    setIsGenerating(false); // Lottie 숨기기
+  };
+
   const handleContentChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const inputValue = e.target.value;
 
@@ -33,8 +41,11 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
     }
   };
   const handleClick = () => {
-    CreateScenario(); // 이미지 생성 요청
+    CreateScenario();
+    // 이미지 생성 요청
+    setIsGenerating(true); // Lottie 보여주기 시작
   };
+
   const CreateScenario = async () => {
     type ErrorType = {
       response: {
@@ -44,15 +55,15 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
     try {
       if (!content.trim()) {
         // content가 공백인 경우 400에러 방지
-        console.log("문장을 입력하세요!");
-        alert("문장을 입력하세요!");
+        console.log('문장을 입력하세요!');
+        alert('문장을 입력하세요!');
         return;
       }
       const response = await axios.post(`/api/v1/stories/images`, {
         content,
       });
       if (response.status === 202) {
-        console.log("성공!");
+        console.log('성공!');
         // 응답이 성공적인 경우 상태 업데이트
         setContentValue(content);
         setTaskID(response.data.task_id);
@@ -64,6 +75,7 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
       console.log(errorObj.response.status);
     }
   };
+
   useEffect(() => {
     const intervalId = setInterval(() => {
       // 이미지가 생성되었을 때만 ShowImage 함수 호출
@@ -74,7 +86,7 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
     const ShowImage = async () => {
       try {
         if (!taskID) {
-          console.log("taskID가 없습니다.");
+          console.log('taskID가 없습니다.');
           return;
         }
         const response = await axios.get(`/api/v1/stories/images`, {
@@ -82,9 +94,9 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
             task_id: taskID,
           },
         });
-        console.log("Response:", response);
+        console.log('Response:', response);
         if (response.status === 200) {
-          console.log("성공!");
+          console.log('성공!');
           const newImageUrl = response.data.image_url.image_url;
 
           // 이전에 생성한 이미지 배열에 추가
@@ -100,6 +112,8 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
         }
       } catch (error) {
         console.error(error);
+      } finally {
+        setIsGenerating(false); // Lottie 숨기기
       }
 
       console.log(images);
@@ -110,32 +124,40 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
   useEffect(() => {
     if (isOpen) {
       // 모달이 열릴 때 외부 클릭 이벤트 리스너 등록
-      document.addEventListener("mousedown", handleBackgroundClick);
+      document.addEventListener('mousedown', handleBackgroundClick);
     } else {
       // 모달이 닫힐 때 외부 클릭 이벤트 리스너 제거
-      document.removeEventListener("mousedown", handleBackgroundClick);
+      document.removeEventListener('mousedown', handleBackgroundClick);
     }
     // 컴포넌트 언마운트 시에 이벤트 리스너 정리
     return () => {
-      document.removeEventListener("mousedown", handleBackgroundClick);
+      document.removeEventListener('mousedown', handleBackgroundClick);
     };
   }, [isOpen]);
   return (
     <div
       className={`fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 ${
-        isOpen ? "" : "hidden"
+        isOpen ? '' : 'hidden'
       }`}
     >
       <div
         ref={modalRef}
-        className="flex flex-col w-[800px] h-[450px] absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+        className="flex absolute flex-col w-[800px] h-[450px] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
       >
         <div className="flex w-full h-[55px] justify-center items-center bg-blue-800 border-2 border-white text-green-400 text-[33px] font-Minecraft">
           SCENARIO
         </div>
         <div className="flex flex-col w-full h-[395px] justify-center items-center gap-[10px] bg-black border-2 border-white text-white">
+          {isGenerating && (
+            <div className="absolute z-50 flex justify-center items-center gap-[10px] bg-gray-500 bg-opacity-50 w-full h-[395px]">
+              <Lottie
+                animationData={lottieData}
+                onComplete={handleLottieComplete}
+              />
+            </div>
+          )}
           <div className="flex justify-center w-full h-[270px] gap-[80px]">
-            <div className="w-[300px]">
+            <div className="w-[300px] z-10">
               {imageUrl && <Carousel images={images} />}
             </div>
             <div className="flex flex-col justify-center w-[300px] gap-[17px] text-center">
@@ -149,7 +171,7 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
                 // onChange={(e) => setContentValue(e.target.value)}
                 onChange={handleContentChange}
                 maxLength={100}
-                style={{ resize: "none" }}
+                style={{ resize: 'none' }}
               ></textarea>
               <div className=" flex flex-col items-end  text-white top-10 ">
                 {characterCount}/{100}
