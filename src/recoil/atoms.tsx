@@ -1,5 +1,4 @@
-// atoms.ts
-import { atom } from 'recoil';
+import { atom } from "recoil";
 
 interface UserState {
   user_id: number;
@@ -7,9 +6,9 @@ interface UserState {
 }
 
 export const userState = atom<UserState>({
-  key: 'userState',
+  key: "userState",
   default: {
     user_id: 0,
-    nickname: '',
+    nickname: "",
   },
 });

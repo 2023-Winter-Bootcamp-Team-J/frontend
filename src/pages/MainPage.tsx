@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import SwiperComponent from "@/components/Swiper";
 import ScenarioModal from "@/components/ScenarioModal";
-import ThreeParticles from "@/component/ThreeParticles";
+import ThreeParticles from "@/components/ThreeParticles";
 
 const MainPage = () => {
   // 선택된 슬라이드의 인덱스를 기억하는 상태
