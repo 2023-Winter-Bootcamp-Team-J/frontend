@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from "react";
-import * as THREE from "Three";
+import React, { useEffect, useRef } from 'react';
+import * as THREE from 'Three';
 
 const ParticleTutorial: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -36,7 +36,8 @@ const ParticleTutorial: React.FC = () => {
 
       makeParticles();
 
-      document.addEventListener("mousemove", onMouseMove, false);
+      document.addEventListener('mousemove', onMouseMove, false);
+      window.addEventListener('resize', onWindowResize);
       setInterval(update, 1000 / 50);
     };
 
@@ -62,7 +63,7 @@ const ParticleTutorial: React.FC = () => {
           zpos,
         ];
         geometry.setAttribute(
-          "position",
+          'position',
           new THREE.Float32BufferAttribute(vertices, 3)
         );
 
@@ -88,6 +89,14 @@ const ParticleTutorial: React.FC = () => {
       mouseY = event.clientY;
     };
 
+    const onWindowResize = () => {
+      if (rendererRef.current && camera) {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        rendererRef.current.setSize(window.innerWidth, window.innerHeight);
+      }
+    };
+
     init();
 
     return () => {
@@ -99,6 +108,7 @@ const ParticleTutorial: React.FC = () => {
           rendererContainer.removeChild(rendererRef.current.domElement);
         }
       }
+      window.removeEventListener('resize', onWindowResize);
     };
   }, []); // 빈 dependency array로 설정하여 한 번만 실행되도록
 
