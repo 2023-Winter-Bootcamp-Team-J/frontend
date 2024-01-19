@@ -1,7 +1,6 @@
-// LandingPage.tsx
-import React, { useState } from 'react';
-import ThreeParticles from './ThreeParticles';
-import NicknameModal from './NicknameModal';
+import React, { useState } from "react";
+import ThreeParticles from "../components/ThreeParticles";
+import NicknameModal from "../components/NicknameModal";
 
 const LandingPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

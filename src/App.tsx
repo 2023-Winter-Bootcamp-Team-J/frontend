@@ -1,14 +1,12 @@
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { RecoilRoot } from 'recoil';
-import MainPage from './pages/MainPage';
-import LandingPage from './component/LandingPage';
-import ScenarioPage from './pages/ScenarioPage';
-import ParticleTutorial from './component/ThreeParticles';
+import React, { useState } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { RecoilRoot } from "recoil";
+import MainPage from "./pages/MainPage";
+import LandingPage from "./pages/LandingPage";
+import ScenarioPage from "./pages/ScenarioPage";
+import ParticleTutorial from "./components/ThreeParticles";
 
 const App = () => {
-  const [isNicknameModalOpen, setNicknameModalOpen] = useState(false);
-
   return (
     <RecoilRoot>
       <Router>
