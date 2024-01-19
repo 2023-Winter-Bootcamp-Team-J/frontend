@@ -1,9 +1,9 @@
 // NicknameModal.tsx
-import React, { useState, ChangeEvent, useRef, useEffect } from 'react';
-import axios, { AxiosError } from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
-import { userState } from '../recoil/atoms';
+import React, { useState, ChangeEvent, useRef, useEffect } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useRecoilState } from "recoil";
+import { userState } from "../recoil/atoms";
 
 interface NicknameModalProps {
   isOpen: boolean;
@@ -12,7 +12,7 @@ interface NicknameModalProps {
 
 const NicknameModal: React.FC<NicknameModalProps> = ({ isOpen, onClose }) => {
   const [user, setUser] = useRecoilState(userState);
-  const [modalnickname, setmodalNickname] = useState<string>('');
+  const [modalnickname, setmodalNickname] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
   const modalRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
@@ -26,38 +26,39 @@ const NicknameModal: React.FC<NicknameModalProps> = ({ isOpen, onClose }) => {
     const nickname = modalnickname;
     try {
       // 사용자가 입력한 닉네임을 API에 전송
-      const response = await axios.post('/api/v1/nicknames/', {
+      const response = await axios.post("/api/v1/nicknames/", {
         nickname,
       });
 
       // HTTP 상태 코드에 따라 처리
       if (response.status === 201) {
         // 성공
-        console.log('닉네임 생성에 성공했습니다.');
-
+        console.log("닉네임 생성에 성공했습니다.");
+        console.log(user);
         // setUser 함수를 사용하여 user 정보 업데이트
         setUser({
           user_id: response.data.data.id,
           nickname: response.data.data.nickname,
         });
         onClose();
-        navigate('/main');
+        navigate("/main");
       }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       // 실패 (HTTP 상태 코드 400) 또는 다른 예외 발생 시 에러 상태 업데이트
-      console.error('닉네임 생성 중에 오류가 발생했습니다.', error);
+      console.error("닉네임 생성 중에 오류가 발생했습니다.", error);
 
       // AxiosError일 경우 더 자세한 정보를 로깅
       if (axios.isAxiosError(error)) {
-        console.error('AxiosError:', error.toJSON());
+        console.error("AxiosError:", error.toJSON());
       }
 
       // 실제 서버에서 반환한 오류 메시지가 어떤 내용인지 콘솔에 로깅
       if (error.response && error.response.data) {
-        console.error('서버 응답 오류:', error.response.data);
+        console.error("서버 응답 오류:", error.response.data);
       }
 
-      setError('닉네임 생성 중에 오류가 발생했습니다. 다시 시도해주세요.');
+      setError("닉네임 생성 중에 오류가 발생했습니다. 다시 시도해주세요.");
     }
   };
 
@@ -71,22 +72,22 @@ const NicknameModal: React.FC<NicknameModalProps> = ({ isOpen, onClose }) => {
   useEffect(() => {
     if (isOpen) {
       // 모달이 열릴 때 외부 클릭 이벤트 리스너 등록
-      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
     } else {
       // 모달이 닫힐 때 외부 클릭 이벤트 리스너 제거
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     }
 
     // 컴포넌트 언마운트 시에 이벤트 리스너 정리
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isOpen]);
 
   return (
     <div
       className={`fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 ${
-        isOpen ? '' : 'hidden'
+        isOpen ? "" : "hidden"
       }`}
     >
       <div
