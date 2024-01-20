@@ -14,7 +14,6 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
   isOpen,
   closeModal,
 }) => {
-  const userId = useRecoilValue(userState).user_id;
   // 모달 외부를 클릭했을 때 모달을 닫도록 하는 이벤트 처리
   const handleBackgroundClick = (e: MouseEvent) => {
     // 배경 클릭 시 모달 닫기\
@@ -113,6 +112,8 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
       } finally {
         setIsGenerating(false); // Lottie 숨기기
       }
+
+      console.log(images);
     };
     return () => clearInterval(intervalId);
   }, [taskID]);
@@ -156,7 +157,6 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
       document.removeEventListener("mousedown", handleBackgroundClick);
     };
   }, [isOpen]);
-
   return (
     <div
       className={`fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 ${
@@ -208,7 +208,7 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
           </div>
           <button
             className="flex w-[50px] justify-center mt-[10px] bg-zinc-300 border-2 border-gray-500 font-Minecraft font-bold text-black text-[20px] hover:bg-blue-600 hover:text-green-400 hover:shadow-blue-600"
-            onClick={handleOkButtonClick}
+            onClick={closeModal}
           >
             OK
           </button>
