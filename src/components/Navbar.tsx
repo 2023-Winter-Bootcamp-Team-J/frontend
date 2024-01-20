@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useRecoilValue } from "recoil";
 import { userState } from "../recoil/atoms";
 import { useNavigate } from "react-router-dom";
@@ -10,7 +10,7 @@ const Navbar = () => {
 
   // user가 변경되면 실행
   useEffect(() => {
-    console.log("user: ", user);
+    // console.log("user: ", user);
   }, [user]);
   const handleNavigate = () => {
     // '/landingpage'로 페이지 이동

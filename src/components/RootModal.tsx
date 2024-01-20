@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 interface StoryModalProps {
@@ -78,7 +78,7 @@ const StoryModal: React.FC<StoryModalProps> = ({
         className="flex flex-col w-[800px] h-[450px] absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
       >
         <div className="flex w-full h-[55px] justify-center items-center bg-blue-800 border-2 border-white text-green-400 text-[33px] font-Minecraft">
-          STORY
+          SCENARIO
           <div className="text-gray-400 text-[18px] ml-[20px]">
             by {user_nickname}
           </div>

@@ -1,13 +1,26 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import axios from "axios";
+import StoryModal from "./StoryModal";
 
 const ForceGraph = ({ storyId }) => {
   const svgRef = useRef(null);
   const story_id = storyId;
-  console.log("story_id: ", story_id);
+  // console.log("story_id: ", story_id);
 
   const [scenario, setScenario] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [clickStoryId, setClickStoryId] = useState(story_id);
+
+  const openModal = (d) => {
+    setClickStoryId(d.data.story_id);
+    // console.log("story_id: ", d.data.story_id);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   function transformData(treeData, startNodeId) {
     const result = []; // 결과를 담을 배열
@@ -22,6 +35,7 @@ const ForceGraph = ({ storyId }) => {
         user_nickname: node.story.user_nickname,
         content: node.story.content,
         image_url: node.story.image_url,
+        child_content: node.story.child_content,
         children: null, // 기본값으로 null 설정
       };
       // 자식 노드가 있는 경우 재귀적으로 호출하여 children 배열에 추가
@@ -47,7 +61,7 @@ const ForceGraph = ({ storyId }) => {
         const response = await axios.get(
           `api/v1/stories/branches/${story_id}/`
         );
-        console.log("response: ", response.data.data);
+        // console.log("response: ", response.data.data);
         if (response.data.data.length > 0) {
           setScenario(response.data.data);
         }
@@ -161,11 +175,11 @@ const ForceGraph = ({ storyId }) => {
 
       const root = d3.hierarchy(treeData[0]); // 트리구조
 
-      update(root);
+      update();
 
       // eslint 경고 무시하는 주석
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      function update(source) {
+      // eslint-disable-next-line no-inner-declarations
+      function update() {
         const nodes = tree(root).descendants();
         const links = tree(root).links();
 
@@ -190,7 +204,8 @@ const ForceGraph = ({ storyId }) => {
           .attr("y", -55)
           .attr("width", 110)
           .attr("height", 110)
-          .style("filter", "drop-shadow(3px 3px 5px #ffffffb6)");
+          .style("filter", "drop-shadow(3px 3px 5px #ffffffb6)")
+          .on("click", (event, d) => openModal(d)); // 클릭 이벤트 핸들러 추가
 
         // 텍스트 넣기
         // nodeEnter
@@ -217,20 +232,32 @@ const ForceGraph = ({ storyId }) => {
   }, [scenario]);
 
   return (
-    <div className="relative w-full h-full">
-      <svg
-        ref={svgRef}
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform:
-            "translate(-50%, -50%) perspective(1500px) rotateX(20deg) rotateY(5deg) rotateZ(-5deg)",
-        }}
-      ></svg>
+    <div className="flex flex-col relative w-full h-full">
+      <div>
+        <svg
+          ref={svgRef}
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: "1",
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform:
+              "translate(-50%, -50%) perspective(1500px) rotateX(20deg) rotateY(5deg) rotateZ(-5deg)",
+          }}
+        ></svg>
+      </div>
+      {isModalOpen && (
+        <div className="z-10">
+          <StoryModal
+            story_id={clickStoryId}
+            isOpen={isModalOpen}
+            onClose={closeModal}
+          />
+        </div>
+      )}
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState, ChangeEvent } from "react";
+import { useRef, useEffect, useState, ChangeEvent } from "react";
 import axios from "axios";
 import Carousel from "../components/ImgCarousel";
 import Lottie from "lottie-react";
@@ -132,6 +132,7 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
       if (storiesResponse.status === 201) {
         console.log(storiesResponse.data.message);
         console.log(storiesResponse.data.data);
+        console.log(storiesResponse.data.story_id);
       }
     } catch (error) {
       console.error("스토리 생성 중 에러 발생:", error);

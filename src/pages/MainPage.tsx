@@ -1,15 +1,16 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import Navbar from "@/components/Navbar";
 import SwiperComponent from "@/components/Swiper";
 import ScenarioModal from "@/components/ScenarioModal";
-// import StoryModal from "@/components/StoryModal";
 import ThreeParticles from "@/components/ThreeParticles";
 
 const MainPage = () => {
   // 선택된 슬라이드의 인덱스를 기억하는 상태
-  const [selectedSlideIndex, setSelectedSlideIndex] = useState<number | null>(
-    null
-  );
+  // const [selectedSlideIndex, setSelectedSlideIndex] = useState<number | null>(
+  //   null
+  // );
+  const [stories, setStories] = useState<[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
   //시나리오 모달 관련 함수
   const closeModal = () => {
@@ -19,15 +20,34 @@ const MainPage = () => {
     setModalOpen(true);
   };
 
+  useEffect(() => {
+    const RootStory = async () => {
+      try {
+        const response = await axios.get(`/api/v1/stories/`);
+        if (response.status === 200) {
+          console.log(response.data.message); //전체 루트 스토리 조회
+          const stories = response.data.data;
+          setStories(stories);
+        }
+      } catch (error) {
+        console.error("루트 스토리 조회 중 에러 발생");
+      }
+    };
+
+    if (stories.length === 0) {
+      RootStory();
+    }
+  }, [stories]);
+
   // Swiper 슬라이드를 클릭할 때 스토리 모달 열도록 하는 함수
   const handleSlideClick = (index: number, storyId: string) => {
     // 여기에 슬라이드 클릭 시 수행할 로직 추가
     console.log(`Slide clicked! Index: ${index}, Story ID: ${storyId}`);
   };
-  useEffect(() => {
-    // selectedSlideIndex가 변경될 때마다 해당 값을 출력
-    console.log(selectedSlideIndex);
-  }, [selectedSlideIndex]);
+  // useEffect(() => {
+  //   // selectedSlideIndex가 변경될 때마다 해당 값을 출력
+  //   console.log(selectedSlideIndex);
+  // }, [selectedSlideIndex]);
 
   return (
     <div>
@@ -65,7 +85,7 @@ const MainPage = () => {
               isOpen={modalOpen}
               closeModal={() => {
                 closeModal();
-                setSelectedSlideIndex(null);
+                // setSelectedSlideIndex(null);
               }}
             />
           )}

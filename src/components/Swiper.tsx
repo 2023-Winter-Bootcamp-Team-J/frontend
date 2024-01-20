@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+// import axios from "axios";
 import Swiper from "swiper";
 import "swiper/css";
 import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
-import StoryModal from "@/components/RootModal";
+import RootModal from "@/components/RootModal";
 // import "swiper/css/navigation";
 import {
   EffectCoverflow,
@@ -43,69 +43,69 @@ const SwiperComponent: React.FC<SwiperComponentProps> = ({ onSlideClick }) => {
     setStoryId(stories[index]?.story_id || null);
     openStory();
     onSlideClick(index, stories[index]?.story_id || ""); // MainPage의 handleSlideClick 호출
+    setStories(stories); //임시로..
   };
 
-  useEffect(() => {
-    const RootStory = async () => {
-      try {
-        const response = await axios.get(`/api/v1/stories/`);
-        if (response.status === 200) {
-          console.log(response.data.message); //전체 루트 스토리 조회
-          const stories = response.data.data;
-          setStories(stories);
-        }
-      } catch (error) {
-        console.error("루트 스토리 조회 중 에러 발생");
-      }
-    };
+  // useEffect(() => {
+  //   const RootStory = async () => {
+  //     try {
+  //       const response = await axios.get(`/api/v1/stories/`);
+  //       if (response.status === 200) {
+  //         console.log(response.data.message); //전체 루트 스토리 조회
+  //         const stories = response.data.data;
+  //         setStories(stories);
+  //       }
+  //     } catch (error) {
+  //       console.error("루트 스토리 조회 중 에러 발생");
+  //     }
+  //   };
 
-    if (stories.length === 0) {
-      RootStory();
-    }
+  //   if (stories.length === 0) {
+  //     RootStory();
+  //   }
 
-    const swiper = new Swiper(".Myswiper", {
-      loop: true,
-      loopAdditionalSlides: 1,
-      effect: "coverflow",
-      grabCursor: true,
-      centeredSlides: true,
-      slidesPerView: "auto",
-      coverflowEffect: {
-        rotate: 30,
-        stretch: 0,
-        depth: 300,
-        modifier: 1,
-        slideShadows: true,
+  const swiper = new Swiper(".Myswiper", {
+    loop: true,
+    loopAdditionalSlides: 1,
+    effect: "coverflow",
+    grabCursor: true,
+    centeredSlides: true,
+    slidesPerView: "auto",
+    coverflowEffect: {
+      rotate: 30,
+      stretch: 0,
+      depth: 300,
+      modifier: 1,
+      slideShadows: true,
+    },
+    navigation: {
+      nextEl: ".swiper-button-next",
+      prevEl: ".swiper-button-prev",
+    },
+    mousewheel: true,
+    pagination: {
+      el: ".swiper-pagination",
+      clickable: true,
+      dynamicBullets: true,
+      renderBullet: function (_index, bullet) {
+        return `<div class="${bullet}  border-2 bg-transparent border-green-300 rounded-full" style="width: 40px; height: 16px; opacity: 1;"></div>`;
       },
-      navigation: {
-        nextEl: ".swiper-button-next",
-        prevEl: ".swiper-button-prev",
-      },
-      mousewheel: true,
-      pagination: {
-        el: ".swiper-pagination",
-        clickable: true,
-        dynamicBullets: true,
-        renderBullet: function (index, bullet) {
-          return `<div class="${bullet}  border-2 bg-transparent border-green-300 rounded-full" style="width: 40px; height: 16px; opacity: 1;"></div>`;
-        },
-      },
-      modules: [EffectCoverflow, Navigation, Mousewheel, Pagination],
-    });
+    },
+    modules: [EffectCoverflow, Navigation, Mousewheel, Pagination],
+  });
 
-    // 각 슬라이드에 클릭 이벤트 추가
-    swiper.slides.forEach((slide, index) => {
-      slide.addEventListener("click", () => handleSlideClick(index));
-    });
+  // 각 슬라이드에 클릭 이벤트 추가
+  swiper.slides.forEach((slide, index) => {
+    slide.addEventListener("click", () => handleSlideClick(index));
+  });
 
-    return () => {
-      swiper.slides.forEach((slide, index) => {
-        slide.removeEventListener("click", () => handleSlideClick(index));
-      });
+  // return () => {
+  //   swiper.slides.forEach((slide, index) => {
+  //     slide.removeEventListener("click", () => handleSlideClick(index));
+  //   });
 
-      swiper.destroy();
-    };
-  }, [onSlideClick, stories]);
+  //   swiper.destroy();
+  // };
 
   return (
     <div>
@@ -131,7 +131,7 @@ const SwiperComponent: React.FC<SwiperComponentProps> = ({ onSlideClick }) => {
         <div className="swiper-pagination bullet "></div>
       </div>
       {storyOpen && (
-        <StoryModal
+        <RootModal
           isOpen={storyOpen}
           closeStory={() => {
             closeStory();
@@ -143,5 +143,4 @@ const SwiperComponent: React.FC<SwiperComponentProps> = ({ onSlideClick }) => {
     </div>
   );
 };
-
 export default SwiperComponent;
