@@ -1,10 +1,10 @@
-import React, { useRef, useEffect, useState, ChangeEvent } from "react";
-import axios from "axios";
-import Carousel from "../components/ImgCarousel";
-import Lottie from "lottie-react";
-import lottieData from "../assets/lottie.json";
-import { useRecoilValue } from "recoil";
-import { userState } from "../recoil/atoms";
+import React, { useRef, useEffect, useState, ChangeEvent } from 'react';
+import axios from 'axios';
+import Carousel from '../components/ImgCarousel';
+import Lottie from 'lottie-react';
+import lottieData from '../assets/lottie.json';
+import { useRecoilValue } from 'recoil';
+import { userState } from '../recoil/atoms';
 
 interface ScenarioModalProps {
   isOpen: boolean;
@@ -14,7 +14,6 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
   isOpen,
   closeModal,
 }) => {
-  const userId = useRecoilValue(userState).user_id;
   // 모달 외부를 클릭했을 때 모달을 닫도록 하는 이벤트 처리
   const handleBackgroundClick = (e: MouseEvent) => {
     // 배경 클릭 시 모달 닫기\
@@ -23,9 +22,9 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
     }
   };
   const modalRef = useRef<HTMLDivElement>(null);
-  const [content, setContentValue] = useState("");
-  const [taskID, setTaskID] = useState("");
-  const [imageUrl, setImageUrl] = useState<string>("");
+  const [content, setContentValue] = useState('');
+  const [taskID, setTaskID] = useState('');
+  const [imageUrl, setImageUrl] = useState<string>('');
   const [images, setImages] = useState<string[]>([]);
   const [characterCount, setCharacterCount] = useState<number>(0);
   const [isGenerating, setIsGenerating] = useState(false); // Lottie를 트리거
@@ -59,15 +58,15 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
     try {
       if (!content.trim()) {
         // content가 공백인 경우 400에러 방지
-        console.log("문장을 입력하세요!");
-        alert("문장을 입력하세요!");
+        console.log('문장을 입력하세요!');
+        alert('문장을 입력하세요!');
         return;
       }
       const response = await axios.post(`/api/v1/stories/images`, {
         content,
       });
       if (response.status === 202) {
-        console.log("요청 성공!");
+        console.log('요청 성공!');
 
         // 응답이 성공적인 경우 상태 업데이트
         setContentValue(content);
@@ -91,7 +90,7 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
     const ShowImage = async () => {
       try {
         if (!taskID) {
-          console.log("taskID가 없습니다.");
+          console.log('taskID가 없습니다.');
           return;
         }
         const response = await axios.get(`/api/v1/stories/images`, {
@@ -101,7 +100,7 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
         });
 
         if (response.status === 200) {
-          console.log("이미지 생성 성공!");
+          console.log('성공!');
           const newImageUrl = response.data.image_url.image_url;
 
           // 이전에 생성한 이미지 배열에 추가
@@ -120,57 +119,29 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
       } finally {
         setIsGenerating(false); // Lottie 숨기기
       }
+
+      console.log(images);
     };
     return () => clearInterval(intervalId);
   }, [taskID]);
 
-  const handleClickOk = async () => {
-    const latestImageUrl = images.length > 0 ? images[images.length - 1] : "";
-    // Ok 버튼 클릭 시 /api/v1/stories/images에 GET 요청
-    try {
-      const storiesResponse = await axios.post(`/api/v1/stories/`, {
-        user_id: userId, // 사용자 ID (원하는 값으로 수정)
-        content,
-        image_url: latestImageUrl, // latestImageUrl은 어디서 가져오는지 확인 필요
-        parent_story: -1, // 부모 ID (원하는 값으로 수정, 필요에 따라 null로 남겨둘 수 있음)
-      });
-
-      // 성공적으로 응답을 받았을 때 처리
-      if (storiesResponse.status === 201) {
-        console.log("스토리 조회 성공!");
-        console.log(storiesResponse.data.data);
-        // TODO: 스토리 조회에 대한 추가 로직 수행
-      }
-    } catch (error) {
-      console.error("스토리 생성 중 에러 발생:", error);
-      console.log(userId);
-      console.log(content);
-      console.log(latestImageUrl);
-    }
-  };
-
-  const handleOkButtonClick = () => {
-    handleClickOk();
-    closeModal();
-  };
   useEffect(() => {
     if (isOpen) {
       // 모달이 열릴 때 외부 클릭 이벤트 리스너 등록
-      document.addEventListener("mousedown", handleBackgroundClick);
+      document.addEventListener('mousedown', handleBackgroundClick);
     } else {
       // 모달이 닫힐 때 외부 클릭 이벤트 리스너 제거
-      document.removeEventListener("mousedown", handleBackgroundClick);
+      document.removeEventListener('mousedown', handleBackgroundClick);
     }
     // 컴포넌트 언마운트 시에 이벤트 리스너 정리
     return () => {
-      document.removeEventListener("mousedown", handleBackgroundClick);
+      document.removeEventListener('mousedown', handleBackgroundClick);
     };
   }, [isOpen]);
-
   return (
     <div
       className={`fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 ${
-        isOpen ? "" : "hidden"
+        isOpen ? '' : 'hidden'
       }`}
     >
       <div
@@ -204,7 +175,7 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
                 // onChange={(e) => setContentValue(e.target.value)}
                 onChange={handleContentChange}
                 maxLength={100}
-                style={{ resize: "none" }}
+                style={{ resize: 'none' }}
               ></textarea>
               <div className=" flex flex-col items-end  text-white top-10 ">
                 {characterCount}/{100}
@@ -219,7 +190,7 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
           </div>
           <button
             className="flex w-[50px] justify-center mt-[10px] bg-zinc-300 border-2 border-gray-500 font-Minecraft font-bold text-black text-[20px] hover:bg-blue-600 hover:text-green-400 hover:shadow-blue-600"
-            onClick={handleOkButtonClick}
+            onClick={closeModal}
           >
             OK
           </button>
