@@ -66,13 +66,9 @@ const MainPage = () => {
             <hr className="border-white w-[600px]" />
           </div>
           <div className="flex justify-center">
-            <SwiperComponent
-              stories={stories}
-              modalOpen={modalOpen}
-              // onSlideClick={handleSlideClick}
-            />
+            <SwiperComponent stories={stories} modalOpen={modalOpen} />
           </div>
-          <button className="flex justify-end pb-[10px] pr-[50px]">
+          <button className="absolute bottom-12 right-14 z-10">
             <img
               className="hover:scale-125 hover:opacity-35 h-[50px] drop-shadow"
               style={{

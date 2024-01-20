@@ -1,13 +1,13 @@
 import ParticleTutorial from "@/components/ThreeParticles";
 import ForceGraph from "@/components/ForceGraph";
 import Navbar from "@/components/Navbar";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const ScenarioPage = () => {
-  // const location = useLocation();
-  // const state = location.state as { story_id: number };
-  // const story_id = state.story_id;
-  const story_id = 9;
+  const location = useLocation();
+  const state = location.state as { story_id: number };
+  const story_id = state.story_id;
+  // const story_id = 9;
   const navigate = useNavigate();
 
   const handleClickBack = () => {
