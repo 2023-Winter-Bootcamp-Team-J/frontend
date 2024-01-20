@@ -2,7 +2,6 @@ import ParticleTutorial from "@/components/ThreeParticles";
 import ForceGraph from "@/components/ForceGraph";
 import Navbar from "@/components/Navbar";
 import { useNavigate } from "react-router-dom";
-// import { useLocation } from "react-router-dom";
 
 const ScenarioPage = () => {
   // const location = useLocation();

@@ -1,19 +1,22 @@
-import React, { useRef, useEffect, useState, ChangeEvent } from 'react';
-import axios from 'axios';
-import Carousel from '../components/ImgCarousel';
-import Lottie from 'lottie-react';
-import lottieData from '../assets/lottie.json';
-import { useRecoilValue } from 'recoil';
-import { userState } from '../recoil/atoms';
+import { useRef, useEffect, useState, ChangeEvent } from "react";
+import axios from "axios";
+import Carousel from "../components/ImgCarousel";
+import Lottie from "lottie-react";
+import lottieData from "../assets/lottie.json";
+import { useRecoilValue } from "recoil";
+import { userState } from "../recoil/atoms";
 
 interface ScenarioModalProps {
   isOpen: boolean;
   closeModal: () => void;
+  handleUpdate: () => void;
 }
 const ScenarioModal: React.FC<ScenarioModalProps> = ({
   isOpen,
   closeModal,
+  handleUpdate,
 }) => {
+  const userId = useRecoilValue(userState).user_id;
   // 모달 외부를 클릭했을 때 모달을 닫도록 하는 이벤트 처리
   const handleBackgroundClick = (e: MouseEvent) => {
     // 배경 클릭 시 모달 닫기\
@@ -22,9 +25,9 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
     }
   };
   const modalRef = useRef<HTMLDivElement>(null);
-  const [content, setContentValue] = useState('');
-  const [taskID, setTaskID] = useState('');
-  const [imageUrl, setImageUrl] = useState<string>('');
+  const [content, setContentValue] = useState("");
+  const [taskID, setTaskID] = useState("");
+  const [imageUrl, setImageUrl] = useState<string>("");
   const [images, setImages] = useState<string[]>([]);
   const [characterCount, setCharacterCount] = useState<number>(0);
   const [isGenerating, setIsGenerating] = useState(false); // Lottie를 트리거
@@ -50,23 +53,18 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
   };
 
   const CreateScenario = async () => {
-    type ErrorType = {
-      response: {
-        status: number;
-      };
-    };
     try {
       if (!content.trim()) {
         // content가 공백인 경우 400에러 방지
-        console.log('문장을 입력하세요!');
-        alert('문장을 입력하세요!');
+        console.log("문장을 입력하세요!");
+        alert("문장을 입력하세요!");
         return;
       }
       const response = await axios.post(`/api/v1/stories/images`, {
         content,
       });
       if (response.status === 202) {
-        console.log('요청 성공!');
+        console.log("이미지 생성 요청 성공!");
 
         // 응답이 성공적인 경우 상태 업데이트
         setContentValue(content);
@@ -75,8 +73,6 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
       }
     } catch (error) {
       console.error(error);
-      const errorObj = error as ErrorType;
-      console.log(errorObj.response.status);
     }
   };
 
@@ -90,7 +86,7 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
     const ShowImage = async () => {
       try {
         if (!taskID) {
-          console.log('taskID가 없습니다.');
+          console.log("taskID가 없습니다.");
           return;
         }
         const response = await axios.get(`/api/v1/stories/images`, {
@@ -100,7 +96,7 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
         });
 
         if (response.status === 200) {
-          console.log('성공!');
+          console.log("이미지 조회 성공!");
           const newImageUrl = response.data.image_url.image_url;
 
           // 이전에 생성한 이미지 배열에 추가
@@ -125,23 +121,46 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
     return () => clearInterval(intervalId);
   }, [taskID]);
 
+  const handleClickOk = async () => {
+    const latestImageUrl = images.length > 0 ? images[images.length - 1] : "";
+    // Ok 버튼 클릭 시 /api/v1/stories/ 요청
+    try {
+      const storiesResponse = await axios.post(`/api/v1/stories/`, {
+        user_id: userId,
+        content,
+        image_url: latestImageUrl,
+        parent_story: -1,
+      });
+
+      // 성공적으로 응답을 받았을 때 처리
+      if (storiesResponse.status === 201) {
+        console.log(storiesResponse.data.message);
+        console.log(storiesResponse.data.data);
+        handleUpdate();
+        closeModal();
+      }
+    } catch (error) {
+      console.error("스토리 생성 중 에러 발생:", error);
+    }
+  };
+
   useEffect(() => {
     if (isOpen) {
       // 모달이 열릴 때 외부 클릭 이벤트 리스너 등록
-      document.addEventListener('mousedown', handleBackgroundClick);
+      document.addEventListener("mousedown", handleBackgroundClick);
     } else {
       // 모달이 닫힐 때 외부 클릭 이벤트 리스너 제거
-      document.removeEventListener('mousedown', handleBackgroundClick);
+      document.removeEventListener("mousedown", handleBackgroundClick);
     }
     // 컴포넌트 언마운트 시에 이벤트 리스너 정리
     return () => {
-      document.removeEventListener('mousedown', handleBackgroundClick);
+      document.removeEventListener("mousedown", handleBackgroundClick);
     };
   }, [isOpen]);
   return (
     <div
       className={`fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 ${
-        isOpen ? '' : 'hidden'
+        isOpen ? "" : "hidden"
       }`}
     >
       <div
@@ -172,10 +191,9 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
                 placeholder="문장을 입력하세요."
                 className="h-[140px] p-[5px] mb-[20px] border-dashed border-2 border-white bg-transparent text-white"
                 value={content}
-                // onChange={(e) => setContentValue(e.target.value)}
                 onChange={handleContentChange}
                 maxLength={100}
-                style={{ resize: 'none' }}
+                style={{ resize: "none" }}
               ></textarea>
               <div className=" flex flex-col items-end  text-white top-10 ">
                 {characterCount}/{100}
@@ -190,7 +208,7 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
           </div>
           <button
             className="flex w-[50px] justify-center mt-[10px] bg-zinc-300 border-2 border-gray-500 font-Minecraft font-bold text-black text-[20px] hover:bg-blue-600 hover:text-green-400 hover:shadow-blue-600"
-            onClick={closeModal}
+            onClick={handleClickOk}
           >
             OK
           </button>

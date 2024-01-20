@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useRecoilValue } from "recoil";
 import { userState } from "../recoil/atoms";
 import { useNavigate } from "react-router-dom";
@@ -14,7 +14,7 @@ const Navbar = () => {
   }, [user]);
   const handleNavigate = () => {
     // '/landingpage'로 페이지 이동
-    navigate("/landingpage");
+    navigate("/");
   };
   return (
     <div className="flex w-full h-[60px] my-[10px] justify-between items-center">

@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from 'react';
-import * as THREE from 'Three';
+import React, { useEffect, useRef } from "react";
+import * as THREE from "Three";
 const ParticleTutorial: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
@@ -29,8 +29,8 @@ const ParticleTutorial: React.FC = () => {
       }
       makeParticles();
 
-      document.addEventListener('mousemove', onMouseMove, false);
-      window.addEventListener('resize', onWindowResize);
+      document.addEventListener("mousemove", onMouseMove, false);
+      window.addEventListener("resize", onWindowResize);
       animate();
     };
 
@@ -61,7 +61,7 @@ const ParticleTutorial: React.FC = () => {
           zpos,
         ];
         particleGeometry.setAttribute(
-          'position',
+          "position",
           new THREE.Float32BufferAttribute(vertices, 3)
         );
 
@@ -106,12 +106,13 @@ const ParticleTutorial: React.FC = () => {
     return () => {
       if (rendererRef.current) {
         rendererRef.current.dispose();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         const rendererContainer = containerRef.current;
         if (rendererContainer) {
           rendererContainer.removeChild(rendererRef.current.domElement);
         }
       }
-      window.removeEventListener('resize', onWindowResize);
+      window.removeEventListener("resize", onWindowResize);
     };
   }, []);
 

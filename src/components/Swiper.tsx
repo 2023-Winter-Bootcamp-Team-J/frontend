@@ -1,8 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Swiper from "swiper";
 import "swiper/css";
 import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
+import RootModal from "@/components/RootModal";
 // import "swiper/css/navigation";
 import {
   EffectCoverflow,
@@ -11,9 +12,44 @@ import {
   Pagination,
 } from "swiper/modules";
 
-const SwiperComponent: React.FC<{ onSlideClick: (index: number) => void }> = ({
-  onSlideClick,
+interface SwiperComponentProps {
+  stories: {
+    story_id: number;
+    user_id: number;
+    user_nickname: string;
+    content: string;
+    image_url: string;
+  }[];
+  modalOpen: boolean;
+}
+
+const SwiperComponent: React.FC<SwiperComponentProps> = ({
+  stories,
+  modalOpen,
 }) => {
+  const [storyId, setStoryId] = useState<number>(0);
+  const [storyOpen, setStoryOpen] = useState(false);
+
+  //스토리 모달 관련 함수
+  const closeStory = () => {
+    setStoryOpen(false);
+  };
+  const openStory = () => {
+    setStoryOpen(true);
+  };
+
+  const handleClickRoot = (story: {
+    story_id: number;
+    user_id: number;
+    user_nickname: string;
+    content: string;
+    image_url: string;
+  }) => {
+    console.log("story: ", story);
+    setStoryId(story.story_id);
+    openStory();
+  };
+
   useEffect(() => {
     const swiper = new Swiper(".Myswiper", {
       loop: true,
@@ -39,81 +75,47 @@ const SwiperComponent: React.FC<{ onSlideClick: (index: number) => void }> = ({
         clickable: true,
         dynamicBullets: true,
         renderBullet: function (index, bullet) {
-          return `<div class="${bullet}  border-2 bg-transparent border-green-300 rounded-full" style="width: 40px; height: 16px; opacity: 1;"></div>`;
+          // index가 빠지면 불렛 중앙 정렬이 해제됨
+          return `<div class="${bullet} border-2 bg-transparent border-green-300 rounded-full" style="width: 40px; height: 16px; opacity: 1;"></div>`;
         },
       },
       modules: [EffectCoverflow, Navigation, Mousewheel, Pagination],
     });
-
-    // 각 슬라이드에 클릭 이벤트 추가
-    swiper.slides.forEach((slide, index) => {
-      slide.addEventListener("click", () => onSlideClick(index));
-    });
-    return () => {
-      // 컴포넌트 언마운트 시에 이벤트 리스너 제거
-      swiper.slides.forEach((slide, index) => {
-        slide.removeEventListener("click", () => onSlideClick(index));
-      });
-
-      swiper.destroy();
-    };
-  }, [onSlideClick]);
+  }, [stories]);
 
   return (
-    <div className="swiper-container w-[1100px] pt-[10px] pb-[50px] Myswiper overflow-hidden block">
-      <div className="swiper-wrapper">
-        <div className="swiper-slide w-[400px] flex bg-center object-cover">
-          <img
-            className="w-full block"
-            src="/asset/test.png"
-            alt="슬라이드1"
-            style={{
-              filter: "drop-shadow(7px 1px 8px rgba(255, 252, 234, 0.759))",
-            }}
-          />
+    <div>
+      <div className="swiper-container w-[1100px] pt-[10px] pb-[50px] Myswiper overflow-hidden block">
+        <div className="swiper-wrapper">
+          {stories.map((story, index) => (
+            <div
+              key={index}
+              className="swiper-slide w-[400px] flex bg-center object-cover"
+              onClick={() => handleClickRoot(story)}
+            >
+              <img
+                className="w-full block"
+                src={story.image_url}
+                alt={`슬라이드${index + 1}`}
+                style={{
+                  filter: "drop-shadow(7px 1px 8px rgba(255, 252, 234, 0.759))",
+                }}
+              />
+            </div>
+          ))}
         </div>
-        <div className="flex bg-center w-[400px] object-cover">
-          <img
-            className="w-full block drop-shadow(3px 3px 5px #ffffffb6)"
-            src="/asset/test2.png"
-            alt="슬라이드2"
-          />
-        </div>
-        <div className="swiper-slide w-[400px] flex bg-center object-cover">
-          <img
-            className="w-full block"
-            src="/asset/test3.png"
-            alt="슬라이드3"
-          />
-        </div>
-        <div className="swiper-slide w-[400px] flex bg-center object-cover">
-          <img className="w-full block" src="/asset/test.png" alt="슬라이드1" />
-        </div>
-        <div className="swiper-slide w-[400px] flex bg-center object-cover">
-          <img
-            className="w-full block"
-            src="/asset/test4.png"
-            alt="슬라이드4"
-          />
-        </div>
-        <button className="swiper-slide w-[400px] flex bg-center object-cover">
-          <img
-            className="w-full block"
-            src="/asset/test5.png"
-            alt="슬라이드5"
-          />
-        </button>
-        <button className="swiper-slide w-[400px] flex bg-center object-cover">
-          <img
-            className="w-full block"
-            src="/asset/test6.png"
-            alt="슬라이드6"
-          />
-        </button>
+        <div className="swiper-pagination bullet "></div>
       </div>
-      <div className="swiper-pagination bullet "></div>
+      {storyOpen && (
+        <RootModal
+          isOpen={storyOpen}
+          closeStory={() => {
+            closeStory();
+          }}
+          storyId={storyId}
+        />
+      )}
     </div>
   );
 };
-
 export default SwiperComponent;
