@@ -1,8 +1,11 @@
 import React, { useRef, useEffect, useState, ChangeEvent } from "react";
 import axios from "axios";
+import Carousel from "../components/ImgCarousel";
+import Lottie from "lottie-react";
+import lottieData from "../assets/lottie.json";
 import { useRecoilValue } from "recoil";
 import { userState } from "../recoil/atoms";
-import Carousel from "../components/ImgCarousel";
+
 interface ScenarioModalProps {
   isOpen: boolean;
   closeModal: () => void;
@@ -25,6 +28,12 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
   const [imageUrl, setImageUrl] = useState<string>("");
   const [images, setImages] = useState<string[]>([]);
   const [characterCount, setCharacterCount] = useState<number>(0);
+  const [isGenerating, setIsGenerating] = useState(false); // Lottie를 트리거
+  // Lottie 애니메이션 완료 시 호출되는 콜백
+  const handleLottieComplete = () => {
+    setIsGenerating(false); // Lottie 숨기기
+  };
+
   const handleContentChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const inputValue = e.target.value;
 
@@ -36,14 +45,12 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
     }
   };
   const handleClick = () => {
-    CreateScenario(); // 이미지 생성 요청
+    CreateScenario();
+    // 이미지 생성 요청
+    setIsGenerating(true); // Lottie 보여주기 시작
   };
+
   const CreateScenario = async () => {
-    type ErrorType = {
-      response: {
-        status: number;
-      };
-    };
     try {
       if (!content.trim()) {
         // content가 공백인 경우 400에러 방지
@@ -55,7 +62,8 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
         content,
       });
       if (response.status === 202) {
-        console.log("요청 성공!");
+        console.log("이미지 생성 요청 성공!");
+
         // 응답이 성공적인 경우 상태 업데이트
         setContentValue(content);
         setTaskID(response.data.task_id);
@@ -63,10 +71,9 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
       }
     } catch (error) {
       console.error(error);
-      const errorObj = error as ErrorType;
-      console.log(errorObj.response.status);
     }
   };
+
   useEffect(() => {
     const intervalId = setInterval(() => {
       // 이미지가 생성되었을 때만 ShowImage 함수 호출
@@ -85,8 +92,9 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
             task_id: taskID,
           },
         });
+
         if (response.status === 200) {
-          console.log("이미지 생성 성공!");
+          console.log("이미지 조회 성공!");
           const newImageUrl = response.data.image_url.image_url;
 
           // 이전에 생성한 이미지 배열에 추가
@@ -102,6 +110,8 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
         }
       } catch (error) {
         console.error(error);
+      } finally {
+        setIsGenerating(false); // Lottie 숨기기
       }
     };
     return () => clearInterval(intervalId);
@@ -109,26 +119,22 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
 
   const handleClickOk = async () => {
     const latestImageUrl = images.length > 0 ? images[images.length - 1] : "";
-    // Ok 버튼 클릭 시 /api/v1/stories/images에 GET 요청
+    // Ok 버튼 클릭 시 /api/v1/stories/ 요청
     try {
       const storiesResponse = await axios.post(`/api/v1/stories/`, {
-        user_id: userId, // 사용자 ID (원하는 값으로 수정)
+        user_id: userId,
         content,
-        image_url: latestImageUrl, // latestImageUrl은 어디서 가져오는지 확인 필요
-        parent_story: -1, // 부모 ID (원하는 값으로 수정, 필요에 따라 null로 남겨둘 수 있음)
+        image_url: latestImageUrl,
+        parent_story: -1,
       });
 
       // 성공적으로 응답을 받았을 때 처리
       if (storiesResponse.status === 201) {
-        console.log("스토리 조회 성공!");
+        console.log(storiesResponse.data.message);
         console.log(storiesResponse.data.data);
-        // TODO: 스토리 조회에 대한 추가 로직 수행
       }
     } catch (error) {
       console.error("스토리 생성 중 에러 발생:", error);
-      console.log(userId);
-      console.log(content);
-      console.log(latestImageUrl);
     }
   };
 
@@ -158,14 +164,22 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
     >
       <div
         ref={modalRef}
-        className="flex flex-col w-[800px] h-[450px] absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+        className="flex absolute flex-col w-[800px] h-[450px] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
       >
         <div className="flex w-full h-[55px] justify-center items-center bg-blue-800 border-2 border-white text-green-400 text-[33px] font-Minecraft">
           SCENARIO
         </div>
         <div className="flex flex-col w-full h-[395px] justify-center items-center gap-[10px] bg-black border-2 border-white text-white">
+          {isGenerating && (
+            <div className="absolute z-50 flex justify-center items-center gap-[10px] bg-gray-500 bg-opacity-50 w-full h-[395px]">
+              <Lottie
+                animationData={lottieData}
+                onComplete={handleLottieComplete}
+              />
+            </div>
+          )}
           <div className="flex justify-center w-full h-[270px] gap-[80px]">
-            <div className="w-[300px]">
+            <div className="w-[300px] z-10">
               {imageUrl && <Carousel images={images} />}
             </div>
             <div className="flex flex-col justify-center w-[300px] gap-[17px] text-center">
@@ -176,7 +190,6 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
                 placeholder="문장을 입력하세요."
                 className="h-[140px] p-[5px] mb-[20px] border-dashed border-2 border-white bg-transparent text-white"
                 value={content}
-                // onChange={(e) => setContentValue(e.target.value)}
                 onChange={handleContentChange}
                 maxLength={100}
                 style={{ resize: "none" }}

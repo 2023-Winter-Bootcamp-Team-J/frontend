@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import SwiperComponent from "@/components/Swiper";
 import ScenarioModal from "@/components/ScenarioModal";
-import StoryModal from "@/components/StoryModal";
-import ThreeParticles from "@/component/ThreeParticles";
+// import StoryModal from "@/components/StoryModal";
+import ThreeParticles from "@/components/ThreeParticles";
 
 const MainPage = () => {
   // 선택된 슬라이드의 인덱스를 기억하는 상태
@@ -11,7 +11,6 @@ const MainPage = () => {
     null
   );
   const [modalOpen, setModalOpen] = useState(false);
-  const [storyOpen, setStoryOpen] = useState(false);
   //시나리오 모달 관련 함수
   const closeModal = () => {
     setModalOpen(false);
@@ -20,26 +19,16 @@ const MainPage = () => {
     setModalOpen(true);
   };
 
-  //스토리 모달 관련 함수
-  const closeStory = () => {
-    setStoryOpen(false);
-  };
-  const openStory = () => {
-    setStoryOpen(true);
+  // Swiper 슬라이드를 클릭할 때 스토리 모달 열도록 하는 함수
+  const handleSlideClick = (index: number, storyId: string) => {
+    // 여기에 슬라이드 클릭 시 수행할 로직 추가
+    console.log(`Slide clicked! Index: ${index}, Story ID: ${storyId}`);
   };
   useEffect(() => {
     // selectedSlideIndex가 변경될 때마다 해당 값을 출력
     console.log(selectedSlideIndex);
   }, [selectedSlideIndex]);
 
-  // Swiper 슬라이드를 클릭할 때 모달을 열도록 하는 함수
-  const handleSlideClick = (index: number) => {
-    setSelectedSlideIndex(index);
-    openStory();
-  };
-  const handleButtonClick = () => {
-    openModal();
-  };
   return (
     <div>
       <ThreeParticles />
@@ -50,7 +39,6 @@ const MainPage = () => {
             <hr className="border-white w-[600px]" />
             <div className="flex items-center justify-between gap-[50px] px-[30px] py-[10px]">
               <div className="text-[20px] text-white">닉네임</div>
-              {/* <img className="w-[50px]" src="/asset/diamond.svg" alt="이미지" /> */}
               <div className="w-[400px] text-[20px] text-white">
                 여기에는 제목이 들어갈 자리입니다. 여기에는 제목이 들어갈
                 자리입니다. 여기에는 제목이 들어갈 자리입니다.
@@ -61,10 +49,7 @@ const MainPage = () => {
           <div className="flex justify-center">
             <SwiperComponent onSlideClick={handleSlideClick} />
           </div>
-          <button
-            className="flex justify-end pb-[10px] pr-[50px]"
-            onClick={handleButtonClick}
-          >
+          <button className="flex justify-end pb-[10px] pr-[50px]">
             <img
               className="hover:scale-125 hover:opacity-35 h-[50px] drop-shadow"
               style={{
@@ -80,15 +65,6 @@ const MainPage = () => {
               isOpen={modalOpen}
               closeModal={() => {
                 closeModal();
-                setSelectedSlideIndex(null);
-              }}
-            />
-          )}
-          {storyOpen && (
-            <StoryModal
-              isOpen={storyOpen}
-              closeStory={() => {
-                closeStory();
                 setSelectedSlideIndex(null);
               }}
             />

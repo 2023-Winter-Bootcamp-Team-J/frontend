@@ -1,25 +1,57 @@
-import React, { useRef, useEffect } from "react";
+import axios from "axios";
+import React, { useRef, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 interface StoryModalProps {
   isOpen: boolean;
   closeStory: () => void;
-  // storyId: string;
+  storyId: string;
 }
 
-const StoryModal: React.FC<StoryModalProps> = ({ isOpen, closeStory }) => {
+const StoryModal: React.FC<StoryModalProps> = ({
+  isOpen,
+  closeStory,
+  storyId,
+}) => {
   const navigate = useNavigate();
+  const [content, setContent] = useState<string>("");
+  const [childContent, setChildContent] = useState<string>("");
+  const [imgUrl, setImgUrl] = useState<string>("");
+  const [user_nickname, setUserNickname] = useState<string>("");
+
   const handleBackgroundClick = (e: MouseEvent) => {
     // 배경 클릭 시 모달 닫기\
     if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
       closeStory();
     }
   };
+  useEffect(() => {
+    const ShowRootScenario = async () => {
+      try {
+        const response = await axios.get(`/api/v1/stories/${storyId}/`, {});
+        if (response.status === 200) {
+          console.log("단일 시나리오 조회");
+          setContent(response.data.data.content);
+          setChildContent(response.data.data.child_content);
+          setImgUrl(response.data.data.image_url);
+          setUserNickname(response.data.data.user_nickname);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    if (isOpen && storyId) {
+      // isOpen이 true이고 storyId가 존재할 때에만 API 호출
+      ShowRootScenario();
+    }
+  }, [isOpen, storyId]);
 
   const handleOkButtonClick = () => {
     // OK 버튼 클릭 시 ScenarioPage로 이동
     navigate("/scenario");
+    // ShowRootScenario();
   };
+  // console.log(storyId);
 
   const modalRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -37,7 +69,7 @@ const StoryModal: React.FC<StoryModalProps> = ({ isOpen, closeStory }) => {
   }, [isOpen]);
   return (
     <div
-      className={`fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 ${
+      className={`fixed z-999 top-0 left-0 w-full h-full bg-black bg-opacity-50 ${
         isOpen ? "" : "hidden"
       }`}
     >
@@ -47,30 +79,33 @@ const StoryModal: React.FC<StoryModalProps> = ({ isOpen, closeStory }) => {
       >
         <div className="flex w-full h-[55px] justify-center items-center bg-blue-800 border-2 border-white text-green-400 text-[33px] font-Minecraft">
           STORY
-          <div className="text-gray-400 text-[18px] ml-[20px]">by Lena</div>
+          <div className="text-gray-400 text-[18px] ml-[20px]">
+            by {user_nickname}
+          </div>
         </div>
         <div className="flex flex-col w-full h-[395px] justify-center items-center gap-[10px] bg-black border-2 border-white text-white">
           <div className="flex justify-center w-full h-[270px] gap-[80px]">
             <div className="w-[270px]">
-              <img className="flex" src="/asset/test.png" alt="손" />
+              <img className="flex" src={imgUrl} alt="Loading..."></img>
             </div>
             <div className="flex flex-col justify-center w-[300px] gap-[17px] text-center">
               <div className="flex items-center w-[300px] gap-[20px]">
                 <div className="flex items-center w-[300px] h-[120px] p-[5px] mb-[20px] border-dashed border-2 border-gray-500 bg-transparent ">
-                  2012년에 개봉한 영화 건축학개론을 올해 재개봉 할 예정이야.
-                  여자 주인공은 한소희가 남자 주인공은 차은우가 등장해.
+                  {content}
                 </div>
               </div>
-              <div className="flex items-center w-[300px] gap-[20px] hover:scale-105 hover:border-2 border-dashed hover:border-blue-600">
+              <div className="flex items-center w-[300px] gap-[20px]">
                 <img className="flex w-[40px]" src="/asset/hand.svg" alt="손" />
-                <div className="flex items-center w-[300px] h-[50px] p-[5px]">
-                  여자 주인공은 매일 알바를 2개씩...
+                <div className="flex items-center w-[300px] h-[50px] p-[5px] text-gray-400 ">
+                  {childContent ||
+                    "ok 버튼을 클릭해 이어지는 스토리를 입력해보세요!"}
                 </div>
               </div>
-              <div className="flex items-center w-[300px] gap-[20px] hover:scale-105">
+              <div className="flex items-center w-[300px] gap-[20px]">
                 <img className="flex w-[40px]" src="/asset/hand.svg" alt="손" />
-                <div className="flex items-center w-[300px] h-[50px] p-[5px] border-dashed  hover:border-2 hover:border-blue-600 bg-transparent ">
-                  남자 주인공의 직업은 아이돌인데...
+                <div className="flex items-center w-[300px] h-[50px] p-[5px]  text-gray-400 ">
+                  {childContent ||
+                    "ok 버튼을 클릭해 이어지는 스토리를 입력해보세요!"}
                 </div>
               </div>
             </div>
