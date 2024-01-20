@@ -9,11 +9,14 @@ import { userState } from "../recoil/atoms";
 interface ScenarioModalProps {
   isOpen: boolean;
   closeModal: () => void;
+  handleUpdate: () => void;
 }
 const ScenarioModal: React.FC<ScenarioModalProps> = ({
   isOpen,
   closeModal,
+  handleUpdate,
 }) => {
+  const userId = useRecoilValue(userState).user_id;
   // 모달 외부를 클릭했을 때 모달을 닫도록 하는 이벤트 처리
   const handleBackgroundClick = (e: MouseEvent) => {
     // 배경 클릭 시 모달 닫기\
@@ -133,17 +136,14 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
       if (storiesResponse.status === 201) {
         console.log(storiesResponse.data.message);
         console.log(storiesResponse.data.data);
-        console.log(storiesResponse.data.story_id);
+        handleUpdate();
+        closeModal();
       }
     } catch (error) {
       console.error("스토리 생성 중 에러 발생:", error);
     }
   };
 
-  const handleOkButtonClick = () => {
-    handleClickOk();
-    closeModal();
-  };
   useEffect(() => {
     if (isOpen) {
       // 모달이 열릴 때 외부 클릭 이벤트 리스너 등록
@@ -208,7 +208,7 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
           </div>
           <button
             className="flex w-[50px] justify-center mt-[10px] bg-zinc-300 border-2 border-gray-500 font-Minecraft font-bold text-black text-[20px] hover:bg-blue-600 hover:text-green-400 hover:shadow-blue-600"
-            onClick={closeModal}
+            onClick={handleClickOk}
           >
             OK
           </button>

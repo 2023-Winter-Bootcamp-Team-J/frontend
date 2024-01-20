@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 interface StoryModalProps {
   isOpen: boolean;
   closeStory: () => void;
-  storyId: string;
+  storyId: number;
 }
 
 const StoryModal: React.FC<StoryModalProps> = ({
@@ -14,13 +14,15 @@ const StoryModal: React.FC<StoryModalProps> = ({
   storyId,
 }) => {
   const navigate = useNavigate();
-  const [content, setContent] = useState<string>("");
-  const [childContent, setChildContent] = useState<string>("");
-  const [imgUrl, setImgUrl] = useState<string>("");
-  const [user_nickname, setUserNickname] = useState<string>("");
+  const [story, setStory] = useState<{
+    user_nickname: string;
+    content: string;
+    image_url: string;
+    child_content: string[];
+  } | null>(null);
 
   const handleBackgroundClick = (e: MouseEvent) => {
-    // 배경 클릭 시 모달 닫기\
+    // 배경 클릭 시 모달 닫기
     if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
       closeStory();
     }
@@ -28,30 +30,30 @@ const StoryModal: React.FC<StoryModalProps> = ({
   useEffect(() => {
     const ShowRootScenario = async () => {
       try {
-        const response = await axios.get(`/api/v1/stories/${storyId}/`, {});
+        const response = await axios.get(`/api/v1/stories/${storyId}/`);
         if (response.status === 200) {
           console.log("단일 시나리오 조회");
-          setContent(response.data.data.content);
-          setChildContent(response.data.data.child_content);
-          setImgUrl(response.data.data.image_url);
-          setUserNickname(response.data.data.user_nickname);
+          setStory({
+            user_nickname: response.data.data.user_nickname,
+            content: response.data.data.content,
+            image_url: response.data.data.image_url,
+            child_content: response.data.data.child_content,
+          });
         }
       } catch (error) {
         console.error(error);
       }
     };
-    if (isOpen && storyId) {
+    if (isOpen) {
       // isOpen이 true이고 storyId가 존재할 때에만 API 호출
       ShowRootScenario();
     }
-  }, [isOpen, storyId]);
+  }, []);
 
   const handleOkButtonClick = () => {
     // OK 버튼 클릭 시 ScenarioPage로 이동
     navigate("/scenario");
-    // ShowRootScenario();
   };
-  // console.log(storyId);
 
   const modalRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -80,32 +82,38 @@ const StoryModal: React.FC<StoryModalProps> = ({
         <div className="flex w-full h-[55px] justify-center items-center bg-blue-800 border-2 border-white text-green-400 text-[33px] font-Minecraft">
           SCENARIO
           <div className="text-gray-400 text-[18px] ml-[20px]">
-            by {user_nickname}
+            by {story?.user_nickname}
           </div>
         </div>
         <div className="flex flex-col w-full h-[395px] justify-center items-center gap-[10px] bg-black border-2 border-white text-white">
           <div className="flex justify-center w-full h-[270px] gap-[80px]">
             <div className="w-[270px]">
-              <img className="flex" src={imgUrl} alt="Loading..."></img>
+              <img
+                className="flex"
+                src={story?.image_url}
+                alt="Loading..."
+              ></img>
             </div>
             <div className="flex flex-col justify-center w-[300px] gap-[17px] text-center">
               <div className="flex items-center w-[300px] gap-[20px]">
                 <div className="flex items-center w-[300px] h-[120px] p-[5px] mb-[20px] border-dashed border-2 border-gray-500 bg-transparent ">
-                  {content}
+                  {story?.content}
                 </div>
               </div>
               <div className="flex items-center w-[300px] gap-[20px]">
                 <img className="flex w-[40px]" src="/asset/hand.svg" alt="손" />
                 <div className="flex items-center w-[300px] h-[50px] p-[5px] text-gray-400 ">
-                  {childContent ||
-                    "ok 버튼을 클릭해 이어지는 스토리를 입력해보세요!"}
+                  {story?.child_content && story.child_content[0]
+                    ? story.child_content[0]
+                    : "새로운 스토리를 시작해보세요!"}
                 </div>
               </div>
               <div className="flex items-center w-[300px] gap-[20px]">
                 <img className="flex w-[40px]" src="/asset/hand.svg" alt="손" />
                 <div className="flex items-center w-[300px] h-[50px] p-[5px]  text-gray-400 ">
-                  {childContent ||
-                    "ok 버튼을 클릭해 이어지는 스토리를 입력해보세요!"}
+                  {story?.child_content && story.child_content[1]
+                    ? story.child_content[1]
+                    : "새로운 스토리를 시작해보세요!"}
                 </div>
               </div>
             </div>

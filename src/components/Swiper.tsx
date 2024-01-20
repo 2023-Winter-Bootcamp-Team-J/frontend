@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-// import axios from "axios";
 import Swiper from "swiper";
 import "swiper/css";
 import "swiper/css/effect-coverflow";
@@ -14,16 +13,21 @@ import {
 } from "swiper/modules";
 
 interface SwiperComponentProps {
-  onSlideClick: (index: number, storyId: string) => void;
+  stories: {
+    story_id: number;
+    user_id: number;
+    user_nickname: string;
+    content: string;
+    image_url: string;
+  }[];
+  modalOpen: boolean;
 }
 
-const SwiperComponent: React.FC<SwiperComponentProps> = ({ onSlideClick }) => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  // 선택된 슬라이드의 인덱스를 기억하는 상태
-  const [slideIndex, setSlideIndex] = useState<number | null>(null);
-  const [storyId, setStoryId] = useState<string | null>(null);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [stories, setStories] = useState<any[]>([]);
+const SwiperComponent: React.FC<SwiperComponentProps> = ({
+  stories,
+  modalOpen,
+}) => {
+  const [storyId, setStoryId] = useState<number>(0);
   const [storyOpen, setStoryOpen] = useState(false);
 
   //스토리 모달 관련 함수
@@ -33,79 +37,51 @@ const SwiperComponent: React.FC<SwiperComponentProps> = ({ onSlideClick }) => {
   const openStory = () => {
     setStoryOpen(true);
   };
-  useEffect(() => {
-    // slideIndex가 변경될 때마다 해당 값을 출력
-  }, [slideIndex]);
 
-  // 스와이퍼 슬라이드를 클릭할 때 스토리 모달 열도록 하는 함수
-  const handleSlideClick = (index: number) => {
-    setSlideIndex(index);
-    setStoryId(stories[index]?.story_id || null);
+  const handleClickRoot = (story: {
+    story_id: number;
+    user_id: number;
+    user_nickname: string;
+    content: string;
+    image_url: string;
+  }) => {
+    console.log("story: ", story);
+    setStoryId(story.story_id);
     openStory();
-    onSlideClick(index, stories[index]?.story_id || ""); // MainPage의 handleSlideClick 호출
-    setStories(stories); //임시로..
   };
 
-  // useEffect(() => {
-  //   const RootStory = async () => {
-  //     try {
-  //       const response = await axios.get(`/api/v1/stories/`);
-  //       if (response.status === 200) {
-  //         console.log(response.data.message); //전체 루트 스토리 조회
-  //         const stories = response.data.data;
-  //         setStories(stories);
-  //       }
-  //     } catch (error) {
-  //       console.error("루트 스토리 조회 중 에러 발생");
-  //     }
-  //   };
-
-  //   if (stories.length === 0) {
-  //     RootStory();
-  //   }
-
-  const swiper = new Swiper(".Myswiper", {
-    loop: true,
-    loopAdditionalSlides: 1,
-    effect: "coverflow",
-    grabCursor: true,
-    centeredSlides: true,
-    slidesPerView: "auto",
-    coverflowEffect: {
-      rotate: 30,
-      stretch: 0,
-      depth: 300,
-      modifier: 1,
-      slideShadows: true,
-    },
-    navigation: {
-      nextEl: ".swiper-button-next",
-      prevEl: ".swiper-button-prev",
-    },
-    mousewheel: true,
-    pagination: {
-      el: ".swiper-pagination",
-      clickable: true,
-      dynamicBullets: true,
-      renderBullet: function (_index, bullet) {
-        return `<div class="${bullet}  border-2 bg-transparent border-green-300 rounded-full" style="width: 40px; height: 16px; opacity: 1;"></div>`;
+  useEffect(() => {
+    const swiper = new Swiper(".Myswiper", {
+      loop: true,
+      loopAdditionalSlides: 1,
+      effect: "coverflow",
+      grabCursor: true,
+      centeredSlides: true,
+      slidesPerView: "auto",
+      coverflowEffect: {
+        rotate: 30,
+        stretch: 0,
+        depth: 300,
+        modifier: 1,
+        slideShadows: true,
       },
-    },
-    modules: [EffectCoverflow, Navigation, Mousewheel, Pagination],
-  });
-
-  // 각 슬라이드에 클릭 이벤트 추가
-  swiper.slides.forEach((slide, index) => {
-    slide.addEventListener("click", () => handleSlideClick(index));
-  });
-
-  // return () => {
-  //   swiper.slides.forEach((slide, index) => {
-  //     slide.removeEventListener("click", () => handleSlideClick(index));
-  //   });
-
-  //   swiper.destroy();
-  // };
+      navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+      },
+      mousewheel: true,
+      pagination: {
+        el: ".swiper-pagination",
+        clickable: true,
+        dynamicBullets: true,
+        renderBullet: function (index, bullet) {
+          // index가 빠지면 불렛 중앙 정렬이 해제됨
+          return `<div class="${bullet} border-2 bg-transparent border-green-300 rounded-full" style="width: 40px; height: 16px; opacity: 1;"></div>`;
+        },
+      },
+      modules: [EffectCoverflow, Navigation, Mousewheel, Pagination],
+    });
+  }, [stories]);
 
   return (
     <div>
@@ -115,7 +91,7 @@ const SwiperComponent: React.FC<SwiperComponentProps> = ({ onSlideClick }) => {
             <div
               key={index}
               className="swiper-slide w-[400px] flex bg-center object-cover"
-              onClick={() => handleSlideClick(index)}
+              onClick={() => handleClickRoot(story)}
             >
               <img
                 className="w-full block"
@@ -135,9 +111,8 @@ const SwiperComponent: React.FC<SwiperComponentProps> = ({ onSlideClick }) => {
           isOpen={storyOpen}
           closeStory={() => {
             closeStory();
-            setSlideIndex(null);
           }}
-          storyId={storyId || ""}
+          storyId={storyId}
         />
       )}
     </div>
