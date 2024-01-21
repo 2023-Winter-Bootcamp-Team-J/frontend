@@ -21,7 +21,7 @@ const ScenarioPage = () => {
         <div className="flex flex-col w-full h-full gap-[50px]">
           <Navbar />
           {/* <div className="bg-white flex justify-center items-center w-[200px] h-[200px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 overflow-hidden"> */}
-          <div className="w-[800px] h-[600px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+          <div className="w-full h-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
             <ForceGraph storyId={story_id} />
           </div>
         </div>

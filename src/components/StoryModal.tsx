@@ -2,17 +2,18 @@ import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 
 interface StoryModalProps {
-  story_id: number;
+  storyId: number;
   isOpen: boolean;
   onClose: () => void;
+  handleClickStory: (storyID: number) => void;
 }
 
 const StoryModal: React.FC<StoryModalProps> = ({
-  story_id,
+  storyId,
   isOpen,
   onClose,
+  handleClickStory,
 }) => {
-  const [storyId, setStoryId] = useState(story_id);
   const [story, setStory] = useState<{
     user_nickname: string;
     content: string;
@@ -21,14 +22,6 @@ const StoryModal: React.FC<StoryModalProps> = ({
     child_content: string[];
   } | null>(null);
   const modalRef = useRef<HTMLDivElement>(null);
-  // console.log("story_id: ", story_id);
-
-  const handleClickChildren = (childId: number) => {
-    console.log("child: ", childId);
-    if (childId) {
-      setStoryId(childId);
-    }
-  };
 
   // 모달 외부를 클릭했을 때 모달을 닫도록 하는 이벤트 처리
   const handleClickOutside = (e: MouseEvent) => {
@@ -81,11 +74,11 @@ const StoryModal: React.FC<StoryModalProps> = ({
 
   return (
     <div
-      className={`fixed top-0 left-0 w-[100vw] h-[100vh] bg-black bg-opacity-50 ${
+      className={`flex justify-center items-center fixed top-0 left-0 w-[100vw] h-[100vh] bg-black bg-opacity-50 ${
         isOpen ? "" : "hidden"
       }`}
     >
-      <div ref={modalRef} className="flex flex-col w-[800px] h-[450px] z-10">
+      <div ref={modalRef} className="flex flex-col w-[800px] h-[450px] z-1">
         <div className="flex gap-[15px] w-full h-[55px] justify-center items-center bg-blue-800 border-2 border-gray-400 text-green-400 text-[33px] font-Minecraft">
           STORY
           <div className="text-gray-400 text-[18px]">
@@ -103,24 +96,26 @@ const StoryModal: React.FC<StoryModalProps> = ({
             </div>
             <div className="flex flex-col justify-center w-[300px] gap-[10px]">
               <div className="flex items-center w-[300px] gap-[20px]">
-                <div className="w-[300px] h-[120px] p-[5px] mb-[20px] border-dashed border-2 border-gray-500 bg-transparent ">
+                <div className="w-[300px] h-[130px] p-[10px] mb-[5px] border-dashed border-2 border-gray-500 bg-transparent ">
                   {story?.content ? `${story.content}` : "LOADING..."}
                 </div>
               </div>
-              <div className="flex items-center w-[300px] gap-[20px] hover:scale-105 hover:border-2 border-dashed hover:border-blue-600">
+              <div
+                onClick={() => {
+                  handleClickStory(
+                    story?.child_id && story.child_id[0]
+                      ? story.child_id[0]
+                      : -1
+                  );
+                }}
+                className="flex items-center w-[300px] h-[60px] gap-[10px] p-2 hover:scale-105 hover:border-2 border-dashed hover:border-blue-600"
+              >
                 <img className="flex w-[40px]" src="/asset/hand.svg" alt="손" />
-                <div
-                  onClick={() => {
-                    handleClickChildren(
-                      story?.child_id && story.child_id[0]
-                        ? story.child_id[0]
-                        : 0
-                    );
-                  }}
-                  className="w-[300px] h-[50px] p-[5px]"
-                >
+                <div className="w-full">
                   {story?.child_content && story.child_content[0] ? (
-                    `${story.child_content[0]}`
+                    <span className="text-[1rem]">
+                      {story.child_content[0]}
+                    </span>
                   ) : (
                     <span className="text-blue-600">
                       새로운 이야기를 만들어보세요!
@@ -128,20 +123,20 @@ const StoryModal: React.FC<StoryModalProps> = ({
                   )}
                 </div>
               </div>
-              <div className="flex items-center w-[300px] gap-[20px] hover:scale-105">
+              <div
+                onClick={() => {
+                  handleClickStory(
+                    story?.child_id && story.child_id[1]
+                      ? story.child_id[1]
+                      : -1
+                  );
+                }}
+                className="flex items-center w-[300px] h-[60px] gap-[10px] p-2 hover:scale-105 hover:border-2 border-dashed hover:border-blue-600"
+              >
                 <img className="flex w-[40px]" src="/asset/hand.svg" alt="손" />
-                <div
-                  onClick={() => {
-                    handleClickChildren(
-                      story?.child_id && story.child_id[1]
-                        ? story.child_id[1]
-                        : 0
-                    );
-                  }}
-                  className="w-[300px] h-[50px] p-[5px] border-dashed  hover:border-2 hover:border-blue-600 bg-transparent "
-                >
+                <div className="w-full">
                   {story?.child_content && story.child_content[1] ? (
-                    `${story.child_content[1]}`
+                    <span>{story.child_content[1]}</span>
                   ) : (
                     <span className="text-blue-600">
                       새로운 이야기를 만들어보세요!

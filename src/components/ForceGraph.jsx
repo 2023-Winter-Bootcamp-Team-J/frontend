@@ -2,24 +2,35 @@ import React, { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import axios from "axios";
 import StoryModal from "./StoryModal";
+import CreateStoryModal from "./CreateStoryModal";
 
 const ForceGraph = ({ storyId }) => {
   const svgRef = useRef(null);
-  const story_id = storyId;
-  // console.log("story_id: ", story_id);
-
   const [scenario, setScenario] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [clickStoryId, setClickStoryId] = useState(story_id);
+  const [isStoryModalOpen, setIsStoryModalOpen] = useState(false);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [clickStoryId, setClickStoryId] = useState(storyId);
+  // const [parentStoryId, setParentStoryId] = userState(0);
+
+  const handleClickStory = (story_id) => {
+    // 스토리 생성 or 조회
+    if (story_id < 0) {
+      // 생성
+      setIsStoryModalOpen(false);
+      setIsCreateModalOpen(true);
+    } else {
+      setClickStoryId(story_id);
+    }
+  };
 
   const openModal = (d) => {
     setClickStoryId(d.data.story_id);
-    // console.log("story_id: ", d.data.story_id);
-    setIsModalOpen(true);
+    setIsStoryModalOpen(true);
   };
 
   const closeModal = () => {
-    setIsModalOpen(false);
+    setIsStoryModalOpen(false);
+    setIsCreateModalOpen(false);
   };
 
   function transformData(treeData, startNodeId) {
@@ -58,9 +69,7 @@ const ForceGraph = ({ storyId }) => {
   useEffect(() => {
     const scenarioAPI = async () => {
       try {
-        const response = await axios.get(
-          `api/v1/stories/branches/${story_id}/`
-        );
+        const response = await axios.get(`api/v1/stories/branches/${storyId}/`);
         // console.log("response: ", response.data.data);
         if (response.data.data.length > 0) {
           setScenario(response.data.data);
@@ -71,7 +80,7 @@ const ForceGraph = ({ storyId }) => {
     };
 
     scenarioAPI();
-  }, [story_id]);
+  }, [isCreateModalOpen]);
 
   useEffect(() => {
     if (scenario && scenario.length > 0) {
@@ -88,7 +97,7 @@ const ForceGraph = ({ storyId }) => {
       const height = 700;
       let i = 0;
 
-      const tree = d3.tree().size([width, height]).nodeSize([220, 200]); //각각 노드의 수평 및 수직 크기
+      const tree = d3.tree().size([width, height]).nodeSize([150, 90]); //각각 노드의 수평 및 수직 크기
 
       const line = d3
         .line()
@@ -101,7 +110,7 @@ const ForceGraph = ({ storyId }) => {
         .attr("width", width)
         .attr("height", height)
         .append("g")
-        .attr("transform", `translate(${width / 8},${height / 2.5})`); // 루트 노드 기준
+        .attr("transform", `translate(${width / 7},${height / 2.5})`); // 루트 노드 기준
 
       const root = d3.hierarchy(treeData[0]); // 트리구조
 
@@ -114,7 +123,7 @@ const ForceGraph = ({ storyId }) => {
         const links = tree(root).links();
 
         nodes.forEach((d) => {
-          d.y = d.depth * 260;
+          d.y = d.depth * 220;
         });
 
         const node = svg
@@ -175,16 +184,26 @@ const ForceGraph = ({ storyId }) => {
             top: "50%",
             left: "50%",
             transform:
-              "translate(-50%, -50%) perspective(1500px) rotateX(20deg) rotateY(5deg) rotateZ(-5deg)",
+              "translate(-50%, -50%) perspective(1500px) rotateX(20deg) rotateY(8deg) rotateZ(-8deg)",
           }}
         ></svg>
       </div>
-      {isModalOpen && (
-        <div className="z-10">
+      {isStoryModalOpen && (
+        <div className="z-10 w-full h-full">
           <StoryModal
-            story_id={clickStoryId}
-            isOpen={isModalOpen}
+            storyId={clickStoryId}
+            isOpen={isStoryModalOpen}
             onClose={closeModal}
+            handleClickStory={handleClickStory}
+          />
+        </div>
+      )}
+      {isCreateModalOpen && (
+        <div className="z-20">
+          <CreateStoryModal
+            parentStoryID={clickStoryId}
+            isOpen={isCreateModalOpen}
+            closeModal={closeModal}
           />
         </div>
       )}
