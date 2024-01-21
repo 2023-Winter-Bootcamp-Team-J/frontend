@@ -17,7 +17,7 @@ const Navbar = () => {
     navigate("/");
   };
   return (
-    <div className="flex w-full h-[60px] my-[10px] justify-between items-center">
+    <div className="flex w-full h-[60px] my-[10px] justify-between items-center z-10">
       <button
         className="ml-[30px] text-[25px] font-Minecraft text-white"
         onClick={handleNavigate}

@@ -6,25 +6,19 @@ import lottieData from "../assets/lottie.json";
 import { useRecoilValue } from "recoil";
 import { userState } from "../recoil/atoms";
 
-interface ScenarioModalProps {
+interface CreateStoryModalProps {
+  parentStoryID: number;
   isOpen: boolean;
   closeModal: () => void;
-  handleUpdate: () => void;
 }
-const ScenarioModal: React.FC<ScenarioModalProps> = ({
+
+const CreateStoryModal: React.FC<CreateStoryModalProps> = ({
+  parentStoryID,
   isOpen,
   closeModal,
-  handleUpdate,
 }) => {
-  const userId = useRecoilValue(userState).user_id;
-  // 모달 외부를 클릭했을 때 모달을 닫도록 하는 이벤트 처리
-  const handleBackgroundClick = (e: MouseEvent) => {
-    // 배경 클릭 시 모달 닫기\
-    if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
-      closeModal();
-    }
-  };
   const modalRef = useRef<HTMLDivElement>(null);
+  const userId = useRecoilValue(userState).user_id;
   const [content, setContentValue] = useState("");
   const [taskID, setTaskID] = useState("");
   const [imageUrl, setImageUrl] = useState<string>("");
@@ -34,6 +28,14 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
   // Lottie 애니메이션 완료 시 호출되는 콜백
   const handleLottieComplete = () => {
     setIsGenerating(false); // Lottie 숨기기
+  };
+
+  // 모달 외부를 클릭했을 때 모달을 닫도록 하는 이벤트 처리
+  const handleBackgroundClick = (e: MouseEvent) => {
+    // 배경 클릭 시 모달 닫기\
+    if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
+      closeModal();
+    }
   };
 
   const handleContentChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -122,6 +124,7 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
   }, [taskID]);
 
   const handleClickOk = async () => {
+    console.log("parent: ", parentStoryID);
     const latestImageUrl = images.length > 0 ? images[images.length - 1] : "";
     // Ok 버튼 클릭 시 /api/v1/stories/ 요청
     try {
@@ -129,14 +132,13 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
         user_id: userId,
         content,
         image_url: latestImageUrl,
-        parent_story: -1,
+        parent_story: parentStoryID,
       });
 
       // 성공적으로 응답을 받았을 때 처리
       if (storiesResponse.status === 201) {
         console.log(storiesResponse.data.message);
         console.log(storiesResponse.data.data);
-        handleUpdate();
         closeModal();
       }
     } catch (error) {
@@ -157,18 +159,19 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
       document.removeEventListener("mousedown", handleBackgroundClick);
     };
   }, [isOpen]);
+
   return (
     <div
-      className={`fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 ${
+      className={`fixed top-0 left-0 w-[100vw] h-[100vh] bg-black bg-opacity-50 ${
         isOpen ? "" : "hidden"
       }`}
     >
       <div
         ref={modalRef}
-        className="flex absolute flex-col w-[800px] h-[450px] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+        className="z-20 flex absolute flex-col w-[800px] h-[450px] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
       >
         <div className="flex w-full h-[55px] justify-center items-center bg-blue-800 border-2 border-white text-green-400 text-[33px] font-Minecraft">
-          NEW SCENARIO
+          NEW STORY
         </div>
         <div className="flex flex-col w-full h-[395px] justify-center items-center gap-[10px] bg-black border-2 border-white text-white">
           {isGenerating && (
@@ -180,7 +183,7 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
             </div>
           )}
           <div className="flex justify-center w-full h-[270px] gap-[80px]">
-            <div className="w-[300px] z-10">
+            <div className="w-[270px] z-10 bg-[#1d1e1e]">
               {imageUrl && <Carousel images={images} />}
             </div>
             <div className="flex flex-col justify-center w-[300px] gap-[17px] text-center">
@@ -217,4 +220,4 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
     </div>
   );
 };
-export default ScenarioModal;
+export default CreateStoryModal;
