@@ -2,13 +2,13 @@ import axios from "axios";
 import { useRef, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-interface StoryModalProps {
+interface RootModalProps {
   isOpen: boolean;
   closeStory: () => void;
   storyId: number;
 }
 
-const StoryModal: React.FC<StoryModalProps> = ({
+const RootModal: React.FC<StoryModalProps> = ({
   isOpen,
   closeStory,
   storyId,
@@ -134,4 +134,4 @@ const StoryModal: React.FC<StoryModalProps> = ({
   );
 };
 
-export default StoryModal;
+export default RootModal;

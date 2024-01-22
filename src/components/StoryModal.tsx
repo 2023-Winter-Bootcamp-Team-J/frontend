@@ -45,7 +45,7 @@ const StoryModal: React.FC<StoryModalProps> = ({
   }, [isOpen]);
 
   useEffect(() => {
-    console.log("**story_id: ", storyId);
+    // console.log("**story_id: ", storyId);
     const storyAPI = async () => {
       try {
         const response = await axios.get(`api/v1/stories/${storyId}`);

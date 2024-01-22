@@ -28,8 +28,10 @@
     "react-dom": "^18.2.0",
     "react-lottie": "^1.2.4",
     "react-router-dom": "^6.21.1",
+    "react-zoom-pan-pinch": "^3.3.0",
     "recoil": "^0.7.7",
     "swiper": "^11.0.5",
+    "three": "^0.160.0",
     "vite-plugin-svgr": "^4.2.0"
   },
   "devDependencies": {

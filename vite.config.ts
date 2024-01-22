@@ -8,8 +8,8 @@ import svgrPlugin from "vite-plugin-svgr";
 export default defineConfig({
   build: {
     rollupOptions: {
-      external: ['three']
-    }
+      external: ["three"],
+    },
   },
   plugins: [react(), svgrPlugin(), vue()],
   server: {
