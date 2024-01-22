@@ -21,14 +21,17 @@ interface SwiperComponentProps {
     image_url: string;
   }[];
   modalOpen: boolean;
+  onSlideClick: (index: number) => void;
 }
 
 const SwiperComponent: React.FC<SwiperComponentProps> = ({
   stories,
   modalOpen,
+  onSlideClick,
 }) => {
   const [storyId, setStoryId] = useState<number>(0);
   const [storyOpen, setStoryOpen] = useState(false);
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
 
   //스토리 모달 관련 함수
   const closeStory = () => {
@@ -48,12 +51,13 @@ const SwiperComponent: React.FC<SwiperComponentProps> = ({
     console.log("story: ", story);
     setStoryId(story.story_id);
     openStory();
+    onSlideClick(stories.findIndex((s) => s.story_id === story.story_id));
   };
 
   useEffect(() => {
     const swiper = new Swiper(".Myswiper", {
-      loop: true,
-      loopAdditionalSlides: 1,
+      loop: true, // 무한 루프 활성화
+      loopAdditionalSlides: 1, // 루프 추가 슬라이드 개수
       effect: "coverflow",
       grabCursor: true,
       centeredSlides: true,
@@ -79,13 +83,32 @@ const SwiperComponent: React.FC<SwiperComponentProps> = ({
           return `<div class="${bullet} border-2 bg-transparent border-green-300 rounded-full" style="width: 40px; height: 16px; opacity: 1;"></div>`;
         },
       },
+      on: {
+        slideChange: (swiper) => {
+          // 중앙에 위치한 슬라이드의 인덱스를 업데이트
+          setCurrentSlideIndex(swiper.realIndex);
+          console.log(currentSlideIndex);
+        },
+      },
       modules: [EffectCoverflow, Navigation, Mousewheel, Pagination],
     });
-  }, [stories]);
+    // 각 슬라이드에 클릭 이벤트 추가
+    swiper.slides.forEach((slide, index) => {
+      slide.addEventListener("click", () => onSlideClick(index));
+    });
+    return () => {
+      // 컴포넌트 언마운트 시에 이벤트 리스너 제거
+      swiper.slides.forEach((slide, index) => {
+        slide.removeEventListener("click", () => onSlideClick(index));
+      });
+
+      swiper.destroy();
+    };
+  }, [onSlideClick, stories]);
 
   return (
     <div>
-      <div className="swiper-container w-[1100px] pt-[10px] pb-[50px] Myswiper overflow-hidden block">
+      <div className="swiper-container w-[1100px] pb-[80px] Myswiper overflow-hidden block">
         <div className="swiper-wrapper">
           {stories.map((story, index) => (
             <div

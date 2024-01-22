@@ -8,6 +8,7 @@ import axios from "axios";
 const MainPage = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [update, setUpdate] = useState(-1);
+  const [currentStoryIndex, setCurrentStoryIndex] = useState(0);
   const [stories, setStories] = useState<
     Array<{
       story_id: number;
@@ -44,29 +45,37 @@ const MainPage = () => {
     }
   };
 
+  const handleSwiper = (index: number) => {
+    setCurrentStoryIndex(index);
+  };
+
   useEffect(() => {
     RootStory();
   }, [update]);
-
   return (
     <div>
       <ThreeParticles />
       <div className="flex w-[100vw] h-[100vh] flex-col justify-center items-center absolute top-1/2 left-1/2 z-1 bg-transparent -translate-x-1/2 -translate-y-1/2">
         <div className="flex flex-col w-full h-full gap-[50px]">
           <Navbar />
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center h-[145px]">
             <hr className="border-white w-[600px]" />
             <div className="flex items-center justify-between gap-[50px] px-[30px] py-[10px]">
-              <div className="text-[20px] text-white">닉네임</div>
+              <div className="text-[20px] text-white">
+                {stories[currentStoryIndex]?.user_nickname}
+              </div>
               <div className="w-[400px] text-[20px] text-white">
-                여기에는 제목이 들어갈 자리입니다. 여기에는 제목이 들어갈
-                자리입니다. 여기에는 제목이 들어갈 자리입니다.
+                {stories[currentStoryIndex]?.content}
               </div>
             </div>
             <hr className="border-white w-[600px]" />
           </div>
           <div className="flex justify-center">
-            <SwiperComponent stories={stories} modalOpen={modalOpen} />
+            <SwiperComponent
+              stories={stories}
+              modalOpen={modalOpen}
+              onSlideClick={handleSwiper}
+            />
           </div>
           <button className="absolute bottom-12 right-14 z-10">
             <img

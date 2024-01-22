@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import * as THREE from "Three";
+import * as THREE from "three";
 const ParticleTutorial: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
@@ -7,7 +7,7 @@ const ParticleTutorial: React.FC = () => {
   useEffect(() => {
     let camera: THREE.PerspectiveCamera;
     let scene: THREE.Scene;
-    let mouseX = 0;
+    // let mouseX = 0;
     let mouseY = 0;
     const init = () => {
       camera = new THREE.PerspectiveCamera(
@@ -92,7 +92,7 @@ const ParticleTutorial: React.FC = () => {
       }
     };
     const onMouseMove = (event: MouseEvent) => {
-      mouseX = event.clientX;
+      // mouseX = event.clientX;
       mouseY = event.clientY;
     };
     const onWindowResize = () => {
