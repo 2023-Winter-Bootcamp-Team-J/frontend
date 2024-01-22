@@ -3,7 +3,7 @@ import Swiper from "swiper";
 import "swiper/css";
 import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
-import RootModal from "@/components/RootModal";
+import RootModal from "../components/RootModal";
 // import "swiper/css/navigation";
 import {
   EffectCoverflow,
@@ -26,7 +26,7 @@ interface SwiperComponentProps {
 
 const SwiperComponent: React.FC<SwiperComponentProps> = ({
   stories,
-  modalOpen,
+  // modalOpen,
   onSlideClick,
 }) => {
   const [storyId, setStoryId] = useState<number>(0);

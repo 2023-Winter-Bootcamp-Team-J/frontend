@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
-import Navbar from "@/components/Navbar";
-import SwiperComponent from "@/components/Swiper";
-import ScenarioModal from "@/components/ScenarioModal";
-import ThreeParticles from "@/components/ThreeParticles";
+import React, { useState, useEffect } from "react";
+import Navbar from "../components/Navbar";
+import SwiperComponent from "../components/Swiper";
+import ScenarioModal from "../components/ScenarioModal";
+import ThreeParticles from "../components/ThreeParticles";
 import axios from "axios";
 
 const MainPage = () => {

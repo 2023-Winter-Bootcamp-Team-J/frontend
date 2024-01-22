@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState, ChangeEvent } from "react";
+import React, { useRef, useEffect, useState, ChangeEvent } from "react";
 import axios from "axios";
 import Carousel from "../components/ImgCarousel";
 import Lottie from "lottie-react";
