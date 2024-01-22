@@ -104,7 +104,7 @@ const SwiperComponent: React.FC<SwiperComponentProps> = ({
 
       swiper.destroy();
     };
-  }, [onSlideClick, stories]);
+  }, [stories]);
 
   return (
     <div>
