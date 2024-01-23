@@ -13,7 +13,7 @@ const App = () => {
         <Routes>
           <Route path="/main" element={<MainPage />} />
           <Route path="/" element={<LandingPage />} />
-          <Route path="/scenario" element={<ScenarioPage />} />
+          <Route path="/scenario/:rootId" element={<ScenarioPage />} />
           <Route path="/three" element={<ParticleTutorial />} />
         </Routes>
       </Router>

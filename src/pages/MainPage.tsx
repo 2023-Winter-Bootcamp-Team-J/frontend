@@ -52,6 +52,7 @@ const MainPage = () => {
   useEffect(() => {
     RootStory();
   }, [update]);
+
   return (
     <div>
       <ThreeParticles />

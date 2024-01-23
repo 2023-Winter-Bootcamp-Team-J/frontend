@@ -87,7 +87,7 @@ const SwiperComponent: React.FC<SwiperComponentProps> = ({
         slideChange: (swiper) => {
           // 중앙에 위치한 슬라이드의 인덱스를 업데이트
           setCurrentSlideIndex(swiper.realIndex);
-          console.log(currentSlideIndex);
+          // console.log(currentSlideIndex);
         },
       },
       modules: [EffectCoverflow, Navigation, Mousewheel, Pagination],
@@ -105,6 +105,12 @@ const SwiperComponent: React.FC<SwiperComponentProps> = ({
       swiper.destroy();
     };
   }, [stories]);
+
+  useEffect(() => {
+    console.log("currentSlideIndex: ", currentSlideIndex);
+    console.log("stories: ", stories[currentSlideIndex]);
+    onSlideClick(currentSlideIndex);
+  }, [currentSlideIndex]);
 
   return (
     <div>
