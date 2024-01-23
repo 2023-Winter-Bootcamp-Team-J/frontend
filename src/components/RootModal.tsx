@@ -9,7 +9,7 @@ interface RootModalProps {
   storyId: number;
 }
 
-const RootModal: React.FC<StoryModalProps> = ({
+const RootModal: React.FC<RootModalProps> = ({
   isOpen,
   closeStory,
   storyId,
@@ -53,11 +53,13 @@ const RootModal: React.FC<StoryModalProps> = ({
 
   const handleOkButtonClick = () => {
     // OK 버튼 클릭 시 ScenarioPage로 이동
-    navigate("/scenario", {
-      state: {
-        story_id: storyId,
-      },
-    });
+    // navigate("/scenario", {
+    //   state: {
+    //     story_id: storyId,
+    //   },
+    // });
+    const rootId = storyId;
+    navigate(`/scenario/${rootId}`);
   };
 
   const modalRef = useRef<HTMLDivElement>(null);
