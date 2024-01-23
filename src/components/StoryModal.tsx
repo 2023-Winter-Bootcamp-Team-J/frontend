@@ -46,7 +46,7 @@ const StoryModal: React.FC<StoryModalProps> = ({
   }, [isOpen]);
 
   useEffect(() => {
-    console.log("**story_id: ", storyId);
+    // console.log("**story_id: ", storyId);
     const storyAPI = async () => {
       try {
         const response = await axios.get(`api/v1/stories/${storyId}`);
@@ -147,8 +147,11 @@ const StoryModal: React.FC<StoryModalProps> = ({
               </div>
             </div>
           </div>
-          <button className="flex w-[50px] justify-center mt-[10px] bg-zinc-300 border-2 border-gray-500 font-Minecraft font-bold text-black text-[20px] hover:bg-blue-600 hover:text-green-400 hover:shadow-blue-600">
-            OK
+          <button
+            onClick={onClose}
+            className="flex w-[90px] justify-center mt-[10px] bg-zinc-300 border-2 border-gray-500 font-Minecraft font-bold text-black text-[20px] hover:bg-blue-600 hover:text-green-400 hover:shadow-blue-600"
+          >
+            CLOSE
           </button>
         </div>
       </div>

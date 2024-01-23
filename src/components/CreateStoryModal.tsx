@@ -210,10 +210,10 @@ const CreateStoryModal: React.FC<CreateStoryModalProps> = ({
             </div>
           </div>
           <button
-            className="flex w-[50px] justify-center mt-[10px] bg-zinc-300 border-2 border-gray-500 font-Minecraft font-bold text-black text-[20px] hover:bg-blue-600 hover:text-green-400 hover:shadow-blue-600"
+            className="flex w-[70px] justify-center mt-[10px] pt-[3px] bg-zinc-300 border-2 border-gray-500 font-Minecraft font-bold text-black text-[20px] hover:bg-blue-600 hover:text-green-400 hover:shadow-blue-600"
             onClick={handleClickOk}
           >
-            OK
+            SAVE
           </button>
         </div>
       </div>

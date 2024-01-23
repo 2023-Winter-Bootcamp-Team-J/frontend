@@ -1,36 +1,66 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
-import axios from "axios";
-import StoryModal from "./StoryModal";
-import CreateStoryModal from "./CreateStoryModal";
 
-const ForceGraph = ({ storyId }) => {
+const ForceGraph = ({ openmodal, scenario }) => {
   const svgRef = useRef(null);
-  const [scenario, setScenario] = useState([]);
-  const [isStoryModalOpen, setIsStoryModalOpen] = useState(false);
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const [clickStoryId, setClickStoryId] = useState(storyId);
-  // const [parentStoryId, setParentStoryId] = userState(0);
 
-  const handleClickStory = (story_id) => {
-    // 스토리 생성 or 조회
-    if (story_id < 0) {
-      // 생성
-      setIsStoryModalOpen(false);
-      setIsCreateModalOpen(true);
+  const [ratio, setRatio] = useState(0.9); // 줌in/out비율 조작
+  // 초기 위치 및 이동 거리 설정
+  const initialPosition = { left: 0, top: 0 };
+  const moveDistance = 50;
+  // StockContainer의 위치 상태
+  const [position, setPosition] = useState(initialPosition);
+
+  // zoom in/out 기능
+  const wheelHandler = (e) => {
+    if (ratio <= 2.5) {
+      setRatio((ratio) => (ratio >= 0.7 ? ratio + 0.001 * e.deltaY : 0.7));
     } else {
-      setClickStoryId(story_id);
+      setRatio(2.5);
+    }
+  };
+  // 키보드 이벤트 핸들러
+  const handleKeyDown = (event) => {
+    switch (event.key) {
+      case "ArrowUp":
+        setPosition((prevPosition) => ({
+          ...prevPosition,
+          top: prevPosition.top - moveDistance,
+        }));
+        break;
+      case "ArrowDown":
+        setPosition((prevPosition) => ({
+          ...prevPosition,
+          top: prevPosition.top + moveDistance,
+        }));
+        break;
+      case "ArrowLeft":
+        setPosition((prevPosition) => ({
+          ...prevPosition,
+          left: prevPosition.left - moveDistance,
+        }));
+        break;
+      case "ArrowRight":
+        setPosition((prevPosition) => ({
+          ...prevPosition,
+          left: prevPosition.left + moveDistance,
+        }));
+        break;
+      default:
+        break;
     }
   };
 
-  const openModal = (d) => {
-    setClickStoryId(d.data.story_id);
-    setIsStoryModalOpen(true);
-  };
+  // 키보드 이벤트 리스너 등록
+  useEffect(() => {
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []); // [] 안에 아무 의존성도 없으므로 컴포넌트가 처음 마운트될 때만 실행
 
-  const closeModal = () => {
-    setIsStoryModalOpen(false);
-    setIsCreateModalOpen(false);
+  const handleClickStory = (story_id) => {
+    openmodal(story_id);
   };
 
   function transformData(treeData, startNodeId) {
@@ -38,6 +68,7 @@ const ForceGraph = ({ storyId }) => {
     const startNode = treeData.find(
       (node) => node.story.story_id === startNodeId
     ); // 시작 노드 찾기
+
     function findChildren(node) {
       // 재귀적으로 자식 노드 찾기
       const transformedNode = {
@@ -49,6 +80,7 @@ const ForceGraph = ({ storyId }) => {
         child_content: node.story.child_content,
         children: null, // 기본값으로 null 설정
       };
+
       // 자식 노드가 있는 경우 재귀적으로 호출하여 children 배열에 추가
       if (node.story.child_id && node.story.child_id.length > 0) {
         transformedNode.children = node.story.child_id.map((childId) => {
@@ -67,37 +99,21 @@ const ForceGraph = ({ storyId }) => {
   }
 
   useEffect(() => {
-    const scenarioAPI = async () => {
-      try {
-        const response = await axios.get(`api/v1/stories/branches/${storyId}/`);
-        // console.log("response: ", response.data.data);
-        if (response.data.data.length > 0) {
-          setScenario(response.data.data);
-        }
-      } catch (error) {
-        console.error("Error fetching scenario data:", error);
-      }
-    };
-
-    scenarioAPI();
-  }, [isCreateModalOpen]);
-
-  useEffect(() => {
     if (scenario && scenario.length > 0) {
       // d3.hierarchy()를 사용하기 위해 데이터 구조 변경
 
       const treeData = transformData(scenario, scenario[0].story.story_id); // 가장 첫번째 데이터를 시작점으로 하는 트리 생성
-      console.log("test: ", treeData); // 결과 확인
+      console.log("treeData: ", treeData); // 결과 확인
 
       // Remove any existing SVG
       d3.select(svgRef.current).selectAll("*").remove();
 
       // 너비와 높이 설정
-      const width = 1200;
-      const height = 700;
+      const width = 1700;
+      const height = 2000;
       let i = 0;
 
-      const tree = d3.tree().size([width, height]).nodeSize([150, 90]); //각각 노드의 수평 및 수직 크기
+      const tree = d3.tree().nodeSize([190, 0]); //각각 노드의 수평 및 수직 크기
 
       const line = d3
         .line()
@@ -110,7 +126,7 @@ const ForceGraph = ({ storyId }) => {
         .attr("width", width)
         .attr("height", height)
         .append("g")
-        .attr("transform", `translate(${width / 7},${height / 2.5})`); // 루트 노드 기준
+        .attr("transform", `translate(${width / 8}, ${height / 3})`); // 루트 노드 기준
 
       const root = d3.hierarchy(treeData[0]); // 트리구조
 
@@ -123,7 +139,7 @@ const ForceGraph = ({ storyId }) => {
         const links = tree(root).links();
 
         nodes.forEach((d) => {
-          d.y = d.depth * 220;
+          d.y = d.depth * 300;
         });
 
         const node = svg
@@ -139,12 +155,12 @@ const ForceGraph = ({ storyId }) => {
         nodeEnter
           .append("image")
           .attr("xlink:href", (d) => d.data.image_url)
-          .attr("x", -55)
-          .attr("y", -55)
-          .attr("width", 110)
-          .attr("height", 110)
+          .attr("x", -75)
+          .attr("y", -75)
+          .attr("width", 150)
+          .attr("height", 150)
           .style("filter", "drop-shadow(3px 3px 5px #ffffffb6)")
-          .on("click", (event, d) => openModal(d)); // 클릭 이벤트 핸들러 추가
+          .on("click", (event, d) => handleClickStory(d.data.story_id)); // 클릭 이벤트 핸들러 추가
 
         // 텍스트 넣기
         // nodeEnter
@@ -171,42 +187,25 @@ const ForceGraph = ({ storyId }) => {
   }, [scenario]);
 
   return (
-    <div className="flex flex-col relative w-full h-full">
-      <div>
-        <svg
-          ref={svgRef}
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            zIndex: "1",
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform:
-              "translate(-50%, -50%) perspective(1500px) rotateX(20deg) rotateY(8deg) rotateZ(-8deg)",
-          }}
-        ></svg>
-      </div>
-      {isStoryModalOpen && (
-        <div className="z-10 w-full h-full">
-          <StoryModal
-            storyId={clickStoryId}
-            isOpen={isStoryModalOpen}
-            onClose={closeModal}
-            handleClickStory={handleClickStory}
-          />
-        </div>
-      )}
-      {isCreateModalOpen && (
-        <div className="z-20">
-          <CreateStoryModal
-            parentStoryID={clickStoryId}
-            isOpen={isCreateModalOpen}
-            closeModal={closeModal}
-          />
-        </div>
-      )}
+    <div
+      className="w-full h-full overflow-hidden transition-all duration-5000"
+      onWheel={wheelHandler}
+    >
+      <svg
+        ref={svgRef}
+        style={{
+          position: "relative",
+          top: "-400px",
+          left: "-150px",
+          width: `${200 / ratio}%`,
+          height: `${200 / ratio}%`,
+          // transition: "all 0.3s",
+          transform: `translate(${position.left}px, ${position.top}px) scale(${ratio}) rotateX(20deg) rotateY(8deg) rotateZ(-8deg)`,
+          // transformOrigin: "left top",
+          // transform: "rotateX(20deg) rotateY(8deg) rotateZ(-8deg)",
+          // perspectiveOrigin: "center",
+        }}
+      />
     </div>
   );
 };

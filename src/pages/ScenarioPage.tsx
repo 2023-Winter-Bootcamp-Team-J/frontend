@@ -1,30 +1,79 @@
-import React from "react";
 import ParticleTutorial from "../components/ThreeParticles";
 import ForceGraph from "../components/ForceGraph";
 import Navbar from "../components/Navbar";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import StoryModal from "../components/StoryModal";
+import CreateStoryModal from "../components/CreateStoryModal";
+import axios from "axios";
 
 const ScenarioPage = () => {
   const location = useLocation();
   const state = location.state as { story_id: number };
-  const story_id = state.story_id;
-  // const story_id = 9;
-  const navigate = useNavigate();
+  const story_id = state.story_id; // story_id 전달 받기
+  const navigate = useNavigate(); // 뒤로 가기
+
+  const [isStoryModalOpen, setIsStoryModalOpen] = useState(false);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false); // 모달 관리
+
+  const [scenario, setScenario] = useState([]); // d3 시나리오
+  const [clickStoryId, setClickStoryId] = useState(story_id); // 클릭한 시나리오 조회
 
   const handleClickBack = () => {
+    // 뒤로 가기
     navigate(-1);
   };
 
+  const openModal = (storyId: number) => {
+    console.log("click_id: ", story_id);
+    // 클릭한 스토리 아이디로 모달 열기
+    setClickStoryId(storyId);
+    setIsStoryModalOpen(true);
+  };
+
+  const closeModal = () => {
+    // 둘 다 닫히게
+    setIsStoryModalOpen(false);
+    setIsCreateModalOpen(false);
+  };
+
+  const handleClickStory = (story_id: number) => {
+    // 스토리 생성 or 조회
+    if (story_id < 0) {
+      // 생성
+      setIsStoryModalOpen(false);
+      setIsCreateModalOpen(true);
+    } else {
+      // 조회
+      setClickStoryId(story_id);
+    }
+  };
+
+  useEffect(() => {
+    const scenarioAPI = async () => {
+      try {
+        const response = await axios.get(
+          `api/v1/stories/branches/${story_id}/`
+        );
+        // console.log("response: ", response.data.data);
+        if (response.data.data.length > 0) {
+          setScenario(response.data.data);
+        }
+      } catch (error) {
+        console.error("Error fetching scenario data:", error);
+      }
+    };
+
+    scenarioAPI();
+  }, [story_id, isCreateModalOpen]);
+
   return (
-    <div>
+    <div className="overflow-hidden">
       <ParticleTutorial />
       <div className="flex w-[100vw] h-[100vh] flex-col justify-center items-center absolute top-1/2 left-1/2 z-1 bg-transparent -translate-x-1/2 -translate-y-1/2">
-        <div className="flex flex-col w-full h-full gap-[50px]">
+        <div className="overflow-hidden flex flex-col w-full h-full">
           <Navbar />
-          {/* <div className="bg-white flex justify-center items-center w-[200px] h-[200px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 overflow-hidden"> */}
-          <div className="w-full h-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-            <ForceGraph storyId={story_id} />
-          </div>
+          <ForceGraph openmodal={openModal} scenario={scenario} />
         </div>
       </div>
       <div
@@ -51,6 +100,25 @@ const ScenarioPage = () => {
           ></path>
         </svg>
       </div>
+      {isStoryModalOpen && (
+        <div className="z-10 w-full h-full">
+          <StoryModal
+            storyId={clickStoryId}
+            isOpen={isStoryModalOpen}
+            onClose={closeModal}
+            handleClickStory={handleClickStory}
+          />
+        </div>
+      )}
+      {isCreateModalOpen && (
+        <div className="z-20">
+          <CreateStoryModal
+            parentStoryID={clickStoryId}
+            isOpen={isCreateModalOpen}
+            closeModal={closeModal}
+          />
+        </div>
+      )}
     </div>
   );
 };
