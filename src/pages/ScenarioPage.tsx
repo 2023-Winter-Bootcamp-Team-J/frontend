@@ -59,7 +59,7 @@ const ScenarioPage = () => {
     const scenarioAPI = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3001/api/v1/stories/branches/${story_id}/`
+          `/api/v1/stories/branches/${story_id}/`
         );
         console.log("response: ", response.data.data);
         if (response.status == 200) {
