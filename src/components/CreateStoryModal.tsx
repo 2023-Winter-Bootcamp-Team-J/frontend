@@ -170,7 +170,7 @@ const CreateStoryModal: React.FC<CreateStoryModalProps> = ({
         ref={modalRef}
         className="z-20 flex absolute flex-col w-[800px] h-[450px] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
       >
-        <div className="flex w-full h-[55px] justify-center items-center bg-blue-800 border-2 border-white text-green-400 text-[33px] font-Minecraft">
+        <div className="flex w-full h-[55px] justify-center items-center pt-[8px] bg-blue-800 border-2 border-white text-green-400 text-[33px] font-Minecraft">
           NEW STORY
         </div>
         <div className="flex flex-col w-full h-[395px] justify-center items-center gap-[10px] bg-black border-2 border-white text-white">

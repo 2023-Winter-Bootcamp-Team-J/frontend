@@ -84,7 +84,7 @@ const StoryModal: React.FC<StoryModalProps> = ({
         ref={modalRef}
         className="flex flex-col w-[800px] h-[450px] absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
       >
-        <div className="flex w-full h-[55px] justify-center items-center bg-blue-800 border-2 border-white text-green-400 text-[33px] font-Minecraft">
+        <div className="flex w-full h-[55px] justify-center items-center pt-[8px] bg-blue-800 border-2 border-white text-green-400 text-[33px] font-Minecraft">
           SCENARIO
           <div className="text-gray-400 text-[18px] ml-[20px]">
             by {story?.user_nickname}
@@ -124,10 +124,10 @@ const StoryModal: React.FC<StoryModalProps> = ({
             </div>
           </div>
           <button
-            className="flex w-[50px] justify-center mt-[10px] bg-zinc-300 border-2 border-gray-500 font-Minecraft font-bold text-black text-[20px] hover:bg-blue-600 hover:text-green-400 hover:shadow-blue-600"
+            className="flex w-[55px] justify-center mt-[10px] pt-[3px] bg-zinc-300 border-2 border-gray-500 font-Minecraft font-bold text-black text-[20px] hover:bg-blue-600 hover:text-green-400 hover:shadow-blue-600"
             onClick={handleOkButtonClick}
           >
-            OK
+            GO!
           </button>
         </div>
       </div>
