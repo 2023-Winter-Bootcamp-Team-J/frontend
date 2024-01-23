@@ -1,8 +1,63 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 
 const ForceGraph = ({ openmodal, scenario }) => {
   const svgRef = useRef(null);
+
+  const [ratio, setRatio] = useState(0.9); // 줌in/out비율 조작
+  // 초기 위치 및 이동 거리 설정
+  const initialPosition = { left: 0, top: 0 };
+  const moveDistance = 50;
+  // StockContainer의 위치 상태
+  const [position, setPosition] = useState(initialPosition);
+
+  // zoom in/out 기능
+  const wheelHandler = (e) => {
+    if (ratio <= 2.5) {
+      setRatio((ratio) => (ratio >= 0.7 ? ratio + 0.001 * e.deltaY : 0.7));
+    } else {
+      setRatio(2.5);
+    }
+  };
+  // 키보드 이벤트 핸들러
+  const handleKeyDown = (event) => {
+    switch (event.key) {
+      case "ArrowUp":
+        setPosition((prevPosition) => ({
+          ...prevPosition,
+          top: prevPosition.top - moveDistance,
+        }));
+        break;
+      case "ArrowDown":
+        setPosition((prevPosition) => ({
+          ...prevPosition,
+          top: prevPosition.top + moveDistance,
+        }));
+        break;
+      case "ArrowLeft":
+        setPosition((prevPosition) => ({
+          ...prevPosition,
+          left: prevPosition.left - moveDistance,
+        }));
+        break;
+      case "ArrowRight":
+        setPosition((prevPosition) => ({
+          ...prevPosition,
+          left: prevPosition.left + moveDistance,
+        }));
+        break;
+      default:
+        break;
+    }
+  };
+
+  // 키보드 이벤트 리스너 등록
+  useEffect(() => {
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []); // [] 안에 아무 의존성도 없으므로 컴포넌트가 처음 마운트될 때만 실행
 
   const handleClickStory = (story_id) => {
     openmodal(story_id);
@@ -54,11 +109,11 @@ const ForceGraph = ({ openmodal, scenario }) => {
       d3.select(svgRef.current).selectAll("*").remove();
 
       // 너비와 높이 설정
-      const width = 1500;
-      const height = 800;
+      const width = 1700;
+      const height = 2000;
       let i = 0;
 
-      const tree = d3.tree().size([width, height]).nodeSize([150, 90]); //각각 노드의 수평 및 수직 크기
+      const tree = d3.tree().nodeSize([190, 0]); //각각 노드의 수평 및 수직 크기
 
       const line = d3
         .line()
@@ -71,7 +126,7 @@ const ForceGraph = ({ openmodal, scenario }) => {
         .attr("width", width)
         .attr("height", height)
         .append("g")
-        .attr("transform", `translate(${width / 7},${height / 2})`); // 루트 노드 기준
+        .attr("transform", `translate(${width / 8}, ${height / 3})`); // 루트 노드 기준
 
       const root = d3.hierarchy(treeData[0]); // 트리구조
 
@@ -84,7 +139,7 @@ const ForceGraph = ({ openmodal, scenario }) => {
         const links = tree(root).links();
 
         nodes.forEach((d) => {
-          d.y = d.depth * 220;
+          d.y = d.depth * 300;
         });
 
         const node = svg
@@ -100,10 +155,10 @@ const ForceGraph = ({ openmodal, scenario }) => {
         nodeEnter
           .append("image")
           .attr("xlink:href", (d) => d.data.image_url)
-          .attr("x", -55)
-          .attr("y", -55)
-          .attr("width", 110)
-          .attr("height", 110)
+          .attr("x", -75)
+          .attr("y", -75)
+          .attr("width", 150)
+          .attr("height", 150)
           .style("filter", "drop-shadow(3px 3px 5px #ffffffb6)")
           .on("click", (event, d) => handleClickStory(d.data.story_id)); // 클릭 이벤트 핸들러 추가
 
@@ -133,17 +188,22 @@ const ForceGraph = ({ openmodal, scenario }) => {
 
   return (
     <div
-      className="overflow-hidden"
-      // className="flex flex-col relative w-full h-full"
+      className="w-full h-full overflow-hidden transition-all duration-5000"
+      onWheel={wheelHandler}
     >
       <svg
         ref={svgRef}
         style={{
-          width: "100%",
-          height: "100%",
-          top: 0,
-          left: 0,
-          overflow: "hidden",
+          position: "relative",
+          top: "-400px",
+          left: "-150px",
+          width: `${200 / ratio}%`,
+          height: `${200 / ratio}%`,
+          // transition: "all 0.3s",
+          transform: `translate(${position.left}px, ${position.top}px) scale(${ratio}) rotateX(20deg) rotateY(8deg) rotateZ(-8deg)`,
+          // transformOrigin: "left top",
+          // transform: "rotateX(20deg) rotateY(8deg) rotateZ(-8deg)",
+          // perspectiveOrigin: "center",
         }}
       />
     </div>

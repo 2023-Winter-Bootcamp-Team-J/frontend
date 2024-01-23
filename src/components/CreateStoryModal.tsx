@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState, ChangeEvent } from "react";
+import React, { useRef, useEffect, useState, ChangeEvent } from "react";
 import axios from "axios";
 import Carousel from "../components/ImgCarousel";
 import Lottie from "lottie-react";
@@ -170,7 +170,7 @@ const CreateStoryModal: React.FC<CreateStoryModalProps> = ({
         ref={modalRef}
         className="z-20 flex absolute flex-col w-[800px] h-[450px] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
       >
-        <div className="flex w-full h-[55px] justify-center items-center bg-blue-800 border-2 border-white text-green-400 text-[33px] font-Minecraft">
+        <div className="flex w-full h-[55px] justify-center items-center pt-[8px] bg-blue-800 border-2 border-white text-green-400 text-[33px] font-Minecraft">
           NEW STORY
         </div>
         <div className="flex flex-col w-full h-[395px] justify-center items-center gap-[10px] bg-black border-2 border-white text-white">
@@ -210,10 +210,10 @@ const CreateStoryModal: React.FC<CreateStoryModalProps> = ({
             </div>
           </div>
           <button
-            className="flex w-[50px] justify-center mt-[10px] bg-zinc-300 border-2 border-gray-500 font-Minecraft font-bold text-black text-[20px] hover:bg-blue-600 hover:text-green-400 hover:shadow-blue-600"
+            className="flex w-[70px] justify-center mt-[10px] pt-[3px] bg-zinc-300 border-2 border-gray-500 font-Minecraft font-bold text-black text-[20px] hover:bg-blue-600 hover:text-green-400 hover:shadow-blue-600"
             onClick={handleClickOk}
           >
-            OK
+            SAVE
           </button>
         </div>
       </div>

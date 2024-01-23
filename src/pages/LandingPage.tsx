@@ -1,3 +1,4 @@
+import React from "react";
 import { useState } from "react";
 import ThreeParticles from "../components/ThreeParticles";
 import NicknameModal from "../components/NicknameModal";

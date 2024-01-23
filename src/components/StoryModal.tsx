@@ -1,3 +1,4 @@
+import React from "react";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 
@@ -79,7 +80,7 @@ const StoryModal: React.FC<StoryModalProps> = ({
       }`}
     >
       <div ref={modalRef} className="flex flex-col w-[800px] h-[450px] z-1">
-        <div className="flex gap-[15px] w-full h-[55px] justify-center items-center bg-blue-800 border-2 border-gray-400 text-green-400 text-[33px] font-Minecraft">
+        <div className="flex gap-[15px] w-full h-[55px] justify-center items-center pt-[8px] bg-blue-800 border-2 border-gray-400 text-green-400 text-[33px] font-Minecraft">
           STORY
           <div className="text-gray-400 text-[18px]">
             by {story?.user_nickname ? `${story.user_nickname}` : "LOADING..."}
@@ -146,8 +147,11 @@ const StoryModal: React.FC<StoryModalProps> = ({
               </div>
             </div>
           </div>
-          <button className="flex w-[50px] justify-center mt-[10px] bg-zinc-300 border-2 border-gray-500 font-Minecraft font-bold text-black text-[20px] hover:bg-blue-600 hover:text-green-400 hover:shadow-blue-600">
-            OK
+          <button
+            onClick={onClose}
+            className="flex w-[90px] justify-center mt-[10px] bg-zinc-300 border-2 border-gray-500 font-Minecraft font-bold text-black text-[20px] hover:bg-blue-600 hover:text-green-400 hover:shadow-blue-600"
+          >
+            CLOSE
           </button>
         </div>
       </div>

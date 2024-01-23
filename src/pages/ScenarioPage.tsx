@@ -1,10 +1,10 @@
-import ParticleTutorial from "@/components/ThreeParticles";
-import ForceGraph from "@/components/ForceGraph";
-import Navbar from "@/components/Navbar";
+import ParticleTutorial from "../components/ThreeParticles";
+import ForceGraph from "../components/ForceGraph";
+import Navbar from "../components/Navbar";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import StoryModal from "@/components/StoryModal";
-import CreateStoryModal from "@/components/CreateStoryModal";
+import StoryModal from "../components/StoryModal";
+import CreateStoryModal from "../components/CreateStoryModal";
 import axios from "axios";
 
 const ScenarioPage = () => {
@@ -18,8 +18,6 @@ const ScenarioPage = () => {
 
   const [scenario, setScenario] = useState([]); // d3 시나리오
   const [clickStoryId, setClickStoryId] = useState(story_id); // 클릭한 시나리오 조회
-
-  const [ratio, setRatio] = useState(1); // 줌in/out비율 조작
 
   const handleClickBack = () => {
     // 뒤로 가기
@@ -51,15 +49,6 @@ const ScenarioPage = () => {
     }
   };
 
-  // zoom in/out 기능
-  const wheelHandler = (e: React.WheelEvent) => {
-    if (ratio <= 2.5) {
-      setRatio((ratio) => (ratio >= 0.7 ? ratio + 0.001 * e.deltaY : 0.7));
-    } else {
-      setRatio(2.5);
-    }
-  };
-
   useEffect(() => {
     const scenarioAPI = async () => {
       try {
@@ -84,25 +73,7 @@ const ScenarioPage = () => {
       <div className="flex w-[100vw] h-[100vh] flex-col justify-center items-center absolute top-1/2 left-1/2 z-1 bg-transparent -translate-x-1/2 -translate-y-1/2">
         <div className="overflow-hidden flex flex-col w-full h-full">
           <Navbar />
-          <div
-            id="StockContainer"
-            className="relative top-0 left-0 overflow-hidden"
-            style={{
-              width: `${200 / ratio}%`,
-              height: `${200 / ratio}%`,
-              transform: `scale(${ratio})`,
-              transformOrigin: "left top",
-            }}
-            onWheel={wheelHandler}
-            draggable
-          >
-            <div
-              id="Frame"
-              className="overflow-hidden w-full h-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-            >
-              <ForceGraph openmodal={openModal} scenario={scenario} />
-            </div>
-          </div>
+          <ForceGraph openmodal={openModal} scenario={scenario} />
         </div>
       </div>
       <div

@@ -8,7 +8,6 @@
     "baseUrl": "./",
     "paths": {
       "@/*": ["./src/*"]
-      // "three": ["node_modules/three/*"]
     },
     // "types": ["vite-plugin-svgr/client"],
 
@@ -28,6 +27,6 @@
     "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"],
+  "include": ["src", "vite.config.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
