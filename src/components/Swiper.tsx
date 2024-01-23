@@ -80,7 +80,7 @@ const SwiperComponent: React.FC<SwiperComponentProps> = ({
         dynamicBullets: true,
         renderBullet: function (index, bullet) {
           // index가 빠지면 불렛 중앙 정렬이 해제됨
-          return `<div class="${bullet} border-2 bg-transparent border-green-300 rounded-full" style="width: 40px; height: 16px; opacity: 1;"></div>`;
+          return `<div class="${bullet} border-2 bg-transparent border-green-300 rounded-full" style="width: 40px; height: 18px; opacity: 1;"></div>`;
         },
       },
       on: {

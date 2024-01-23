@@ -80,7 +80,7 @@ const StoryModal: React.FC<StoryModalProps> = ({
       }`}
     >
       <div ref={modalRef} className="flex flex-col w-[800px] h-[450px] z-1">
-        <div className="flex gap-[15px] w-full h-[55px] justify-center items-center bg-blue-800 border-2 border-gray-400 text-green-400 text-[33px] font-Minecraft">
+        <div className="flex gap-[15px] w-full h-[55px] justify-center items-center pt-[8px] bg-blue-800 border-2 border-gray-400 text-green-400 text-[33px] font-Minecraft">
           STORY
           <div className="text-gray-400 text-[18px]">
             by {story?.user_nickname ? `${story.user_nickname}` : "LOADING..."}
