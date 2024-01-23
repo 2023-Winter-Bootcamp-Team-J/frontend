@@ -1,7 +1,6 @@
 import ParticleTutorial from "../components/ThreeParticles";
 import ForceGraph from "../components/ForceGraph";
 import Navbar from "../components/Navbar";
-// import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import StoryModal from "../components/StoryModal";
@@ -9,13 +8,9 @@ import CreateStoryModal from "../components/CreateStoryModal";
 import axios from "axios";
 
 const ScenarioPage = () => {
-  // const location = useLocation();
-  // const state = location.state as { story_id: number };
-  // const story_id = state.story_id; // story_id 전달 받기
   const { rootId } = useParams() as { rootId: string };
   console.log("rootId: ", rootId);
   const story_id = parseInt(rootId, 10);
-  // console.log("storyId: ", storyId);
   const navigate = useNavigate(); // 뒤로 가기
 
   const [isStoryModalOpen, setIsStoryModalOpen] = useState(false);

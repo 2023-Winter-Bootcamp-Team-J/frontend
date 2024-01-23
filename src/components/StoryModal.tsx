@@ -23,7 +23,7 @@ const StoryModal: React.FC<StoryModalProps> = ({
     child_content: string[];
   } | null>(null);
   const modalRef = useRef<HTMLDivElement>(null);
-
+  console.log(storyId);
   // 모달 외부를 클릭했을 때 모달을 닫도록 하는 이벤트 처리
   const handleClickOutside = (e: MouseEvent) => {
     if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
@@ -46,10 +46,10 @@ const StoryModal: React.FC<StoryModalProps> = ({
   }, [isOpen]);
 
   useEffect(() => {
-    // console.log("**story_id: ", storyId);
+    console.log("**story_id: ", storyId);
     const storyAPI = async () => {
       try {
-        const response = await axios.get(`api/v1/stories/${storyId}`);
+        const response = await axios.get(`/api/v1/stories/${storyId}/`);
         console.log("response: ", response.data.data);
         if (response.data.data) {
           // 데이터가 존재할 때만 state 업데이트
