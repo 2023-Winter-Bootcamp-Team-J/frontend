@@ -2,19 +2,30 @@ import React, { useState, useEffect } from "react";
 
 interface CarouselProps {
   images: string[];
+  onCurrentIndexChange: (index: number) => void;
 }
 
-const Carousel: React.FC<CarouselProps> = ({ images }) => {
+const Carousel: React.FC<CarouselProps> = ({
+  images,
+  onCurrentIndexChange,
+}) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  // const [countImages, setCountImages] = useState(0); // 추가
 
   // useEffect를 사용하여 images가 업데이트될 때마다 currentIndex를 0으로 설정
   useEffect(() => {
-    setCurrentIndex(images.length - 1);
+    if (images.length > 0) {
+      setCurrentIndex(images.length - 1);
+    }
   }, [images]);
+
+  useEffect(() => {
+    onCurrentIndexChange(currentIndex);
+  }, [currentIndex, onCurrentIndexChange, images]);
 
   const nextImage = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-    console.log(currentIndex);
+    // console.log(currentIndex + 1);
   };
   const prevImage = () => {
     setCurrentIndex(
@@ -42,18 +53,23 @@ const Carousel: React.FC<CarouselProps> = ({ images }) => {
           )}
         </div>
       ))}
-      <button
-        className="absolute z-10 top-1/2 left-4 transform -translate-y-1/2 text-white text-5xl"
-        onClick={prevImage}
-      >
-        &#8249;
-      </button>
-      <button
-        className="absolute z-10  top-1/2 right-4 transform -translate-y-1/2 text-white text-5xl"
-        onClick={nextImage}
-      >
-        &#8250;
-      </button>
+      {images.length > 1 && (
+        <>
+          <button
+            className="absolute z-10 top-1/2 left-4 transform -translate-y-1/2 text-white text-5xl"
+            onClick={prevImage}
+          >
+            &#8249;
+          </button>
+          <div className="absolute z-10 text-white"></div>
+          <button
+            className="absolute z-10  top-1/2 right-4 transform -translate-y-1/2 text-white text-5xl"
+            onClick={nextImage}
+          >
+            &#8250;
+          </button>
+        </>
+      )}
     </div>
   );
 };

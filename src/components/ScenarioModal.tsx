@@ -30,7 +30,9 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
   const [imageUrl, setImageUrl] = useState<string>("");
   const [images, setImages] = useState<string[]>([]);
   const [characterCount, setCharacterCount] = useState<number>(0);
+  const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
   const [isGenerating, setIsGenerating] = useState(false); // Lottie를 트리거
+  const [generationCount, setGenerationCount] = useState<number>(0);
   // Lottie 애니메이션 완료 시 호출되는 콜백
   const handleLottieComplete = () => {
     setIsGenerating(false); // Lottie 숨기기
@@ -47,10 +49,18 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
     }
   };
   const handleClick = () => {
-    CreateScenario(); // 이미지 생성 요청
-    setIsGenerating(true); // Lottie 보여주기 시작
+    if (generationCount < 3) {
+      CreateScenario(); // 이미지 생성 요청
+      setIsGenerating(true); // Lottie 보여주기 시작
+      setGenerationCount((count) => count + 1);
+    } else {
+      alert("이미지 생성 요청은 최대 3회까지 가능합니다.");
+    }
   };
-
+  const handleCurrentIndexChange = (index: number) => {
+    setCurrentImageIndex(index);
+    // currentIndex를 활용한 로직을 추가하세요.
+  };
   const CreateScenario = async () => {
     try {
       if (!content.trim()) {
@@ -68,7 +78,8 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
         // 응답이 성공적인 경우 상태 업데이트
         setContentValue(content);
         setTaskID(response.data.task_id);
-        console.log(response.data.task_id);
+        setCurrentImageIndex(0);
+        // console.log(response.data.task_id);
       }
     } catch (error) {
       console.error(error);
@@ -109,11 +120,12 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
           // 이미지가 정상적으로 받아졌으므로 타이머 중지
           clearInterval(intervalId);
           setIsGenerating(false); // Lottie 숨기기
+          setCurrentImageIndex(0);
         }
       } catch (error) {
         console.error(error);
       }
-      console.log(images);
+      // console.log(images);
     };
     return () => clearInterval(intervalId);
   }, [taskID]);
@@ -180,8 +192,18 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
             </div>
           )}
           <div className="flex justify-center w-full h-[270px] gap-[80px]">
-            <div className="w-[300px] z-10">
-              {imageUrl && <Carousel images={images} />}
+            <div className="flex flex-col w-[270px] gap-[5px]">
+              <div className="w-[270px] h-[270px] z-10 bg-[#1d1e1e]">
+                {imageUrl && (
+                  <Carousel
+                    images={images}
+                    onCurrentIndexChange={handleCurrentIndexChange}
+                  />
+                )}
+              </div>
+              <div className="flex justify-center text-white font-[16px] leading-[20px]">
+                {currentImageIndex + 1} of 3
+              </div>
             </div>
             <div className="flex flex-col justify-center w-[300px] gap-[17px] text-center">
               <div className="text-[18px] text-white">
@@ -202,7 +224,7 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
                 className="text-center w-full h-[30px] bg-green-400 border-2 border-gray-500 text-black hover:bg-blue-600 hover:text-white hover:shadow-blue-600"
                 onClick={handleClick}
               >
-                사진 생성하기
+                사진 생성하기 {currentImageIndex + 1} of 3
               </button>
             </div>
           </div>

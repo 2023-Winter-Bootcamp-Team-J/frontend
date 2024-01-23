@@ -9,7 +9,7 @@ interface RootModalProps {
   storyId: number;
 }
 
-const RootModal: React.FC<StoryModalProps> = ({
+const RootModal: React.FC<RootModalProps> = ({
   isOpen,
   closeStory,
   storyId,
