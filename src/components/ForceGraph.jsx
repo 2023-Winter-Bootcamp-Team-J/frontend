@@ -110,7 +110,7 @@ const ForceGraph = ({ openmodal, scenario }) => {
 
       // 너비와 높이 설정
       const width = 1700;
-      const height = 2000;
+      const height = 3000;
       let i = 0;
 
       const tree = d3.tree().nodeSize([190, 0]); //각각 노드의 수평 및 수직 크기
