@@ -106,6 +106,12 @@ const SwiperComponent: React.FC<SwiperComponentProps> = ({
     };
   }, [stories]);
 
+  useEffect(() => {
+    console.log("currentSlideIndex: ", currentSlideIndex);
+    console.log("stories: ", stories[currentSlideIndex]);
+    onSlideClick(currentSlideIndex);
+  }, [currentSlideIndex]);
+
   return (
     <div>
       <div className="swiper-container w-[1100px] pb-[80px] Myswiper overflow-hidden block">

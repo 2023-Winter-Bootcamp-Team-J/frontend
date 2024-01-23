@@ -1,16 +1,21 @@
 import ParticleTutorial from "../components/ThreeParticles";
 import ForceGraph from "../components/ForceGraph";
 import Navbar from "../components/Navbar";
-import { useLocation, useNavigate } from "react-router-dom";
+// import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import StoryModal from "../components/StoryModal";
 import CreateStoryModal from "../components/CreateStoryModal";
 import axios from "axios";
 
 const ScenarioPage = () => {
-  const location = useLocation();
-  const state = location.state as { story_id: number };
-  const story_id = state.story_id; // story_id 전달 받기
+  // const location = useLocation();
+  // const state = location.state as { story_id: number };
+  // const story_id = state.story_id; // story_id 전달 받기
+  const { rootId } = useParams() as { rootId: string };
+  console.log("rootId: ", rootId);
+  const story_id = parseInt(rootId, 10);
+  // console.log("storyId: ", storyId);
   const navigate = useNavigate(); // 뒤로 가기
 
   const [isStoryModalOpen, setIsStoryModalOpen] = useState(false);
@@ -25,7 +30,7 @@ const ScenarioPage = () => {
   };
 
   const openModal = (storyId: number) => {
-    console.log("click_id: ", story_id);
+    console.log("click_id: ", storyId);
     // 클릭한 스토리 아이디로 모달 열기
     setClickStoryId(storyId);
     setIsStoryModalOpen(true);
@@ -37,26 +42,27 @@ const ScenarioPage = () => {
     setIsCreateModalOpen(false);
   };
 
-  const handleClickStory = (story_id: number) => {
+  const handleClickStory = (storyId: number) => {
     // 스토리 생성 or 조회
-    if (story_id < 0) {
+    if (storyId < 0) {
       // 생성
       setIsStoryModalOpen(false);
       setIsCreateModalOpen(true);
     } else {
       // 조회
-      setClickStoryId(story_id);
+      setClickStoryId(storyId);
     }
   };
 
   useEffect(() => {
+    console.log("storyId: ", story_id);
     const scenarioAPI = async () => {
       try {
         const response = await axios.get(
-          `api/v1/stories/branches/${story_id}/`
+          `/api/v1/stories/branches/${story_id}/`
         );
-        // console.log("response: ", response.data.data);
-        if (response.data.data.length > 0) {
+        console.log("response: ", response.data.data);
+        if (response.status == 200) {
           setScenario(response.data.data);
         }
       } catch (error) {
