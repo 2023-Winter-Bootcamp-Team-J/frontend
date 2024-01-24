@@ -19,7 +19,7 @@ const ParticleTutorial: React.FC = () => {
       );
       camera.position.z = 2000;
       scene = new THREE.Scene();
-      scene.background = new THREE.Color(0x000720);
+      scene.background = new THREE.Color(0x0b1433);
       scene.add(camera);
 
       const renderer = new THREE.WebGLRenderer({ antialias: true });
