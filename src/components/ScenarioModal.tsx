@@ -60,6 +60,7 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
   const handleCurrentIndexChange = (index: number) => {
     setCurrentImageIndex(index);
     // currentIndex를 활용한 로직을 추가하세요.
+    console.log("image_index: ", index);
   };
   const CreateScenario = async () => {
     try {
@@ -85,6 +86,10 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    console.log("currentIndex: ", currentImageIndex);
+  }, [currentImageIndex]);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -169,6 +174,7 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
       document.removeEventListener("mousedown", handleBackgroundClick);
     };
   }, [isOpen]);
+
   return (
     <div
       className={`fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 ${
