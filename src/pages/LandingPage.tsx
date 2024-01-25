@@ -4,6 +4,8 @@ import ThreeParticles from "../components/ThreeParticles";
 import NicknameModal from "../components/NicknameModal";
 import Onboading1 from "@/components/Onboading1";
 import Onboading2 from "@/components/Onboading2";
+import Onboading3 from "@/components/Onboarding3";
+import Onboading4 from "@/components/Onboarding4";
 
 const LandingPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -19,12 +21,18 @@ const LandingPage = () => {
   return (
     <div>
       <ThreeParticles />
-      <div className="flex flex-col justify-center items-center w-[80vw] h-[80vh] absolute top-1/2 left-1/2 z-1 bg-transparent -translate-x-1/2 -translate-y-1/2">
-        <div className="flex text-white text-8xl  p-10 font-['Minecraft']">
-          Next-Page
+      <div className="flex flex-col justify-center items-center w-[80vw] h-[80vh] font-['NextPage'] absolute top-1/2 left-1/2 z-1 bg-transparent -translate-x-1/2 -translate-y-1/2">
+        <div className="flex text-white text-8xl  p-10">
+          <span>
+            <span className="text-blue-600">N</span>ext-
+            <span className="text-green-400">P</span>age
+          </span>
         </div>
         <div className="flex text-white text-center font-bold text-2xl">
-          사용자와 AI가 함께<br></br>다음 페이지를 창조해 나가는 서비스
+          <span>
+            사용자와 <span className="text-blue-600">AI</span>가 함께<br></br>
+            다음 페이지를 창조해 나가는 서비스
+          </span>
         </div>
         <div className="flex relative w-3/4 h-1/2 justify-center top-20">
           <img
@@ -43,6 +51,8 @@ const LandingPage = () => {
       <NicknameModal isOpen={isModalOpen} onClose={closeModal} />
       <Onboading1 />
       <Onboading2 />
+      <Onboading3 />
+      <Onboading4 />
     </div>
   );
 };

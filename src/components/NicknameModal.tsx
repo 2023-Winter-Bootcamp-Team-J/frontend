@@ -93,7 +93,7 @@ const NicknameModal: React.FC<NicknameModalProps> = ({ isOpen, onClose }) => {
         ref={modalRef}
         className="flex flex-col w-[600px] h-[350px] absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-800 overflow-hidden"
       >
-        <div className="flex w-full h-[8vh] justify-center items-center bg-blue-800 border-2 border-white text-green-400 text-[33px] font-Minecraft">
+        <div className="flex w-full h-[8vh] justify-center items-center pt-[8px] bg-blue-800 border-2 border-white text-green-400 text-[33px] font-Minecraft">
           WELCOME
         </div>
         <div className="flex flex-col w-full h-[90vh] justify-center items-center gap-[30px] bg-black border-2 text-white">
