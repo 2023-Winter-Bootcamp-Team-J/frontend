@@ -11,11 +11,11 @@ const Onboading2 = () => {
   };
 
   const imgStyle = {
-    animation: "imgmove 4s linear infinite",
+    animation: "imgmove 8s linear infinite",
   };
 
   const imgStyle2 = {
-    animation: "imgmove2 4s linear infinite",
+    animation: "imgmove2 8s linear infinite",
   };
   return (
     <div
@@ -23,7 +23,12 @@ const Onboading2 = () => {
       style={bgstyle}
     >
       <div className="flex items-center gap-[40px]">
-        <div className="flex text-green-400 text-[130px] font-['Minecraft']">
+        <div
+          className="flex text-green-400 text-[130px] font-['Minecraft']"
+          style={{
+            filter: "drop-shadow(0 0 6px rgba(255, 255, 255, 0.214))",
+          }}
+        >
           {"{"}
         </div>
         <div
@@ -31,26 +36,43 @@ const Onboading2 = () => {
           style={imgStyle}
         >
           <img src="/asset/img1.png" alt="" />
-          <img src="/asset/img2.png" alt="" />
-          <img src="/asset/img3.png" alt="" />
-          <img src="/asset/img4.png" alt="" />
-          <img src="/asset/img5.png" alt="" />
           <img src="/asset/img6.png" alt="" />
-          <img src="/asset/img7.png" alt="" />
+          <img src="/asset/img3.png" alt="" />
+          <img src="/asset/test2.png" alt="" />
+          <img src="/asset/img5.png" alt="" />
+          <img src="/asset/test4.png" alt="" />
+          <img src="/asset/img2.png" alt="" />
+          <img src="/asset/img1.png" alt="" />
+          <img src="/asset/img6.png" alt="" />
+          <img src="/asset/img3.png" alt="" />
+          <img src="/asset/test2.png" alt="" />
+          <img src="/asset/img5.png" alt="" />
+          <img src="/asset/test4.png" alt="" />
+          <img src="/asset/img2.png" alt="" />
         </div>
         <div
           className="flex flex-col flex-nowrap imgmove2 w-[142px] h-full gap-[15px]"
           style={imgStyle2}
         >
-          <img className="h-[142px]" src="/asset/test.png" alt="" />
-          <img className="h-[142px]" src="/asset/test2.png" alt="" />
+          <img src="/asset/test.png" alt="" />
           <img src="/asset/test3.png" alt="" />
-          <img src="/asset/test4.png" alt="" />
+          <img src="/asset/img4.png" alt="" />
+          <img src="/asset/test5.png" alt="" />
+          <img src="/asset/test6.png" alt="" />
+          <img src="/asset/img7.png" alt="" />
+          <img src="/asset/test.png" alt="" />
+          <img src="/asset/test3.png" alt="" />
+          <img src="/asset/img4.png" alt="" />
           <img src="/asset/test5.png" alt="" />
           <img src="/asset/test6.png" alt="" />
           <img src="/asset/img7.png" alt="" />
         </div>
-        <div className="h-[200px] items-center text-green-400 text-[130px] font-['Minecraft']">
+        <div
+          className="h-[200px] items-center text-green-400 text-[130px] font-['Minecraft']"
+          style={{
+            filter: "drop-shadow(0 0 6px rgba(255, 255, 255, 0.214))",
+          }}
+        >
           {"}"}
         </div>
       </div>

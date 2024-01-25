@@ -20,9 +20,7 @@ const Onboading1 = () => {
   };
   const cursorStyle = {
     content: "Imagine What",
-    // position: "absolute",
     width: "50%",
-    // height: "100%",
     color: "white",
     overflow: "hidden",
     borderRight: "2px solid white",
@@ -30,35 +28,12 @@ const Onboading1 = () => {
   };
   const cursorStyle2 = {
     content: "Make world",
-    // position: "absolute",
     width: "36%",
-    // height: "100%",
     color: "white",
     overflow: "hidden",
     borderRight: "2px solid white",
     animation: "typing 4.5s steps(30) infinite, delay 2s",
-    // animation: {
-    //   name: "typing",
-    //   duration: "4.5s",
-    //   timingFunction: "steps(30) infinite",
-    //   delay: "2s",
-    // },
   };
-  // const keyframes = {
-  //   typingAni: {
-  //     "0%": { width: "0%" },
-  //     "100%": { width: "700px" },
-  //   },
-  //   cursor: {
-  //     "0%": { opacity: 0 },
-  //     "50%": { opacity: 1 },
-  //     "100%": { opacity: 0 },
-  //   },
-  //   blink: {
-  //     "0%, 100%": { opacity: 1 },
-  //     "50%": { opacity: 0 },
-  //   },
-  // };
 
   return (
     <div
@@ -72,7 +47,12 @@ const Onboading1 = () => {
         >
           Imagine What
         </div>
-        <div className="w-[400px] h-[6px] mt-[50px] bg-green-400"></div>
+        <div
+          className="w-[450px] h-[6px] mt-[50px] bg-green-400"
+          style={{
+            filter: "drop-shadow(0 0 6px rgba(255, 255, 255, 0.214)",
+          }}
+        ></div>
       </div>
       <div
         className="flex justify-center text-white text-[160px] rotating-question-mark"
@@ -83,12 +63,17 @@ const Onboading1 = () => {
         ?
       </div>
       <div className="flex w-full h-[130px] items-center justify-between px-[130px]">
-        <div className="text-green-400 text-[100px] mx-8">
-          {"{"} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+        <div
+          className="text-green-400 text-[100px] mx-8"
+          style={{
+            filter: "drop-shadow(0 0 6px rgba(255, 255, 255, 0.214))",
+          }}
+        >
+          {"{"} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
           {"}"}
         </div>
         <div
-          className="absolute left-[58%] text-white text-[80px] mt-[20px] whitespace-nowrap"
+          className="absolute left-[58%] text-white text-[80px] mt-[20px] animate-delay-3s whitespace-nowrap"
           style={typingStyle && cursorStyle2}
         >
           Make World
