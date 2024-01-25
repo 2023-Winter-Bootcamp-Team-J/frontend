@@ -1,4 +1,3 @@
-import backgroundImageUrl from "../../public/asset/bg.png";
 import createModal from "../../public/asset/createmodal.png";
 import storyModal from "../../public/asset/storymodal.png";
 import grid from "../../public/asset/grid.png";
@@ -8,15 +7,15 @@ const Onboading4 = () => {
     width: "100vw",
     height: "960px",
     overflow: "hidden",
-    backgroundImage: `url(${backgroundImageUrl})`,
-    backgroundSize: "cover", // 이미지를 커버하도록 설정
-    backgroundPosition: "center", // 이미지를 중앙에 두기
-    backgroundRepeat: "no-repeat", // 이미지를 반복하지 않도록 설정
+    // backgroundImage: `url(${backgroundImageUrl})`,
+    // backgroundSize: "cover", // 이미지를 커버하도록 설정
+    // backgroundPosition: "center", // 이미지를 중앙에 두기
+    // backgroundRepeat: "no-repeat", // 이미지를 반복하지 않도록 설정
   };
 
   return (
     <div
-      className="relative flex justify-center items-center p-[50px] font-['NextPage'] text-[40px] text-white"
+      className="relative flex justify-center items-center p-[50px] text-[40px] text-white"
       style={style}
     >
       {/* 내용 */}
