@@ -136,14 +136,13 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
   }, [taskID]);
 
   const handleClickOk = async () => {
-    const latestImageUrl = images.length > 0 ? images[images.length - 1] : "";
-    // Ok 버튼 클릭 시 /api/v1/stories/ 요청
+    const selectedImageUrl = images[currentImageIndex] || ""; // 현재 선택된 이미지
     setIsGenerating(true); // Lottie 보여주기 시작
     try {
       const storiesResponse = await axios.post(`/api/v1/stories/`, {
         user_id: userId,
         content,
-        image_url: latestImageUrl,
+        image_url: selectedImageUrl,
         parent_story: -1,
       });
 
@@ -188,7 +187,7 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
         <div className="flex w-full h-[55px] justify-center items-center pt-[8px] bg-blue-800 border-2 border-white text-green-400 text-[33px] font-Minecraft">
           NEW SCENARIO
         </div>
-        <div className="flex flex-col w-full h-[395px] justify-center items-center gap-[10px] bg-black border-2 border-white text-white">
+        <div className="flex flex-col w-full h-[395px] justify-center items-center gap-[17px] bg-black border-2 border-white text-white">
           {isGenerating && (
             <div className="absolute z-50 flex justify-center items-center gap-[10px] bg-gray-500 bg-opacity-50 w-full h-[395px]">
               <Lottie
@@ -198,8 +197,8 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
             </div>
           )}
           <div className="flex justify-center w-full h-[270px] gap-[80px]">
-            <div className="flex flex-col w-[270px] gap-[5px]">
-              <div className="w-[270px] h-[270px] z-10 bg-[#1d1e1e]">
+            <div className="flex flex-col w-[270px] h-[300px]">
+              <div className="w-[270px] h-[270px] mb-[10px] z-10 bg-[#1d1e1e]">
                 {imageUrl && (
                   <Carousel
                     images={images}
@@ -207,8 +206,9 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
                   />
                 )}
               </div>
-              <div className="flex justify-center text-white font-[16px] leading-[20px]">
-                {currentImageIndex + 1} of 3
+              <div className="flex justify-center text-green-400 font-[16px] leading-[20px]">
+                {currentImageIndex + 1}
+                <span className="text-white"> &nbsp; / &nbsp; 3</span>
               </div>
             </div>
             <div className="flex flex-col justify-center w-[300px] gap-[17px] text-center">
@@ -217,7 +217,7 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
               </div>
               <textarea
                 placeholder="문장을 입력하세요."
-                className="h-[140px] p-[5px] mb-[20px] border-dashed border-2 border-white bg-transparent text-white"
+                className="h-[140px] p-[7px] mb-[20px] border-dashed border-2 border-white bg-transparent text-white"
                 value={content}
                 onChange={handleContentChange}
                 maxLength={100}
@@ -227,10 +227,13 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
                 {characterCount}/{100}
               </div>
               <button
-                className="text-center w-full h-[30px] bg-green-400 border-2 border-gray-500 text-black hover:bg-blue-600 hover:text-white hover:shadow-blue-600"
+                className="text-center w-full h-[30px] pl-[40px] bg-green-400 border-2 border-gray-500 text-black hover:bg-blue-600 hover:text-white hover:shadow-blue-600"
                 onClick={handleClick}
               >
-                사진 생성하기 {currentImageIndex + 1} of 3
+                사진 생성하기 &nbsp;
+                <span className="text-[13px] text-gray-600">
+                  {3 - generationCount}회 남음
+                </span>
               </button>
             </div>
           </div>

@@ -22,10 +22,19 @@ const Navbar = () => {
         className="ml-[30px] text-[25px] font-Minecraft text-white"
         onClick={handleNavigate}
       >
-        Next-Page
+        <span>
+          <span className="text-blue-600">N</span>ext-
+          <span className="text-green-400">P</span>age
+        </span>
       </button>
       <div className="mr-[30px] text-white cursor-pointer">
-        {user.nickname ? `${user.nickname}님 환영합니다!` : "로딩 중..."}
+        {user.nickname && (
+          <>
+            <span className="text-green-400">{user.nickname}</span>
+            <span className="text-white">님 환영합니다!</span>
+          </>
+        )}
+        {!user.nickname && "로딩 중..."}
       </div>
     </div>
   );
