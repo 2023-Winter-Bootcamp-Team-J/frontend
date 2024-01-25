@@ -1,13 +1,14 @@
-import React from "react";
-import bgUrl from "../../dist/asset/bg.png";
+import backgroundImageUrl from "../../public/asset/bg.png";
 import "../../src/index.css";
 
 const Onboading2 = () => {
   const bgstyle = {
     width: "100vw",
     height: "960px",
-    backgroundImage: `url(${bgUrl})`,
-    backgroundRepeat: "no-repeat",
+    backgroundImage: `url(${backgroundImageUrl})`,
+    backgroundSize: "cover", // 이미지를 커버하도록 설정
+    backgroundPosition: "center", // 이미지를 중앙에 두기
+    backgroundRepeat: "no-repeat", // 이미지를 반복하지 않도록 설정
   };
 
   const imgStyle = {
