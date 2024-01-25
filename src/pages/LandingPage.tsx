@@ -2,6 +2,8 @@ import React from "react";
 import { useState } from "react";
 import ThreeParticles from "../components/ThreeParticles";
 import NicknameModal from "../components/NicknameModal";
+import Onboading1 from "@/components/Onboading1";
+import Onboading2 from "@/components/Onboading2";
 
 const LandingPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -39,6 +41,8 @@ const LandingPage = () => {
         </div>
       </div>
       <NicknameModal isOpen={isModalOpen} onClose={closeModal} />
+      <Onboading1 />
+      <Onboading2 />
     </div>
   );
 };

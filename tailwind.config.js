@@ -1,16 +1,17 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ['./src/**/*.{js,ts,jsx,tsx}'],
+  content: ["./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
       screens: {
-        md: '925px',
-        lg: '1210px',
-        xl: '1490px',
+        md: "925px",
+        lg: "1210px",
+        xl: "1490px",
       },
     },
     fontFamily: {
-      Minecraft: ['Minecraft'],
+      Minecraft: ["Minecraft"],
+      DungGeunMo: ["DungGeunMo"],
     },
   },
   plugins: [],

@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: 'Minecraft';
+  font-family: "Minecraft";
   src: url(./../public/asset/font/Minecraft.ttf);
 }
 *::-webkit-scrollbar {
@@ -12,4 +12,62 @@
 * {
   -ms-overflow-style: none; /* IE and 엣지 */
   scrollbar-width: none; /* 파이어폭스 */
+}
+
+/* styles.module.css (or your preferred naming convention for module styles) */
+@keyframes typing {
+  from {
+    width: 0;
+  }
+}
+
+@keyframes blink {
+  50% {
+    border-color: transparent;
+  }
+}
+
+.animation-typing {
+  animation:
+    typing 2s steps(22),
+    blink 0.5s step-end infinite alternate;
+}
+
+.animation-blink {
+  animation: blink 0.5s step-end infinite alternate;
+}
+
+@keyframes rotateY {
+  0% {
+    transform: rotateY(0deg);
+  }
+  100% {
+    transform: rotateY(360deg);
+  }
+}
+
+.rotating-question-mark {
+  animation: rotateY 3.5s linear infinite;
+}
+
+.animate-delay-3s {
+  animation: fadeIn 1s ease-in-out 3s forwards;
+}
+
+@keyframes imgmove {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(0, -30%);
+  }
+}
+
+@keyframes imgmove2 {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(0, 30%);
+  }
 }

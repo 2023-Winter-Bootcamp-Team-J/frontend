@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: 'Minecraft';
+  font-family: "Minecraft";
   src: url(./../public/asset/font/Minecraft.ttf);
 }
 
