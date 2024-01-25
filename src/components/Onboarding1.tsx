@@ -37,7 +37,7 @@ const Onboading1 = () => {
 
   return (
     <div
-      className="flex flex-col justify-around pt-[40px] font-['Minecraft']"
+      className="flex flex-col justify-center gap-[150px] font-['Minecraft']"
       style={bgstyle}
     >
       <div className="flex w-full h-[140px] items-center justify-between px-[130px]">
