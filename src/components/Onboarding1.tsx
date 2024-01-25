@@ -1,14 +1,13 @@
-import backgroundImageUrl from "../../public/asset/bg.png";
 import "../../src/index.css";
 
 const Onboading1 = () => {
   const bgstyle = {
     width: "100vw",
     height: "960px",
-    backgroundImage: `url(${backgroundImageUrl})`,
-    backgroundSize: "cover", // 이미지를 커버하도록 설정
-    backgroundPosition: "center", // 이미지를 중앙에 두기
-    backgroundRepeat: "no-repeat", // 이미지를 반복하지 않도록 설정
+    // backgroundImage: `url(${bgUrl})`,
+    // backgroundRepeat: "no-repeat",
+    // backgroundPosition: "center",
+    // backgroundSize: "cover",
   };
 
   const typingStyle = {
@@ -39,15 +38,15 @@ const Onboading1 = () => {
       className="flex flex-col justify-center gap-[150px] font-['Minecraft']"
       style={bgstyle}
     >
-      <div className="flex w-full h-[140px] items-center justify-between px-[130px]">
+      <div className="relative flex w-full h-[140px] items-center justify-between px-[130px]">
         <div
-          className="w-[650px] text-white text-[80px] whitespace-nowrap"
+          className="absolute left-[130px] w-[650px] text-white text-[80px] whitespace-nowrap"
           style={typingStyle && cursorStyle}
         >
           Imagine What
         </div>
         <div
-          className="w-[450px] h-[6px] mt-[50px] bg-green-400"
+          className="absolute right-[130px] w-[450px] h-[6px] mt-[50px] bg-green-400"
           style={{
             filter: "drop-shadow(0 0 6px rgba(255, 255, 255, 0.214)",
           }}

@@ -1,5 +1,3 @@
-import backgroundImageUrl from "../../public/asset/bg.png";
-// import d3ver3 from "../../public/asset/d3ver3.png";
 import d3ver4 from "../../public/asset/d3ver4.png";
 
 const Onboading3 = () => {
@@ -7,10 +5,10 @@ const Onboading3 = () => {
     width: "100vw",
     height: "960px",
     overflow: "hidden",
-    backgroundImage: `url(${backgroundImageUrl})`,
-    backgroundSize: "cover", // 이미지를 커버하도록 설정
-    backgroundPosition: "center", // 이미지를 중앙에 두기
-    backgroundRepeat: "no-repeat", // 이미지를 반복하지 않도록 설정
+    // backgroundImage: `url(${backgroundImageUrl})`,
+    // backgroundSize: "cover", // 이미지를 커버하도록 설정
+    // backgroundPosition: "center", // 이미지를 중앙에 두기
+    // backgroundRepeat: "no-repeat", // 이미지를 반복하지 않도록 설정
   };
 
   return (
