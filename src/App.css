@@ -3,8 +3,12 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: 'Minecraft';
-  src: url(./../public/asset/font/Minecraft.ttf);
+  font-family: "Minecraft";
+  src: url(../public/asset/font/Minecraft.ttf);
+}
+@font-face {
+  font-family: "DungGeunMo";
+  src: url(../public/asset/font/DungGeunMo.ttf);
 }
 
 * {
