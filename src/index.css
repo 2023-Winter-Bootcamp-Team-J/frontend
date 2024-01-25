@@ -3,13 +3,32 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: 'Minecraft';
+  font-family: "Minecraft";
   src: url(./../public/asset/font/Minecraft.ttf);
 }
+@font-face {
+  font-family: "DungGeunMo";
+  src: url(../public/asset/font/DungGeunMo.ttf);
+}
+
+@font-face {
+  font-family: "NextPage";
+  src: url(../public/asset/font/Minecraft.ttf);
+  unicode-range: U+0041-005A, U+0061-007A, U+0020-007E;
+  /* 영문 */
+}
+@font-face {
+  font-family: "NextPage";
+  src: url(../public/asset/font/DungGeunMo.ttf);
+  unicode-range: U+1100-11FF, U+3130-318F, U+A960-A97F, U+AC00-D7A3, U+D7B0-D7FF;
+  /* 한글 */
+}
+
 *::-webkit-scrollbar {
   display: none;
 }
 * {
   -ms-overflow-style: none; /* IE and 엣지 */
   scrollbar-width: none; /* 파이어폭스 */
+  font-family: NextPage;
 }

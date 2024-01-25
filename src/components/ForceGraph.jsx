@@ -126,7 +126,7 @@ const ForceGraph = ({ openmodal, scenario }) => {
         .attr("width", width)
         .attr("height", height)
         .append("g")
-        .attr("transform", `translate(${width / 8}, ${height / 3})`); // 루트 노드 기준
+        .attr("transform", `translate(${width / 8}, ${height / 4})`); // 루트 노드 기준
 
       const root = d3.hierarchy(treeData[0]); // 트리구조
 
