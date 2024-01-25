@@ -63,7 +63,9 @@ const MainPage = () => {
             <hr className="border-white w-[600px]" />
             <div className="flex items-center justify-between gap-[50px] px-[30px] py-[10px]">
               <div className="text-[20px] text-white">
-                {stories[currentStoryIndex]?.user_nickname}
+                <span className="text-green-400">
+                  {stories[currentStoryIndex]?.user_nickname}
+                </span>
               </div>
               <div className="w-[400px] text-[20px] text-white">
                 {stories[currentStoryIndex]?.content}
