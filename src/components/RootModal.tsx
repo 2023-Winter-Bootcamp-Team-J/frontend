@@ -72,13 +72,13 @@ const RootModal: React.FC<RootModalProps> = ({
   }, [isOpen]);
   return (
     <div
-      className={`fixed z-999 top-0 left-0 w-full h-full bg-black bg-opacity-50 ${
+      className={`flex justify-center items-center fixed top-0 left-0 w-[100vw] h-[100vh] bg-black bg-opacity-50 ${
         isOpen ? "" : "hidden"
       }`}
     >
       <div
         ref={modalRef}
-        className="flex flex-col w-[800px] h-[450px] absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+        className="flex flex-col w-[800px] h-[450px] z-1 absolute top-[25%] left-[25%] transform -translate-x-1/2 -translate-y-1/2 animate-scale-up-ver-center"
       >
         <div className="flex w-full h-[55px] justify-center items-center pt-[8px] bg-blue-800 border-2 border-white text-green-400 text-[33px] font-Minecraft">
           SCENARIO
@@ -95,7 +95,7 @@ const RootModal: React.FC<RootModalProps> = ({
                 alt="Loading..."
               ></img>
             </div>
-            <div className="flex flex-col justify-center w-[300px] gap-[17px] text-center">
+            <div className="flex flex-col justify-center w-[300px] gap-[17px] text-center text-white">
               <div className="flex items-center w-[300px] gap-[20px]">
                 <div className="flex items-center w-[300px] h-[120px] p-[5px] mb-[20px] border-dashed border-2 border-gray-500 bg-transparent ">
                   {story?.content}
@@ -103,18 +103,30 @@ const RootModal: React.FC<RootModalProps> = ({
               </div>
               <div className="flex items-center w-[300px] gap-[20px]">
                 <img className="flex w-[40px]" src="/asset/hand.svg" alt="손" />
-                <div className="flex items-center w-[300px] h-[50px] p-[5px] text-gray-400 ">
-                  {story?.child_content && story.child_content[0]
-                    ? story.child_content[0]
-                    : "새로운 스토리를 시작해보세요!"}
+                <div className="w-full">
+                  {story?.child_content && story.child_content[0] ? (
+                    <p className="w-[240px] text-[1rem] ellipsis2 ">
+                      {story.child_content[0]}
+                    </p>
+                  ) : (
+                    <span className="text-gray-400">
+                      새로운 이야기를 만들어보세요!
+                    </span>
+                  )}
                 </div>
               </div>
               <div className="flex items-center w-[300px] gap-[20px]">
                 <img className="flex w-[40px]" src="/asset/hand.svg" alt="손" />
-                <div className="flex items-center w-[300px] h-[50px] p-[5px]  text-gray-400 ">
-                  {story?.child_content && story.child_content[1]
-                    ? story.child_content[1]
-                    : "새로운 스토리를 시작해보세요!"}
+                <div className="w-full">
+                  {story?.child_content && story.child_content[1] ? (
+                    <p className="w-[240px] text-[1rem] ellipsis2 ">
+                      {story.child_content[1]}
+                    </p>
+                  ) : (
+                    <span className="text-gray-400">
+                      새로운 이야기를 만들어보세요!
+                    </span>
+                  )}
                 </div>
               </div>
             </div>
