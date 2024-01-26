@@ -7,7 +7,6 @@ import axios from "axios";
 
 const MainPage = () => {
   const [modalOpen, setModalOpen] = useState(false);
-  const [update, setUpdate] = useState(-1);
   const [currentStoryIndex, setCurrentStoryIndex] = useState(0);
   const [stories, setStories] = useState<
     Array<{
@@ -29,7 +28,7 @@ const MainPage = () => {
   };
 
   const handleUpdate = () => {
-    setUpdate(update * -1);
+    window.location.reload();
   };
 
   const RootStory = async () => {
@@ -51,7 +50,7 @@ const MainPage = () => {
 
   useEffect(() => {
     RootStory();
-  }, [update]);
+  }, []);
 
   return (
     <div>

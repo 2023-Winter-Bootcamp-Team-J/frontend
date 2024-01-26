@@ -159,7 +159,6 @@ const ForceGraph = ({ openmodal, scenario }) => {
           .attr("y", -75)
           .attr("width", 150)
           .attr("height", 150)
-          .style("filter", "drop-shadow(3px 3px 5px #ffffffb6)")
           .on("click", (event, d) => handleClickStory(d.data.story_id)); // 클릭 이벤트 핸들러 추가
 
         // 텍스트 넣기
