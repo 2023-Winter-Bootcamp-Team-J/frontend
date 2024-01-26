@@ -27,7 +27,8 @@ const Navbar = () => {
           <span className="text-green-400">P</span>age
         </span>
       </button>
-      <div className="mr-[30px] text-white cursor-pointer">
+      {/* <div className="mr-[30px] text-white cursor-pointer"> */}
+      <div className="mr-[30px] text-white">
         {user.nickname && (
           <>
             <span className="text-green-400">{user.nickname}</span>

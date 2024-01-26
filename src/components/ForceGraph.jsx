@@ -25,25 +25,25 @@ const ForceGraph = ({ openmodal, scenario }) => {
       case "ArrowUp":
         setPosition((prevPosition) => ({
           ...prevPosition,
-          top: prevPosition.top - moveDistance,
+          top: prevPosition.top + moveDistance,
         }));
         break;
       case "ArrowDown":
         setPosition((prevPosition) => ({
           ...prevPosition,
-          top: prevPosition.top + moveDistance,
+          top: prevPosition.top - moveDistance,
         }));
         break;
       case "ArrowLeft":
         setPosition((prevPosition) => ({
           ...prevPosition,
-          left: prevPosition.left - moveDistance,
+          left: prevPosition.left + moveDistance,
         }));
         break;
       case "ArrowRight":
         setPosition((prevPosition) => ({
           ...prevPosition,
-          left: prevPosition.left + moveDistance,
+          left: prevPosition.left - moveDistance,
         }));
         break;
       default:

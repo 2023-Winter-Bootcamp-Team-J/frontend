@@ -80,9 +80,10 @@ const MainPage = () => {
               onSlideClick={handleSwiper}
             />
           </div>
-          <button className="absolute bottom-12 right-14 z-10">
+
+          <div className="absolute bottom-12 right-14 z-10">
             <img
-              className="hover:scale-125 hover:opacity-35 h-[50px] drop-shadow"
+              className="relative hover:scale-125 hover:opacity-35 h-[50px] drop-shadow"
               style={{
                 filter: "drop-shadow(7px 1px 8px rgba(255, 255, 255, 0.7))",
               }}
@@ -90,7 +91,27 @@ const MainPage = () => {
               src="/asset/write.svg"
               alt="글버튼"
             />
-          </button>
+            <div className="w-max flex gap-1 text-gray-400 text-[14px] absolute right-[60px] bottom-0 z-1">
+              {/* <div className="w-max flex gap-1 text-blue-100 text-[14px] absolute right-[60px] bottom-0 z-1"> */}
+              <svg
+                className="w-[15px]"
+                data-slot="icon"
+                fill="none"
+                strokeWidth={2.5}
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z"
+                />
+              </svg>
+              <span>나만의 시나리오를 작성해보세요!</span>
+            </div>
+          </div>
           {modalOpen && (
             <ScenarioModal
               isOpen={modalOpen}
