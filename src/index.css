@@ -48,7 +48,7 @@
 
 .animation-typing {
   animation:
-    typing 2s steps(22),
+    typing 2.5s steps(22),
     blink 0.5s step-end infinite alternate;
 }
 
@@ -91,4 +91,11 @@
   100% {
     transform: translateY(0);
   }
+}
+.ellipsis2 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }

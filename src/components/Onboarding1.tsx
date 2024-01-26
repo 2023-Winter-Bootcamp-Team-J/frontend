@@ -18,7 +18,7 @@ const Onboarding1 = () => {
   };
   const cursorStyle = {
     content: "Imagine What",
-    width: "50%",
+    width: "40%",
     color: "white",
     overflow: "hidden",
     borderRight: "2px solid white",
@@ -26,7 +26,7 @@ const Onboarding1 = () => {
   };
   const cursorStyle2 = {
     content: "Make world",
-    width: "36%",
+    width: "33%",
     color: "white",
     overflow: "hidden",
     borderRight: "2px solid white",

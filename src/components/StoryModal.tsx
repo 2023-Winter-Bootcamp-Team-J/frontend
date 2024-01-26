@@ -79,7 +79,10 @@ const StoryModal: React.FC<StoryModalProps> = ({
         isOpen ? "" : "hidden"
       }`}
     >
-      <div ref={modalRef} className="flex flex-col w-[800px] h-[450px] z-1">
+      <div
+        ref={modalRef}
+        className="flex flex-col w-[800px] h-[450px] z-1 top-[25%] left-[25%] transform -translate-x-1/2 -translate-y-1/2 animate-scale-up-ver-center"
+      >
         <div className="flex gap-[15px] w-full h-[55px] justify-center items-center pt-[8px] bg-blue-800 border-2 border-gray-400 text-green-400 text-[33px] font-Minecraft">
           STORY
           <div className="text-gray-400 text-[18px]">
@@ -92,7 +95,7 @@ const StoryModal: React.FC<StoryModalProps> = ({
               <img
                 className="w-full block"
                 src={story?.image_url ? `${story.image_url}` : ""}
-                alt="슬라이드4"
+                alt="Image"
               />
             </div>
             <div className="flex flex-col justify-center w-[300px] gap-[10px]">
@@ -114,9 +117,9 @@ const StoryModal: React.FC<StoryModalProps> = ({
                 <img className="flex w-[40px]" src="/asset/hand.svg" alt="손" />
                 <div className="w-full">
                   {story?.child_content && story.child_content[0] ? (
-                    <span className="text-[1rem]">
+                    <p className="w-[240px] text-[1rem] ellipsis2 ">
                       {story.child_content[0]}
-                    </span>
+                    </p>
                   ) : (
                     <span className="text-blue-600">
                       새로운 이야기를 만들어보세요!
@@ -137,7 +140,9 @@ const StoryModal: React.FC<StoryModalProps> = ({
                 <img className="flex w-[40px]" src="/asset/hand.svg" alt="손" />
                 <div className="w-full">
                   {story?.child_content && story.child_content[1] ? (
-                    <span>{story.child_content[1]}</span>
+                    <p className="w-[240px] text-[1rem] ellipsis2 ">
+                      {story.child_content[1]}
+                    </p>
                   ) : (
                     <span className="text-blue-600">
                       새로운 이야기를 만들어보세요!

@@ -186,13 +186,13 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
 
   return (
     <div
-      className={`fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 ${
+      className={`flex fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 ${
         isOpen ? "" : "hidden"
       }`}
     >
       <div
         ref={modalRef}
-        className="flex absolute flex-col w-[800px] h-[450px] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+        className="flex absolute flex-col w-[800px] h-[450px] top-[25%] left-[25%] transform -translate-x-1/2 -translate-y-1/2 animate-scale-up-ver-center"
       >
         <div className="flex w-full h-[55px] justify-center items-center pt-[8px] bg-blue-800 border-2 border-white text-green-400 text-[33px] font-Minecraft">
           NEW SCENARIO
