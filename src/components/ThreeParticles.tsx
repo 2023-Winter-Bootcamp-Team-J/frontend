@@ -117,6 +117,6 @@ const ParticleTutorial: React.FC = () => {
     };
   }, []);
 
-  return <div ref={containerRef}>{/* 나머지 JSX */}</div>;
+  return <div ref={containerRef}></div>;
 };
 export default ParticleTutorial;

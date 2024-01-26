@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import ThreeParticles from "../components/ThreeParticles";
 import NicknameModal from "../components/NicknameModal";
 import Onboarding1 from "@/components/Onboarding1";
@@ -9,6 +9,7 @@ import Onboarding4 from "@/components/Onboarding4";
 
 const LandingPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const topScroll = useRef(null);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -19,7 +20,7 @@ const LandingPage = () => {
   };
 
   return (
-    <div>
+    <div ref={topScroll}>
       <div className="fixed">
         <ThreeParticles />
       </div>
@@ -75,7 +76,7 @@ const LandingPage = () => {
         <Onboarding2 />
         <Onboarding1 />
         <Onboarding3 />
-        <Onboarding4 />
+        <Onboarding4 topScroll={topScroll} />
       </div>
 
       <NicknameModal isOpen={isModalOpen} onClose={closeModal} />

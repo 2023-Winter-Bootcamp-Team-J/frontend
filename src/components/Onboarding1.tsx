@@ -1,6 +1,6 @@
 import "../../src/index.css";
 
-const Onboading1 = () => {
+const Onboarding1 = () => {
   const bgstyle = {
     width: "100vw",
     height: "960px",
@@ -48,14 +48,14 @@ const Onboading1 = () => {
         <div
           className="absolute right-[130px] w-[450px] h-[6px] mt-[50px] bg-green-400"
           style={{
-            filter: "drop-shadow(0 0 6px rgba(255, 255, 255, 0.214)",
+            filter: "drop-shadow(0 0 6px rgba(255, 255, 255, 0.424)",
           }}
         ></div>
       </div>
       <div
         className="flex justify-center text-white text-[160px] rotating-question-mark"
         style={{
-          filter: "drop-shadow(0 0 6px rgba(255, 255, 255, 0.424))",
+          filter: "drop-shadow(0 0 8px rgba(255, 255, 255, 0.424))",
         }}
       >
         ?
@@ -64,7 +64,7 @@ const Onboading1 = () => {
         <div
           className="text-green-400 text-[100px] mx-8"
           style={{
-            filter: "drop-shadow(0 0 6px rgba(255, 255, 255, 0.214))",
+            filter: "drop-shadow(0 0 6px rgba(255, 255, 255, 0.424))",
           }}
         >
           {"{"} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
@@ -81,4 +81,4 @@ const Onboading1 = () => {
   );
 };
 
-export default Onboading1;
+export default Onboarding1;

@@ -1,6 +1,6 @@
 import "../../src/index.css";
 
-const Onboading2 = () => {
+const Onboarding2 = () => {
   const bgstyle = {
     width: "100vw",
     height: "960px",
@@ -26,7 +26,7 @@ const Onboading2 = () => {
         <div
           className="flex text-green-400 text-[130px] font-['Minecraft']"
           style={{
-            filter: "drop-shadow(0 0 6px rgba(255, 255, 255, 0.214))",
+            filter: "drop-shadow(0 0 6px rgba(255, 255, 255, 0.424)",
           }}
         >
           {"{"}
@@ -36,41 +36,47 @@ const Onboading2 = () => {
           style={imgStyle}
         >
           <img src="/asset/img1.png" alt="" />
-          <img src="/asset/img6.png" alt="" />
-          <img src="/asset/img3.png" alt="" />
-          <img src="/asset/test2.png" alt="" />
           <img src="/asset/img5.png" alt="" />
-          <img src="/asset/test4.png" alt="" />
-          <img src="/asset/img2.png" alt="" />
+          <img src="/asset/img7.png" alt="" />
+          <img src="/asset/img9.png" alt="" />
+          <img src="/asset/img11.png" alt="" />
+          <img src="/asset/img13.png" alt="" />
+          <img src="/asset/img15.png" alt="" />
+          <img src="/asset/img18.png" alt="" />
           <img src="/asset/img1.png" alt="" />
-          <img src="/asset/img6.png" alt="" />
-          <img src="/asset/img3.png" alt="" />
-          <img src="/asset/test2.png" alt="" />
           <img src="/asset/img5.png" alt="" />
-          <img src="/asset/test4.png" alt="" />
-          <img src="/asset/img2.png" alt="" />
+          <img src="/asset/img7.png" alt="" />
+          <img src="/asset/img9.png" alt="" />
+          <img src="/asset/img11.png" alt="" />
+          <img src="/asset/img13.png" alt="" />
+          <img src="/asset/img15.png" alt="" />
+          <img src="/asset/img18.png" alt="" />
         </div>
         <div
           className="flex flex-col flex-nowrap imgmove2 w-[142px] h-full gap-[15px]"
           style={imgStyle2}
         >
-          <img src="/asset/test.png" alt="" />
-          <img src="/asset/test3.png" alt="" />
-          <img src="/asset/img4.png" alt="" />
-          <img src="/asset/test5.png" alt="" />
-          <img src="/asset/test6.png" alt="" />
-          <img src="/asset/img7.png" alt="" />
-          <img src="/asset/test.png" alt="" />
-          <img src="/asset/test3.png" alt="" />
-          <img src="/asset/img4.png" alt="" />
-          <img src="/asset/test5.png" alt="" />
-          <img src="/asset/test6.png" alt="" />
-          <img src="/asset/img7.png" alt="" />
+          <img src="/asset/img2.png" alt="" />
+          <img src="/asset/img6.png" alt="" />
+          <img src="/asset/img8.png" alt="" />
+          <img src="/asset/img10.png" alt="" />
+          <img src="/asset/img12.png" alt="" />
+          <img src="/asset/img14.png" alt="" />
+          <img src="/asset/img16.png" alt="" />
+          <img src="/asset/img17.png" alt="" />
+          <img src="/asset/img2.png" alt="" />
+          <img src="/asset/img6.png" alt="" />
+          <img src="/asset/img8.png" alt="" />
+          <img src="/asset/img10.png" alt="" />
+          <img src="/asset/img12.png" alt="" />
+          <img src="/asset/img14.png" alt="" />
+          <img src="/asset/img16.png" alt="" />
+          <img src="/asset/img17.png" alt="" />
         </div>
         <div
           className="h-[200px] items-center text-green-400 text-[130px] font-['Minecraft']"
           style={{
-            filter: "drop-shadow(0 0 6px rgba(255, 255, 255, 0.214))",
+            filter: "drop-shadow(0 0 6px rgba(255, 255, 255, 0.424)",
           }}
         >
           {"}"}
@@ -103,4 +109,4 @@ const Onboading2 = () => {
   );
 };
 
-export default Onboading2;
+export default Onboarding2;

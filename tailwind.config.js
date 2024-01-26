@@ -84,20 +84,38 @@ export default {
         },
       },
       animation: {
-        bounce: "bounce 1s infinite",
+        bounce: "bounce 1.5s infinite",
+        hidden: "opacity 0.2s",
         "slide-left":
           "slide-left 2s cubic-bezier(0.250, 0.460, 0.450, 0.940) both",
-        "slide-bl": "slide-bl 2s cubic-bezier(0.250, 0.460, 0.450, 0.940) both",
+        "slide-bl":
+          "slide-bl 2s cubic-bezier(0.250, 0.460, 0.450, 0.940) infinite",
         "scale-up-center":
           "scale-up-center 2s cubic-bezier(0.390, 0.575, 0.565, 1.000) both",
         "scale-up-hor-left":
           "scale-up-hor-left 2s cubic-bezier(0.390, 0.575, 0.565, 1.000) both",
         "scale-up-ver-top":
-          "scale-up-ver-top 2s cubic-bezier(0.390, 0.575, 0.565, 1.000) both",
+          "scale-up-ver-top 2s cubic-bezier(0.390, 0.575, 0.565, 1.000) infinite",
         "scale-up-ver-bottom":
           "scale-up-ver-bottom 1s cubic-bezier(0.390, 0.575, 0.565, 1.000) both",
         "flip-card": "flip-card 5s infinite",
       },
+      // arrow: {
+      //   hidden: {
+      //     opacity: "0.2",
+      //     y: "15",
+      //   },
+      //   visible: {
+      //     opacity: "1",
+      //     y: "0",
+      //     transition: {
+      //       delay: "0.2",
+      //       duration: "0.8",
+      //       repeat: "Infinity",
+      //       repeatType: "reverse",
+      //     },
+      //   },
+      // },
     },
   },
   plugins: [],

@@ -1,6 +1,6 @@
 import d3ver4 from "../../public/asset/d3ver4.png";
 
-const Onboading3 = () => {
+const Onboarding3 = () => {
   const style = {
     width: "100vw",
     height: "960px",
@@ -26,6 +26,9 @@ const Onboading3 = () => {
         <img
           // className="absolute top-[-360px] left-[400px] w-[1000px] animate-slide-left"
           className="absolute top-[-360px] left-[400px] w-[1000px] animate-slide-bl"
+          style={{
+            filter: "drop-shadow(0 0 14px rgba(255, 255, 255, 0.424))",
+          }}
           src={d3ver4}
           alt="d3"
         />
@@ -33,4 +36,4 @@ const Onboading3 = () => {
     </div>
   );
 };
-export default Onboading3;
+export default Onboarding3;
