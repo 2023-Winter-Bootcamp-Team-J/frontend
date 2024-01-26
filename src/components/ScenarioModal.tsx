@@ -33,6 +33,16 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
   const [isGenerating, setIsGenerating] = useState(false); // Lottie를 트리거
   const [generationCount, setGenerationCount] = useState<number>(0);
+  const [isHovered, setIsHovered] = useState(false); // 안내 메시지
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
+
   // Lottie 애니메이션 완료 시 호출되는 콜백
   const handleLottieComplete = () => {
     setIsGenerating(false); // Lottie 숨기기
@@ -211,19 +221,46 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
                 <span className="text-white"> &nbsp; / &nbsp; 3</span>
               </div>
             </div>
-            <div className="flex flex-col justify-center w-[300px] gap-[17px] text-center">
-              <div className="text-[18px] text-white">
-                시나리오 시작하기 (제목)
+            <div className="relative flex flex-col justify-center w-[300px] gap-[10px] text-center text-white">
+              <div className="w-full flex items-center justify-center">
+                <span className="text-[18px]">새로운 시나리오 작성</span>
+                <svg
+                  className="h-[20px] absolute right-0 hover:text-green-400"
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
+                  data-slot="icon"
+                  fill="none"
+                  strokeWidth={2.5}
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z"
+                  />
+                </svg>
+              </div>
+              <div
+                className="w-[185px] absolute top-[30px] left-[296px] text-[12px] bg-[#1d1e1e] text-green-400 p-2 text-left"
+                // className="w-[240px] absolute top-[32px] right-[16px] text-[12px] bg-white text-green-400 p-2 text-left"
+                style={{ display: isHovered ? "block" : "none" }}
+              >
+                장면을 자세히 묘사하면 그림의 정확도가 올라갑니다!
+                <br />
+                (인물, 상황, 장소, 기분 등)
               </div>
               <textarea
                 placeholder="문장을 입력하세요."
-                className="h-[140px] p-[7px] mb-[20px] border-dashed border-2 border-white bg-transparent text-white"
+                className="focus:outline-none font-['DungGeunMo'] h-[140px] p-[7px] border-dashed border-2 border-white bg-transparent"
                 value={content}
                 onChange={handleContentChange}
                 maxLength={100}
                 style={{ resize: "none" }}
               ></textarea>
-              <div className=" flex flex-col items-end  text-white top-10 ">
+              <div className="flex flex-col items-end text-white">
                 {characterCount}/{100}
               </div>
               <button
@@ -231,7 +268,7 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
                 onClick={handleClick}
               >
                 사진 생성하기 &nbsp;
-                <span className="text-[13px] text-gray-600">
+                <span className="font-['DungGeunMo'] text-[13px] text-gray-600">
                   {3 - generationCount}회 남음
                 </span>
               </button>

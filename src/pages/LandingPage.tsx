@@ -6,10 +6,25 @@ import Onboarding1 from "@/components/Onboarding1";
 import Onboarding2 from "@/components/Onboarding2";
 import Onboarding3 from "@/components/Onboarding3";
 import Onboarding4 from "@/components/Onboarding4";
+import { useRecoilValue } from "recoil";
+import { userState } from "@/recoil/atoms";
+import { useNavigate } from "react-router-dom";
 
 const LandingPage = () => {
+  // Recoil에서 전역 상태를 가져옵니다.
+  const user = useRecoilValue(userState);
+  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const topScroll = useRef(null);
+
+  const handleClickStart = () => {
+    // 닉네임 생성 기록이 있으면 바로 main으로
+    if (user.nickname) {
+      navigate("/main");
+    } else {
+      openModal();
+    }
+  };
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -58,18 +73,29 @@ const LandingPage = () => {
             다음 페이지를 창조해 나가는 서비스
           </span>
         </div>
-        <div className="flex relative w-[1100px] h-[275px] justify-center top-20">
+        <div className="flex relative w-[1100px] h-[275px] justify-center top-10">
           <img
-            className="flex w-5/6 absolute  text-white "
+            className="flex w-5/6 absolute text-white "
             src="/asset/book.svg"
             alt="책 이미지"
           ></img>
-          <button
-            className="flex absolute pt-[3px] mt-[20px] font-medium z-30 text-black w-[150px] h-[60px] text-4xl bg-green-400 rounded-2xl justify-center items-center hover:bg-blue-500 hover:text-green-400"
-            onClick={openModal}
-          >
-            START
-          </button>
+          <div className="flex flex-col items-center gap-[10px]">
+            <button
+              className="flex z-10 font-medium text-black w-[150px] h-[60px] text-4xl bg-green-400 rounded-2xl justify-center items-center hover:bg-blue-500 hover:text-green-400"
+              onClick={handleClickStart}
+            >
+              <span className="leading-none">START</span>
+            </button>
+            <div className="h-[20px]">
+              <span
+                className="text-white text-[20px]"
+                style={{ display: !user.nickname ? "none" : "block" }}
+              >
+                <span className="text-green-400">{user.nickname}</span>님
+                환영합니다!
+              </span>
+            </div>
+          </div>
         </div>
       </div>
       <div className="pt-[960px]">
