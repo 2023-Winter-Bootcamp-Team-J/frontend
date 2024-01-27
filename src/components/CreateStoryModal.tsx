@@ -45,7 +45,11 @@ const CreateStoryModal: React.FC<CreateStoryModalProps> = ({
   // 모달 외부를 클릭했을 때 모달을 닫도록 하는 이벤트 처리
   const handleBackgroundClick = (e: MouseEvent) => {
     // 배경 클릭 시 모달 닫기\
-    if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
+    if (
+      modalRef.current &&
+      !modalRef.current.contains(e.target as Node) &&
+      !isGenerating
+    ) {
       closeModal();
     }
   };
@@ -120,6 +124,7 @@ const CreateStoryModal: React.FC<CreateStoryModalProps> = ({
         if (response.status === 200) {
           console.log("이미지 조회 성공!");
           const newImageUrl = response.data.image_url.image_url;
+          console.log("newImageUrl: ", newImageUrl);
 
           // 이전에 생성한 이미지 배열에 추가
           setImages((prevImages) => [...prevImages, newImageUrl]);
@@ -135,6 +140,11 @@ const CreateStoryModal: React.FC<CreateStoryModalProps> = ({
         }
       } catch (error) {
         console.error(error);
+        console.log("status: ", error.request.status);
+        if (error.request.status >= 500) {
+          alert("네트워크 연결이 불안정합니다.");
+          setIsGenerating(false); // Lottie 숨기기
+        }
       }
       console.log(images);
     };
@@ -179,7 +189,7 @@ const CreateStoryModal: React.FC<CreateStoryModalProps> = ({
     return () => {
       document.removeEventListener("mousedown", handleBackgroundClick);
     };
-  }, [isOpen]);
+  }, [isOpen, isGenerating]);
 
   return (
     <div

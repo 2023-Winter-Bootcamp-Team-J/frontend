@@ -1,17 +1,17 @@
 import React, { useRef, useEffect, useState, ChangeEvent } from "react";
 import axios from "axios";
-import Carousel from "../components/ImgCarousel";
+import Carousel from "./ImgCarousel";
 import Lottie from "lottie-react";
 import lottieData from "../assets/lottie.json";
 import { useRecoilValue } from "recoil";
 import { userState } from "../recoil/atoms";
 
-interface ScenarioModalProps {
+interface CreateScenarioModalProps {
   isOpen: boolean;
   closeModal: () => void;
   handleUpdate: () => void;
 }
-const ScenarioModal: React.FC<ScenarioModalProps> = ({
+const CreateScenarioModal: React.FC<CreateScenarioModalProps> = ({
   isOpen,
   closeModal,
   handleUpdate,
@@ -20,7 +20,11 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
   // 모달 외부를 클릭했을 때 모달을 닫도록 하는 이벤트 처리
   const handleBackgroundClick = (e: MouseEvent) => {
     // 배경 클릭 시 모달 닫기\
-    if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
+    if (
+      modalRef.current &&
+      !modalRef.current.contains(e.target as Node) &&
+      !isGenerating
+    ) {
       closeModal();
     }
   };
@@ -123,6 +127,7 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
         if (response.status === 200) {
           console.log("이미지 조회 성공!");
           const newImageUrl = response.data.image_url.image_url;
+          console.log("newImageUrl: ", newImageUrl);
 
           // 이전에 생성한 이미지 배열에 추가
           setImages((prevImages) => [...prevImages, newImageUrl]);
@@ -130,7 +135,7 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
           // setImageUrl(newImageUrl);
           const imageUrl = response.data.image_url;
           setImageUrl(imageUrl.image_url);
-          console.log(imageUrl.image_url);
+          console.log("imageUrl: ", imageUrl.image_url);
 
           // 이미지가 정상적으로 받아졌으므로 타이머 중지
           clearInterval(intervalId);
@@ -182,7 +187,7 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
     return () => {
       document.removeEventListener("mousedown", handleBackgroundClick);
     };
-  }, [isOpen]);
+  }, [isOpen, isGenerating]);
 
   return (
     <div
@@ -285,4 +290,4 @@ const ScenarioModal: React.FC<ScenarioModalProps> = ({
     </div>
   );
 };
-export default ScenarioModal;
+export default CreateScenarioModal;

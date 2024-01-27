@@ -153,24 +153,34 @@ const ForceGraph = ({ openmodal, scenario }) => {
           .attr("transform", (d) => `translate(${d.y},${d.x})`);
 
         nodeEnter
+          .append("rect") // 테두리를 나타낼 사각형을 추가
+          .attr("width", 150) // 노드 이미지의 크기와 일치하는 가로 크기 설정
+          .attr("height", 150) // 노드 이미지의 크기와 일치하는 세로 크기 설정
+          .style("stroke", "white") // 테두리의 색상 설정
+          .style("stroke-width", 10) // 테두리의 두께 설정
+          .style("filter", "drop-shadow(0 0 10px rgba(255, 255, 255, 0.5))") // 테두리에 그림자 효과 추가
+          .on("mouseover", handleNodeHover) // 호버 이벤트 추가
+          .on("mouseout", handleNodeMouseout); // 마우스 아웃 이벤트 추가
+
+        nodeEnter
           .append("image")
           .attr("xlink:href", (d) => d.data.image_url)
-          .attr("x", -75)
-          .attr("y", -75)
           .attr("width", 150)
           .attr("height", 150)
           .on("click", (event, d) => handleClickStory(d.data.story_id)); // 클릭 이벤트 핸들러 추가
 
-        // 텍스트 넣기
-        // nodeEnter
-        //   .append("text")
-        //   .attr("x", (d) => (d.children || d.children ? -1 : 1))
-        //   .attr("dy", ".35em")
-        //   .attr("text-anchor", (d) =>
-        //     d.children || d.children ? "end" : "start"
-        //   )
-        //   .text((d) => d.data.content)
-        //   .style("fill", "white");
+        function handleNodeHover(event, d) {
+          console.log("호버");
+          d3.select(this) // 현재 호버된 노드 선택
+            .select("rect") // 노드의 테두리 선택
+            .style("stroke", "red"); // 테두리 색상을 빨간색으로 변경
+        }
+
+        function handleNodeMouseout(event, d) {
+          d3.select(this) // 현재 마우스 아웃된 노드 선택
+            .select("rect") // 노드의 테두리 선택
+            .style("stroke", "white"); // 테두리 색상을 원래 색상으로 변경
+        }
 
         const link = svg.selectAll("path.link").data(links, (d) => d.target.id);
 
@@ -178,9 +188,16 @@ const ForceGraph = ({ openmodal, scenario }) => {
           .enter()
           .insert("path", "g")
           .attr("class", "link")
-          .attr("d", (d) => line([d.source, d.target]))
-          .attr("stroke-width", 1)
-          .style("stroke", "white");
+          .attr("d", (d) =>
+            line([
+              { x: d.source.x + 75, y: d.source.y + 75 },
+              { x: d.target.x + 75, y: d.target.y + 75 },
+            ])
+          )
+          .attr("stroke-width", 8)
+          .style("stroke", "white")
+          .style("stroke-dasharray", "8, 5") // dashed 스타일 설정
+          .style("filter", "drop-shadow(0 0 10px rgba(255, 255, 255, 0.5))");
       }
     }
   }, [scenario]);
@@ -198,7 +215,6 @@ const ForceGraph = ({ openmodal, scenario }) => {
           left: "-150px",
           width: `${200 / ratio}%`,
           height: `${200 / ratio}%`,
-          // transition: "all 0.3s",
           transform: `translate(${position.left}px, ${position.top}px) scale(${ratio}) rotateX(20deg) rotateY(8deg) rotateZ(-8deg)`,
           // transformOrigin: "left top",
           // transform: "rotateX(20deg) rotateY(8deg) rotateZ(-8deg)",
