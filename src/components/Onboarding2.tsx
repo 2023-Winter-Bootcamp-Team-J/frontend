@@ -4,10 +4,6 @@ const Onboarding2 = () => {
   const bgstyle = {
     width: "100vw",
     height: "960px",
-    // backgroundImage: `url(${bgUrl})`,
-    // backgroundRepeat: "no-repeat",
-    // backgroundPosition: "center",
-    // backgroundSize: "cover",
   };
 
   const imgStyle = {

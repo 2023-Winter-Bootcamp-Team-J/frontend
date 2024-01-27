@@ -75,6 +75,9 @@ const LandingPage = () => {
         </div>
         <div className="flex relative w-[1100px] h-[275px] justify-center top-10">
           <img
+            style={{
+              filter: "drop-shadow(0 0 8px rgba(255, 255, 255, 0.324))",
+            }}
             className="flex w-5/6 absolute text-white "
             src="/asset/book.svg"
             alt="책 이미지"
@@ -96,6 +99,30 @@ const LandingPage = () => {
               </span>
             </div>
           </div>
+          <svg
+            onClick={() => {
+              window.scrollTo({
+                top: 960,
+                left: 0,
+                behavior: "smooth",
+              });
+            }}
+            className="cursor-pointer absolute bottom-[-120px] text-white animate-bounce"
+            style={{
+              filter: "drop-shadow(0 0 8px rgba(255, 255, 255, 0.324))",
+              paddingTop: "30px",
+            }}
+            xmlns="http://www.w3.org/2000/svg"
+            width="60"
+            height="90"
+            viewBox="0 0 14 15"
+            fill="none"
+          >
+            <path
+              d="M6.99997 14.164L13.207 7.957L11.793 6.543L6.99997 11.336L2.20697 6.543L0.792969 7.957L6.99997 14.164ZM6.99997 8.514L13.207 2.307L11.793 0.892998L6.99997 5.686L2.20697 0.892998L0.792969 2.307L6.99997 8.514Z"
+              fill="white"
+            />
+          </svg>
         </div>
       </div>
       <div className="pt-[960px]">
@@ -104,7 +131,6 @@ const LandingPage = () => {
         <Onboarding3 />
         <Onboarding4 topScroll={topScroll} />
       </div>
-
       <NicknameModal isOpen={isModalOpen} onClose={closeModal} />
     </div>
   );
