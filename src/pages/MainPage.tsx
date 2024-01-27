@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Navbar from "../components/Navbar";
 import SwiperComponent from "../components/Swiper";
-import ScenarioModal from "../components/ScenarioModal";
+import CreateScenarioModal from "../components/CreateScenarioModal";
 import ThreeParticles from "../components/ThreeParticles";
 import axios from "axios";
 
@@ -124,7 +124,7 @@ const MainPage = () => {
             </div>
           </div>
           {modalOpen && (
-            <ScenarioModal
+            <CreateScenarioModal
               isOpen={modalOpen}
               closeModal={() => {
                 closeModal();
