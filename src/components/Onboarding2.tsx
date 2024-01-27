@@ -1,4 +1,5 @@
 import "../../src/index.css";
+import { motion } from "framer-motion";
 
 const Onboarding2 = () => {
   const bgstyle = {
@@ -79,27 +80,103 @@ const Onboarding2 = () => {
         </div>
       </div>
       <div className="flex flex-col justify-center gap-[100px] text-white text-[35px] font-['DungGeunMo']">
-        <div className="translate-x-[-100px] transform rotate-[-30deg] hover:text-green-400 hover:scale-110">
-          좀비 세상에서 출근해야 한다면?
-        </div>
-        <div className="transform rotate-[-20deg] hover:text-green-400 hover:scale-110">
-          일어나보니 재벌 3세라면?
-        </div>
-        <div className="translate-x-[60px] transform rotate-[-10deg] hover:text-green-400 hover:scale-110">
-          내 애인이 간첩이라면?
-        </div>
-        <div className="translate-x-[70px] hover:text-green-400 hover:scale-110">
-          로맨스 소설 속에 들어간다면
-        </div>
-        <div className="translate-x-[60px] transform rotate-[10deg] hover:text-green-400 hover:scale-110">
-          지구가 내일 폭발한다면?
-        </div>
-        <div className="transform rotate-[20deg] hover:text-green-400 hover:scale-110">
-          자기야 미안해를 했다면?
-        </div>
-        <div className="translate-x-[-100px] transform rotate-[30deg] hover:text-green-400 hover:scale-110">
-          내가 너라면 아무 말없이
-        </div>
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false }}
+          transition={{
+            ease: "easeInOut",
+            duration: 0.5,
+          }}
+        >
+          <div className="translate-x-[-100px] transform rotate-[-30deg] hover:text-green-400 hover:scale-110">
+            좀비 세상에서 출근해야 한다면?
+          </div>
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false }}
+          transition={{
+            ease: "easeInOut",
+            duration: 0.5,
+            delay: 0.1,
+          }}
+        >
+          <div className="transform rotate-[-20deg] hover:text-green-400 hover:scale-110">
+            일어나보니 재벌 3세라면?
+          </div>
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false }}
+          transition={{
+            ease: "easeInOut",
+            duration: 0.5,
+            delay: 0.2,
+          }}
+        >
+          <div className="translate-x-[60px] transform rotate-[-10deg] hover:text-green-400 hover:scale-110">
+            내 애인이 간첩이라면?
+          </div>
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false }}
+          transition={{
+            ease: "easeInOut",
+            duration: 0.5,
+            delay: 0.3,
+          }}
+        >
+          <div className="translate-x-[70px] hover:text-green-400 hover:scale-110">
+            로맨스 소설 속에 들어간다면
+          </div>
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false }}
+          transition={{
+            ease: "easeInOut",
+            duration: 0.5,
+            delay: 0.4,
+          }}
+        >
+          <div className="translate-x-[60px] transform rotate-[10deg] hover:text-green-400 hover:scale-110">
+            지구가 내일 폭발한다면?
+          </div>
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false }}
+          transition={{
+            ease: "easeInOut",
+            duration: 0.5,
+            delay: 0.5,
+          }}
+        >
+          <div className="transform rotate-[20deg] hover:text-green-400 hover:scale-110">
+            자기야 미안해를 했다면?
+          </div>
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false }}
+          transition={{
+            ease: "easeInOut",
+            duration: 0.5,
+            delay: 0.6,
+          }}
+        >
+          <div className="translate-x-[-100px] transform rotate-[30deg] hover:text-green-400 hover:scale-110">
+            내가 너라면 아무 말없이
+          </div>
+        </motion.div>
       </div>
     </div>
   );

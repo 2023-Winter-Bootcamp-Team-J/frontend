@@ -31,6 +31,7 @@
   -ms-overflow-style: none; /* IE and 엣지 */
   scrollbar-width: none; /* 파이어폭스 */
   font-family: NextPage;
+  scroll-behavior: smooth;
 }
 
 /* styles.module.css (or your preferred naming convention for module styles) */
@@ -66,7 +67,7 @@
 }
 
 .rotating-question-mark {
-  animation: rotateY 3.5s linear infinite;
+  animation: rotateY 3s linear infinite;
 }
 
 .animate-delay-3s {
@@ -80,13 +81,13 @@
   }
   100% {
     /* transform: translate(0, -30%); */
-    transform: translateY(-100%);
+    transform: translateY(-116%);
   }
 }
 
 @keyframes imgmove2 {
   0% {
-    transform: translateY(-100%);
+    transform: translateY(-116%);
   }
   100% {
     transform: translateY(0);

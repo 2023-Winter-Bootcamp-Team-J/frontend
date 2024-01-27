@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import Swiper from "swiper";
 import "swiper/css";
 import "swiper/css/effect-coverflow";
@@ -114,36 +115,48 @@ const SwiperComponent: React.FC<SwiperComponentProps> = ({
 
   return (
     <div>
-      <div className="swiper-container w-[1100px] pb-[80px] Myswiper overflow-hidden block">
-        <div className="swiper-wrapper">
-          {stories.map((story, index) => (
-            <div
-              key={index}
-              className="swiper-slide w-[400px] flex bg-center object-cover"
-              onClick={() => handleClickRoot(story)}
-            >
-              <img
-                className="w-full block"
-                src={story.image_url}
-                alt={`슬라이드${index + 1}`}
-                style={{
-                  filter: "drop-shadow(7px 1px 8px rgba(255, 252, 234, 0.759))",
-                }}
-              />
-            </div>
-          ))}
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: false }}
+        transition={{
+          ease: "easeInOut",
+          duration: 0.5,
+          delay: 0.3,
+        }}
+      >
+        <div className="swiper-container w-[1100px] pb-[80px] Myswiper overflow-hidden block">
+          <div className="swiper-wrapper">
+            {stories.map((story, index) => (
+              <div
+                key={index}
+                className="swiper-slide w-[400px] flex bg-center object-cover"
+                onClick={() => handleClickRoot(story)}
+              >
+                <img
+                  className="w-full block"
+                  src={story.image_url}
+                  alt={`슬라이드${index + 1}`}
+                  style={{
+                    filter:
+                      "drop-shadow(7px 1px 8px rgba(255, 252, 234, 0.759))",
+                  }}
+                />
+              </div>
+            ))}
+          </div>
+          <div className="swiper-pagination bullet "></div>
         </div>
-        <div className="swiper-pagination bullet "></div>
-      </div>
-      {storyOpen && (
-        <RootModal
-          isOpen={storyOpen}
-          closeStory={() => {
-            closeStory();
-          }}
-          storyId={storyId}
-        />
-      )}
+        {storyOpen && (
+          <RootModal
+            isOpen={storyOpen}
+            closeStory={() => {
+              closeStory();
+            }}
+            storyId={storyId}
+          />
+        )}
+      </motion.div>
     </div>
   );
 };

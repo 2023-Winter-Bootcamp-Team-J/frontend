@@ -1,5 +1,6 @@
 import React from "react";
 import { useState, useRef } from "react";
+import { motion } from "framer-motion";
 import ThreeParticles from "../components/ThreeParticles";
 import NicknameModal from "../components/NicknameModal";
 import Onboarding1 from "@/components/Onboarding1";
@@ -62,68 +63,108 @@ const LandingPage = () => {
       <div className="flex flex-col justify-center items-center w-[100vw] h-[960px] font-['NextPage'] absolute top-1/2 left-1/2 bg-transparent -translate-x-1/2 -translate-y-1/2">
         <div className="flex text-white text-[120px]">
           <span>
-            <span className="text-blue-600">N</span>ext-
-            <span className="text-green-400">P</span>age
-          </span>
-        </div>
-        <div className="flex text-white text-center font-bold text-[23px]">
-          <span>
-            사용자와 <span className="text-blue-600">AI</span>가 함께
-            <br></br>
-            다음 페이지를 창조해 나가는 서비스
-          </span>
-        </div>
-        <div className="flex relative w-[1100px] h-[275px] justify-center top-10">
-          <img
-            style={{
-              filter: "drop-shadow(0 0 8px rgba(255, 255, 255, 0.324))",
-            }}
-            className="flex w-5/6 absolute text-white "
-            src="/asset/book.svg"
-            alt="책 이미지"
-          ></img>
-          <div className="flex flex-col items-center gap-[10px]">
-            <button
-              className="flex z-10 font-medium text-black w-[150px] h-[60px] text-4xl bg-green-400 rounded-2xl justify-center items-center hover:bg-blue-500 hover:text-green-400"
-              onClick={handleClickStart}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false }}
+              transition={{
+                ease: "easeInOut",
+                duration: 1,
+              }}
             >
-              <span className="leading-none">START</span>
-            </button>
-            <div className="h-[20px]">
-              <span
-                className="text-white text-[20px]"
-                style={{ display: !user.nickname ? "none" : "block" }}
-              >
-                <span className="text-green-400">{user.nickname}</span>님
-                환영합니다!
-              </span>
-            </div>
-          </div>
-          <svg
-            onClick={() => {
-              window.scrollTo({
-                top: 960,
-                left: 0,
-                behavior: "smooth",
-              });
-            }}
-            className="cursor-pointer absolute bottom-[-120px] text-white animate-bounce"
-            style={{
-              filter: "drop-shadow(0 0 8px rgba(255, 255, 255, 0.324))",
-              paddingTop: "30px",
-            }}
-            xmlns="http://www.w3.org/2000/svg"
-            width="60"
-            height="90"
-            viewBox="0 0 14 15"
-            fill="none"
-          >
-            <path
-              d="M6.99997 14.164L13.207 7.957L11.793 6.543L6.99997 11.336L2.20697 6.543L0.792969 7.957L6.99997 14.164ZM6.99997 8.514L13.207 2.307L11.793 0.892998L6.99997 5.686L2.20697 0.892998L0.792969 2.307L6.99997 8.514Z"
-              fill="white"
-            />
-          </svg>
+              <span className="text-blue-600">N</span>ext-
+              <span className="text-green-400">P</span>age
+            </motion.div>
+          </span>
         </div>
+        <div className="flex text-white text-center font-normal text-[23px]">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false }}
+            transition={{
+              ease: "easeInOut",
+              delay: 0.2,
+              duration: 1,
+            }}
+          >
+            <span>
+              사용자와 <span className="text-blue-600">AI</span>가 함께
+              <br></br>
+              다음 페이지를 창조해 나가는 서비스
+            </span>
+          </motion.div>
+        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{
+            ease: "easeInOut",
+            delay: 0.5,
+            duration: 1.1,
+          }}
+        >
+          <div className="flex relative w-[1100px] h-[275px] justify-center top-10">
+            <img
+              className="flex w-5/6 absolute text-white "
+              src="/asset/book.svg"
+              alt="책 이미지"
+            ></img>
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{
+                ease: "easeInOut",
+                delay: 0.5,
+                duration: 1.1,
+              }}
+            >
+              <div className="flex flex-col items-center gap-[10px]">
+                <button
+                  className="flex z-10 font-medium text-black w-[145px] h-[53px] mt-[30px] text-4xl bg-green-400 rounded-2xl justify-center items-center hover:bg-blue-500 hover:text-green-400"
+                  onClick={handleClickStart}
+                >
+                  <span className="leading-none mt-[6px] ml-[4px]">START</span>
+                </button>
+                <div className="h-[20px]">
+                  <span
+                    className="text-white text-[18px]"
+                    style={{ display: !user.nickname ? "none" : "block" }}
+                  >
+                    <span className="text-green-400">{user.nickname}</span>님
+                    환영합니다 !
+                  </span>
+                </div>
+              </div>
+            </motion.div>
+            <svg
+              onClick={() => {
+                window.scrollTo({
+                  top: 960,
+                  left: 0,
+                  behavior: "smooth",
+                });
+              }}
+              className="cursor-pointer absolute bottom-[-120px] text-white animate-bounce"
+              style={{
+                filter: "drop-shadow(0 0 8px rgba(255, 255, 255, 0.324))",
+                paddingTop: "30px",
+              }}
+              xmlns="http://www.w3.org/2000/svg"
+              width="60"
+              height="90"
+              viewBox="0 0 14 15"
+              fill="none"
+            >
+              <path
+                d="M6.99997 14.164L13.207 7.957L11.793 6.543L6.99997 11.336L2.20697 6.543L0.792969 7.957L6.99997 14.164ZM6.99997 8.514L13.207 2.307L11.793 0.892998L6.99997 5.686L2.20697 0.892998L0.792969 2.307L6.99997 8.514Z"
+                fill="white"
+              />
+            </svg>
+          </div>
+        </motion.div>
       </div>
       <div className="pt-[960px]">
         <Onboarding2 />

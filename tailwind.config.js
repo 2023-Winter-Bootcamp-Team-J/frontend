@@ -108,14 +108,13 @@ export default {
         hidden: "opacity 0.2s",
         "slide-left":
           "slide-left 2s cubic-bezier(0.250, 0.460, 0.450, 0.940) both",
-        "slide-bl":
-          "slide-bl 2s cubic-bezier(0.250, 0.460, 0.450, 0.940) infinite",
+        "slide-bl": "slide-bl 2s cubic-bezier(0.250, 0.460, 0.450, 0.940) both",
         "scale-up-center":
           "scale-up-center 2s cubic-bezier(0.390, 0.575, 0.565, 1.000) both",
         "scale-up-hor-left":
           "scale-up-hor-left 2s cubic-bezier(0.390, 0.575, 0.565, 1.000) both",
         "scale-up-ver-top":
-          "scale-up-ver-top 2s cubic-bezier(0.390, 0.575, 0.565, 1.000) infinite",
+          "scale-up-ver-top 2s cubic-bezier(0.390, 0.575, 0.565, 1.000) both",
         "scale-up-ver-bottom":
           "scale-up-ver-bottom 1s cubic-bezier(0.390, 0.575, 0.565, 1.000) both",
         "flip-card": "flip-card 5s infinite",
