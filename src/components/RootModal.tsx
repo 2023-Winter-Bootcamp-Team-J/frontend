@@ -86,7 +86,57 @@ const RootModal: React.FC<RootModalProps> = ({
             by {story?.user_nickname}
           </div>
         </div>
-        <div className="flex flex-col w-full h-[395px] justify-center items-center gap-[10px] bg-black border-2 border-white text-white">
+
+        {/* 변경 */}
+        <div className="flex flex-col w-full h-[395px] justify-center items-center gap-[10px] bg-black text-white border-2 border-gray-400 ">
+          <div className="flex justify-center w-full h-[270px] gap-[80px]">
+            <div className="w-[270px] bg-gray-500">
+              <img className="flex" src={story?.image_url} alt="Loading..." />
+            </div>
+            <div className="flex flex-col justify-center w-[300px] gap-[10px]">
+              <div className="flex items-center w-[300px] gap-[20px]">
+                <div className="w-[300px] h-[130px] p-[10px] mb-[5px] border-dashed border-2 border-gray-500 bg-transparent ">
+                  {story?.content ? story.content : "LOADING..."}
+                </div>
+              </div>
+              <div className="flex items-center w-[300px] h-[60px] gap-[10px] p-2">
+                <img className="flex w-[40px]" src="/asset/hand.svg" alt="손" />
+                <div className="w-full">
+                  {story?.child_content && story.child_content[0] ? (
+                    <p className="w-[240px] text-[1rem] ellipsis2 ">
+                      {story.child_content[0]}
+                    </p>
+                  ) : (
+                    <span className="text-gray-400">
+                      새로운 이야기를 만들어보세요!
+                    </span>
+                  )}
+                </div>
+              </div>
+              <div className="flex items-center w-[300px] h-[60px] gap-[10px] p-2">
+                <img className="flex w-[40px]" src="/asset/hand.svg" alt="손" />
+                <div className="w-full">
+                  {story?.child_content && story.child_content[1] ? (
+                    <p className="w-[240px] text-[1rem] ellipsis2 ">
+                      {story.child_content[1]}
+                    </p>
+                  ) : (
+                    <span className="text-gray-400">
+                      새로운 이야기를 만들어보세요!
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+          <button
+            className="flex w-[55px] justify-center mt-[10px] pt-[3px] bg-zinc-300 border-2 border-gray-500 font-Minecraft font-bold text-black text-[20px] hover:bg-blue-600 hover:text-green-400 hover:shadow-blue-600"
+            onClick={handleOkButtonClick}
+          >
+            GO!
+          </button>
+        </div>
+        {/* <div className="flex flex-col w-full h-[395px] justify-center items-center gap-[10px] bg-black border-2 border-white text-white">
           <div className="flex justify-center w-full h-[270px] gap-[80px]">
             <div className="w-[270px]">
               <img
@@ -137,7 +187,7 @@ const RootModal: React.FC<RootModalProps> = ({
           >
             GO!
           </button>
-        </div>
+        </div> */}
       </div>
     </div>
   );
