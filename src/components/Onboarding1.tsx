@@ -1,4 +1,5 @@
 import "../../src/index.css";
+import { motion } from "framer-motion";
 
 const Onboarding1 = () => {
   const bgstyle = {
@@ -58,7 +59,18 @@ const Onboarding1 = () => {
           filter: "drop-shadow(0 0 8px rgba(255, 255, 255, 0.424))",
         }}
       >
-        ?
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false }}
+          transition={{
+            ease: "easeInOut",
+            duration: 0.5,
+            delay: 0.1,
+          }}
+        >
+          ?
+        </motion.div>
       </div>
       <div className="flex w-full h-[130px] items-center justify-between px-[130px]">
         <div

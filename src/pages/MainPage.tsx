@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import Navbar from "../components/Navbar";
 import SwiperComponent from "../components/Swiper";
 import ScenarioModal from "../components/ScenarioModal";
@@ -59,18 +60,29 @@ const MainPage = () => {
         <div className="flex flex-col w-full h-full gap-[33px]">
           <Navbar />
           <div className="flex flex-col items-center h-[145px]">
-            <hr className="border-white w-[600px]" />
-            <div className="flex items-center justify-between gap-[50px] px-[30px] py-[10px]">
-              <div className="text-[20px] text-white">
-                <span className="text-green-400">
-                  {stories[currentStoryIndex]?.user_nickname}
-                </span>
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false }}
+              transition={{
+                ease: "easeInOut",
+                duration: 0.5,
+                delay: 0.1,
+              }}
+            >
+              <hr className="border-white w-[600px]" />
+              <div className="flex items-center justify-between gap-[50px] px-[30px] py-[10px]">
+                <div className="text-[20px] text-white">
+                  <span className="text-green-400">
+                    {stories[currentStoryIndex]?.user_nickname}
+                  </span>
+                </div>
+                <div className="w-[400px] text-[20px] text-white">
+                  {stories[currentStoryIndex]?.content}
+                </div>
               </div>
-              <div className="w-[400px] text-[20px] text-white">
-                {stories[currentStoryIndex]?.content}
-              </div>
-            </div>
-            <hr className="border-white w-[600px]" />
+              <hr className="border-white w-[600px]" />
+            </motion.div>
           </div>
           <div className="flex justify-center">
             <SwiperComponent
