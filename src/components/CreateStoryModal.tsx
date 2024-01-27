@@ -193,13 +193,13 @@ const CreateStoryModal: React.FC<CreateStoryModalProps> = ({
 
   return (
     <div
-      className={`fixed top-0 left-0 w-[100vw] h-[100vh] bg-black bg-opacity-50 ${
+      className={`flex justify-center items-center fixed top-0 left-0 w-[100vw] h-[100vh] bg-black bg-opacity-50 ${
         isOpen ? "" : "hidden"
       }`}
     >
       <div
         ref={modalRef}
-        className="z-20 flex absolute flex-col w-[800px] h-[450px] top-[25%] left-[25%] transform -translate-x-1/2 -translate-y-1/2 animate-scale-up-ver-center"
+        className="z-20 flex flex-col w-[800px] h-[450px] animate-scale-up-ver-center"
       >
         <div className="flex w-full h-[55px] justify-center items-center pt-[8px] bg-blue-800 border-2 border-white text-green-400 text-[33px] font-Minecraft">
           NEW STORY

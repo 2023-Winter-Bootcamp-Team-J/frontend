@@ -78,7 +78,7 @@ const RootModal: React.FC<RootModalProps> = ({
     >
       <div
         ref={modalRef}
-        className="flex flex-col w-[800px] h-[450px] z-1 absolute top-[25%] left-[25%] transform -translate-x-1/2 -translate-y-1/2 animate-scale-up-ver-center"
+        className="flex flex-col w-[800px] h-[450px] z-1 animate-scale-up-ver-center"
       >
         <div className="flex w-full h-[55px] justify-center items-center pt-[8px] bg-blue-800 border-2 border-white text-green-400 text-[33px] font-Minecraft">
           SCENARIO

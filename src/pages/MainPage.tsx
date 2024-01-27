@@ -91,7 +91,6 @@ const MainPage = () => {
               onSlideClick={handleSwiper}
             />
           </div>
-
           <div className="absolute bottom-12 right-14 z-10">
             <img
               className="relative hover:scale-125 hover:opacity-35 h-[50px] drop-shadow"
