@@ -81,7 +81,7 @@ const StoryModal: React.FC<StoryModalProps> = ({
     >
       <div
         ref={modalRef}
-        className="flex flex-col w-[800px] h-[450px] z-1 top-[25%] left-[25%] transform -translate-x-1/2 -translate-y-1/2 animate-scale-up-ver-center"
+        className="flex flex-col w-[800px] h-[450px] z-1 animate-scale-up-ver-center"
       >
         <div className="flex gap-[15px] w-full h-[55px] justify-center items-center pt-[8px] bg-blue-800 border-2 border-gray-400 text-green-400 text-[33px] font-Minecraft">
           STORY
