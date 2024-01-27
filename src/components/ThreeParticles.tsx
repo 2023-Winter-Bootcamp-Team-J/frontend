@@ -1,15 +1,23 @@
 import React, { useEffect, useRef } from "react";
 import * as THREE from "three";
 
+interface Particle {
+  particle: THREE.Points;
+  velocity: number;
+}
+
 const ParticleTutorial: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
-  const particles: THREE.Points[] = [];
+  const particles: Particle[] = [];
+  let distance = 2300;
+  let numParticles = 500;
+  let mouseY = 0;
+
   useEffect(() => {
     let camera: THREE.PerspectiveCamera;
     let scene: THREE.Scene;
-    // let mouseX = 0;
-    let mouseY = 0;
+
     const init = () => {
       camera = new THREE.PerspectiveCamera(
         100,
@@ -39,28 +47,28 @@ const ParticleTutorial: React.FC = () => {
       requestAnimationFrame(animate);
       update();
     };
+
     const update = () => {
       updateParticles();
       if (rendererRef.current) {
         rendererRef.current.render(scene, camera);
       }
     };
+
     const makeParticles = () => {
       const colors = [0x98adf9, 0x7aff8f, 0xffffff];
-      const distance = 2300;
-      const numParticles = 1000;
 
-      const particleGeometry = new THREE.BufferGeometry();
-
-      for (let zpos = -distance; zpos < distance; zpos += 15) {
+      for (let i = 0; i < numParticles; i++) {
         const colorIndex = Math.floor(Math.random() * colors.length);
         const color = colors[colorIndex];
 
         const vertices = [
           Math.random() * (distance * 2) - distance,
           Math.random() * (distance * 2) - distance,
-          zpos,
+          Math.random() * (distance * 2) - distance,
         ];
+
+        const particleGeometry = new THREE.BufferGeometry();
         particleGeometry.setAttribute(
           "position",
           new THREE.Float32BufferAttribute(vertices, 3)
@@ -71,31 +79,34 @@ const ParticleTutorial: React.FC = () => {
           size: 7,
         });
 
-        const particle = new THREE.Points(
-          particleGeometry.clone(),
-          particleMaterial
-        );
-
+        const particle = new THREE.Points(particleGeometry, particleMaterial);
         scene.add(particle);
-        particles.push(particle);
-        if (particles.length >= numParticles) {
-          break;
-        }
+
+        particles.push({
+          particle,
+          velocity: Math.random() * 5 + 1, // 파티클의 이동 속도 설정
+        });
       }
     };
+
     const updateParticles = () => {
       for (let i = 0; i < particles.length; i++) {
-        const particle = particles[i];
-        particle.position.z += mouseY * 0.01;
-        if (particle.position.z > 1500) {
-          particle.position.z = -1000 + (particle.position.z - 1000);
+        const particleObj = particles[i];
+        const particle = particleObj.particle;
+
+        particle.position.z += particleObj.velocity * mouseY * 0.001;
+
+        // 카메라 앞쪽 경계를 넘어서면 파티클을 뒤쪽으로 재배치
+        if (particle.position.z > distance) {
+          particle.position.z = -distance;
         }
       }
     };
+
     const onMouseMove = (event: MouseEvent) => {
-      // mouseX = event.clientX;
       mouseY = event.clientY;
     };
+
     const onWindowResize = () => {
       if (rendererRef.current && camera) {
         camera.aspect = window.innerWidth / window.innerHeight;
@@ -103,11 +114,12 @@ const ParticleTutorial: React.FC = () => {
         rendererRef.current.setSize(window.innerWidth, window.innerHeight);
       }
     };
+
     init();
+
     return () => {
       if (rendererRef.current) {
         rendererRef.current.dispose();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
         const rendererContainer = containerRef.current;
         if (rendererContainer) {
           rendererContainer.removeChild(rendererRef.current.domElement);
@@ -119,4 +131,5 @@ const ParticleTutorial: React.FC = () => {
 
   return <div ref={containerRef}></div>;
 };
+
 export default ParticleTutorial;
