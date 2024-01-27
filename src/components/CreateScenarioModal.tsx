@@ -250,7 +250,6 @@ const CreateScenarioModal: React.FC<CreateScenarioModalProps> = ({
               </div>
               <div
                 className="w-[185px] absolute top-[30px] left-[296px] text-[12px] bg-[#1d1e1e] text-green-400 p-2 text-left"
-                // className="w-[240px] absolute top-[32px] right-[16px] text-[12px] bg-white text-green-400 p-2 text-left"
                 style={{ display: isHovered ? "block" : "none" }}
               >
                 장면을 자세히 묘사하면 그림의 정확도가 올라갑니다!
