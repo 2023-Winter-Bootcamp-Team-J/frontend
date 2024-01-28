@@ -6,8 +6,11 @@ import { useEffect, useState } from "react";
 import StoryModal from "../components/StoryModal";
 import CreateStoryModal from "../components/CreateStoryModal";
 import axios from "axios";
+import { useRecoilValue } from "recoil";
+import { userState } from "@/recoil/atoms";
 
 const ScenarioPage = () => {
+  const user = useRecoilValue(userState);
   const { rootId } = useParams() as { rootId: string };
   console.log("rootId: ", rootId);
   const story_id = parseInt(rootId, 10);
@@ -40,9 +43,13 @@ const ScenarioPage = () => {
   const handleClickStory = (storyId: number) => {
     // 스토리 생성 or 조회
     if (storyId < 0) {
-      // 생성
-      setIsStoryModalOpen(false);
-      setIsCreateModalOpen(true);
+      if (user.user_id) {
+        // 로그인 상태일 때만 시나리오 생성하게 하기
+        setIsStoryModalOpen(false);
+        setIsCreateModalOpen(true);
+      } else {
+        alert("로그인 후 생성이 가능합니다.");
+      }
     } else {
       // 조회
       setClickStoryId(storyId);

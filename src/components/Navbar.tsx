@@ -86,7 +86,10 @@ const Navbar = () => {
         {nickname ? (
           <div className="relative">
             <span className="text-white">
-              <span onClick={handleLogOutModal} className="text-green-400">
+              <span
+                onClick={handleLogOutModal}
+                className="text-green-400 hover:text-blue-600"
+              >
                 {nickname}
               </span>
               님 환영합니다!
@@ -116,14 +119,17 @@ const Navbar = () => {
                   />
                 </svg>
                 <div onClick={handleClickLogOut} className="text-[10px]">
-                  LOGOUT
+                  Log Out
                 </div>
               </div>
             )}
           </div>
         ) : (
-          <span onClick={handleNavigate} className="text-gray-400">
-            로그인 후 이용해주세요.
+          <span
+            onClick={handleNavigate}
+            className="text-gray-400 hover:text-gray-100"
+          >
+            Log In
           </span>
         )}
       </div>

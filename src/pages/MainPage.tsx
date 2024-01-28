@@ -5,8 +5,11 @@ import SwiperComponent from "../components/Swiper";
 import CreateScenarioModal from "../components/CreateScenarioModal";
 import ThreeParticles from "../components/ThreeParticles";
 import axios from "axios";
+import { useRecoilValue } from "recoil";
+import { userState } from "@/recoil/atoms";
 
 const MainPage = () => {
+  const user = useRecoilValue(userState);
   const [modalOpen, setModalOpen] = useState(false);
   const [currentStoryIndex, setCurrentStoryIndex] = useState(0);
   const [stories, setStories] = useState<
@@ -25,7 +28,12 @@ const MainPage = () => {
     setStories(stories);
   };
   const openModal = () => {
-    setModalOpen(true);
+    if (user.user_id) {
+      // 로그인 상태일 때만 시나리오 생성하게 하기
+      setModalOpen(true);
+    } else {
+      alert("로그인 후 생성이 가능합니다.");
+    }
   };
 
   const handleUpdate = () => {
@@ -102,7 +110,6 @@ const MainPage = () => {
               alt="글버튼"
             />
             <div className="w-max flex gap-1 text-gray-400 text-[14px] absolute right-[60px] bottom-0 z-1">
-              {/* <div className="w-max flex gap-1 text-blue-100 text-[14px] absolute right-[60px] bottom-0 z-1"> */}
               <svg
                 className="w-[15px]"
                 data-slot="icon"

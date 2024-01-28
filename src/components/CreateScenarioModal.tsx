@@ -39,6 +39,14 @@ const CreateScenarioModal: React.FC<CreateScenarioModalProps> = ({
   const [generationCount, setGenerationCount] = useState<number>(0);
   const [isHovered, setIsHovered] = useState(false); // 안내 메시지
 
+  const errorEvent = (error) => {
+    if (error.request.status >= 500) {
+      console.log("status: ", error.request.status);
+      alert("네트워크 연결이 불안정합니다.");
+      setIsGenerating(false); // Lottie 보여주기 중지
+    }
+  };
+
   const handleMouseEnter = () => {
     setIsHovered(true);
   };
@@ -94,10 +102,10 @@ const CreateScenarioModal: React.FC<CreateScenarioModalProps> = ({
         setContentValue(content);
         setTaskID(response.data.task_id);
         setCurrentImageIndex(0);
-        // console.log(response.data.task_id);
       }
     } catch (error) {
-      console.error(error);
+      console.error("이미지 생성 요청 중 에러: ", error);
+      errorEvent(error);
     }
   };
 
@@ -129,21 +137,27 @@ const CreateScenarioModal: React.FC<CreateScenarioModalProps> = ({
           const newImageUrl = response.data.image_url.image_url;
           console.log("newImageUrl: ", newImageUrl);
 
-          // 이전에 생성한 이미지 배열에 추가
-          setImages((prevImages) => [...prevImages, newImageUrl]);
+          if (newImageUrl !== undefined) {
+            // 이전에 생성한 이미지 배열에 추가
+            setImages((prevImages) => [...prevImages, newImageUrl]);
 
-          // setImageUrl(newImageUrl);
-          const imageUrl = response.data.image_url;
-          setImageUrl(imageUrl.image_url);
-          console.log("imageUrl: ", imageUrl.image_url);
+            // setImageUrl(newImageUrl);
+            const imageUrl = response.data.image_url;
+            setImageUrl(imageUrl.image_url);
+            console.log("imageUrl: ", imageUrl.image_url);
 
-          // 이미지가 정상적으로 받아졌으므로 타이머 중지
-          clearInterval(intervalId);
-          setIsGenerating(false); // Lottie 숨기기
-          setCurrentImageIndex(0);
+            // 이미지가 정상적으로 받아졌으므로 타이머 중지
+            clearInterval(intervalId);
+            setIsGenerating(false); // Lottie 숨기기
+            setCurrentImageIndex(0);
+          } else {
+            alert("생성에 실패하였습니다. 다시 시도해주세요.");
+            setIsGenerating(false); // Lottie 숨기기
+          }
         }
       } catch (error) {
-        console.error(error);
+        console.error("이미지 불러오기 중 에러: ", error);
+        errorEvent(error);
       }
       // console.log(images);
     };
@@ -170,6 +184,7 @@ const CreateScenarioModal: React.FC<CreateScenarioModalProps> = ({
       }
     } catch (error) {
       console.error("스토리 생성 중 에러 발생:", error);
+      errorEvent(error);
     } finally {
       setIsGenerating(false); // Lottie 숨기기
     }
