@@ -29,7 +29,7 @@ const CreateStoryModal: React.FC<CreateStoryModalProps> = ({
   const [generationCount, setGenerationCount] = useState<number>(0);
   const [isHovered, setIsHovered] = useState(false); // 안내 메시지
 
-  const errorEvent = (error) => {
+  const errorEvent = (error: any) => {
     if (error.request.status >= 500) {
       console.log("status: ", error.request.status);
       alert("네트워크 연결이 불안정합니다.");
