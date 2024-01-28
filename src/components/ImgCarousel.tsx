@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { div } from "three/examples/jsm/nodes/Nodes.js";
 
 interface CarouselProps {
   images: string[];
@@ -34,36 +35,35 @@ const Carousel: React.FC<CarouselProps> = ({
   };
 
   return (
-    <div
-      className="relative w-[270px] h-[270px] overflow-hidden"
-      style={{ filter: "drop-shadow(0px 6px 17px rgba(255, 255, 255, 0.3))" }}
-    >
-      {images.map((image, index) => (
-        <div key={index}>
-          {image ? (
-            <img
-              className={`w-full h-full object-cover transition-transform duration-300 transform ${
-                index === currentIndex ? "" : "hidden"
-              }`}
-              src={image}
-              alt={`Image ${index + 1}`}
-            />
-          ) : (
-            <p>Image</p>
-          )}
-        </div>
-      ))}
+    <div className="flex w-full">
+      <div className="relative w-[350px] h-[350px] overflow-hidden">
+        {images.map((image, index) => (
+          <div key={index}>
+            {image ? (
+              <img
+                className={`w-full h-full object-cover transition-transform duration-300 transform ${
+                  index === currentIndex ? "" : "hidden"
+                }`}
+                src={image}
+                alt={`Image ${index + 1}`}
+              />
+            ) : (
+              <p>Image</p>
+            )}
+          </div>
+        ))}
+      </div>{" "}
       {images.length > 1 && (
         <>
           <button
-            className="absolute z-10 top-1/2 left-4 transform -translate-y-1/2 text-white text-5xl"
+            className="absolute z-10 top-[37%] left-[1rem] transform -translate-y-1/2 text-white text-6xl"
             onClick={prevImage}
           >
             &#8249;
           </button>
           <div className="absolute z-10 text-white"></div>
           <button
-            className="absolute z-10  top-1/2 right-4 transform -translate-y-1/2 text-white text-5xl"
+            className="absolute z-10 top-[37%] right-[1rem] transform -translate-y-1/2 text-white text-6xl"
             onClick={nextImage}
           >
             &#8250;
