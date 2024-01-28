@@ -79,72 +79,85 @@ const StoryModal: React.FC<StoryModalProps> = ({
         isOpen ? "" : "hidden"
       }`}
     >
-      <div
-        ref={modalRef}
-        className="flex flex-col w-[800px] h-[450px] z-1 animate-scale-up-ver-center"
-      >
-        <div className="flex gap-[15px] w-full h-[55px] justify-center items-center pt-[8px] bg-blue-800 border-2 border-gray-400 text-green-400 text-[33px] font-Minecraft">
-          STORY
-          <div className="text-gray-400 text-[18px]">
-            by {story?.user_nickname ? `${story.user_nickname}` : "LOADING..."}
+      <div className="flex gap-[100px]">
+        <div ref={modalRef} className="flex flex-col w-[420px] h-[670px] z-1">
+          <div className="flex gap-[15px] w-full h-[55px] justify-center items-center pt-[8px] pl-[35px] bg-blue-800 border-2 border-gray-400 text-green-400 text-[33px] font-Minecraft">
+            STORY
+            <div className="text-gray-400 text-[18px]">
+              by
+              {story?.user_nickname ? `${story.user_nickname}` : "LOADING..."}
+            </div>
+          </div>
+          <div className="flex flex-col w-full h-[615px] justify-center items-center gap-[16px] bg-black text-white border-2 border-gray-400 ">
+            <img
+              className="block w-[350px] bg-gray-500"
+              style={{
+                filter: "drop-shadow(0px 0px 6px rgba(255, 255, 255, 0.615))",
+              }}
+              src={story?.image_url ? `${story.image_url}` : ""}
+              alt="Image"
+            />
+            <div className="flex flex-col items-center w-[330px] gap-[10px]">
+              <div className="w-[350px] h-[155px] p-[10px] border-dashed border-2 border-gray-500 bg-transparent ">
+                {story?.content ? `${story.content}` : "LOADING..."}
+              </div>
+            </div>
+            <button
+              onClick={onClose}
+              className="flex w-[90px] justify-center bg-zinc-300 border-2 border-gray-500 font-Minecraft font-bold text-black text-[20px] hover:bg-blue-600 hover:text-green-400 hover:shadow-blue-600"
+            >
+              CLOSE
+            </button>
           </div>
         </div>
-        <div className="flex flex-col w-full h-[395px] justify-center items-center gap-[10px] bg-black text-white border-2 border-gray-400 ">
-          <div className="flex justify-center w-full h-[270px] gap-[80px]">
-            <div className="w-[270px] bg-gray-500">
-              <img
-                className="w-full block"
-                src={story?.image_url ? `${story.image_url}` : ""}
-                alt="Image"
-              />
-            </div>
-            <div className="flex flex-col justify-center w-[300px] gap-[10px]">
-              <div className="flex items-center w-[300px] gap-[20px]">
-                <div className="w-[300px] h-[130px] p-[10px] mb-[5px] border-dashed border-2 border-gray-500 bg-transparent ">
-                  {story?.content ? `${story.content}` : "LOADING..."}
-                </div>
+        <div className="flex flex-col justify-center gap-[80px]">
+          {/* Child Story Modal1 */}
+          <div
+            onClick={() => {
+              handleClickStory(
+                story?.child_id && story.child_id[0] ? story.child_id[0] : -1
+              );
+            }}
+            className="flex gap-[40px] hover:scale-110"
+          >
+            <img className="w-[60px] h-[60px]" src="/asset/hand.svg" alt="" />
+            <div className="flex flex-col w-[370px] h-[235px] z-1">
+              <div className="flex gap-[15px] w-full h-[40px] justify-center items-center pt-[8px] bg-blue-800 border-2 border-gray-400 text-green-400 text-[23px] font-Minecraft">
+                CHILD
               </div>
-              <div
-                onClick={() => {
-                  handleClickStory(
-                    story?.child_id && story.child_id[0]
-                      ? story.child_id[0]
-                      : -1
-                  );
-                }}
-                className="flex items-center w-[300px] h-[60px] gap-[10px] p-2 hover:scale-105 hover:border-2 border-dashed hover:border-blue-600"
-              >
-                <img className="flex w-[40px]" src="/asset/hand.svg" alt="손" />
-                <div className="w-full">
+              <div className="flex flex-col w-full h-[220px] justify-center items-center bg-black text-white border-2 border-gray-400 ">
+                <div className="w-[330px] h-[155px] p-[10px] border-dashed border-2 border-gray-500 hover:border-blue-600 bg-transparent ">
                   {story?.child_content && story.child_content[0] ? (
-                    <p className="w-[240px] text-[1rem] ellipsis2 ">
-                      {story.child_content[0]}
-                    </p>
+                    <p>{story.child_content[0]}</p>
                   ) : (
-                    <span className="text-blue-600">
+                    <span className="flex justify-center leading-[8rem] text-blue-600">
                       새로운 이야기를 만들어보세요!
                     </span>
                   )}
                 </div>
               </div>
-              <div
-                onClick={() => {
-                  handleClickStory(
-                    story?.child_id && story.child_id[1]
-                      ? story.child_id[1]
-                      : -1
-                  );
-                }}
-                className="flex items-center w-[300px] h-[60px] gap-[10px] p-2 hover:scale-105 hover:border-2 border-dashed hover:border-blue-600"
-              >
-                <img className="flex w-[40px]" src="/asset/hand.svg" alt="손" />
-                <div className="w-full">
+            </div>
+          </div>{" "}
+          {/* Child Story Modal2 */}
+          <div
+            onClick={() => {
+              handleClickStory(
+                story?.child_id && story.child_id[1] ? story.child_id[1] : -1
+              );
+            }}
+            className="flex gap-[40px] hover:scale-110"
+          >
+            <img className="w-[60px] h-[60px]" src="/asset/hand.svg" alt="" />
+            <div className="flex flex-col w-[370px] h-[235px] z-1">
+              <div className="flex gap-[15px] w-full h-[40px] justify-center items-center pt-[8px] bg-blue-800 border-2 border-gray-400 text-green-400 text-[23px] font-Minecraft">
+                CHILD
+              </div>
+              <div className="flex flex-col w-full h-[220px] justify-center items-center bg-black text-white border-2 border-gray-400 ">
+                <div className="w-[330px] h-[155px] p-[10px] border-dashed border-2 border-gray-500 hover:border-blue-600 bg-transparent ">
                   {story?.child_content && story.child_content[1] ? (
-                    <p className="w-[240px] text-[1rem] ellipsis2 ">
-                      {story.child_content[1]}
-                    </p>
+                    <p>{story.child_content[1]}</p>
                   ) : (
-                    <span className="text-blue-600">
+                    <span className="flex justify-center leading-[8rem] text-blue-600">
                       새로운 이야기를 만들어보세요!
                     </span>
                   )}
@@ -152,12 +165,6 @@ const StoryModal: React.FC<StoryModalProps> = ({
               </div>
             </div>
           </div>
-          <button
-            onClick={onClose}
-            className="flex w-[90px] justify-center mt-[10px] bg-zinc-300 border-2 border-gray-500 font-Minecraft font-bold text-black text-[20px] hover:bg-blue-600 hover:text-green-400 hover:shadow-blue-600"
-          >
-            CLOSE
-          </button>
         </div>
       </div>
     </div>
