@@ -73,8 +73,8 @@ const CreateScenarioModal: React.FC<CreateScenarioModalProps> = ({
   const handleClick = () => {
     if (generationCount < 3) {
       CreateScenario(); // 이미지 생성 요청
-      setIsGenerating(true); // Lottie 보여주기 시작
-      setGenerationCount((count) => count + 1);
+      // setIsGenerating(true); // Lottie 보여주기 시작
+      // setGenerationCount((count) => count + 1);
     } else {
       alert("이미지 생성 요청은 최대 3회까지 가능합니다.");
     }
@@ -82,7 +82,7 @@ const CreateScenarioModal: React.FC<CreateScenarioModalProps> = ({
   const handleCurrentIndexChange = (index: number) => {
     setCurrentImageIndex(index);
     // currentIndex를 활용한 로직을 추가하세요.
-    console.log("image_index: ", index);
+    // console.log("image_index: ", index);
   };
   const CreateScenario = async () => {
     try {
@@ -90,18 +90,20 @@ const CreateScenarioModal: React.FC<CreateScenarioModalProps> = ({
         // content가 공백인 경우 400에러 방지
         console.log("문장을 입력하세요!");
         alert("문장을 입력하세요!");
-        return;
-      }
-      const response = await axios.post(`/api/v1/stories/images`, {
-        content,
-      });
-      if (response.status === 202) {
-        console.log("이미지 생성 요청 성공!");
+      } else {
+        setIsGenerating(true); // Lottie 보여주기 시작
+        const response = await axios.post(`/api/v1/stories/images`, {
+          content,
+        });
+        if (response.status === 202) {
+          console.log("이미지 생성 요청 성공!");
 
-        // 응답이 성공적인 경우 상태 업데이트
-        setContentValue(content);
-        setTaskID(response.data.task_id);
-        setCurrentImageIndex(0);
+          // 응답이 성공적인 경우 상태 업데이트
+          setGenerationCount((count) => count + 1);
+          setContentValue(content);
+          setTaskID(response.data.task_id);
+          setCurrentImageIndex(0);
+        }
       }
     } catch (error) {
       console.error("이미지 생성 요청 중 에러: ", error);
@@ -151,6 +153,7 @@ const CreateScenarioModal: React.FC<CreateScenarioModalProps> = ({
             setIsGenerating(false); // Lottie 숨기기
             setCurrentImageIndex(0);
           } else {
+            clearInterval(intervalId); // 인터벌 끝내기
             alert("생성에 실패하였습니다. 다시 시도해주세요.");
             setIsGenerating(false); // Lottie 숨기기
           }

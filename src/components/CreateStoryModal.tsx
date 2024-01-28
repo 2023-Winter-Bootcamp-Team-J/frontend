@@ -75,8 +75,8 @@ const CreateStoryModal: React.FC<CreateStoryModalProps> = ({
   const handleClick = () => {
     if (generationCount < 3) {
       CreateScenario(); // 이미지 생성 요청
-      setIsGenerating(true); // Lottie 보여주기 시작
-      setGenerationCount((count) => count + 1);
+      // setIsGenerating(true); // Lottie 보여주기 시작
+      // setGenerationCount((count) => count + 1);
     } else {
       alert("이미지 생성 요청은 최대 3회까지 가능합니다.");
     }
@@ -92,18 +92,20 @@ const CreateStoryModal: React.FC<CreateStoryModalProps> = ({
         // content가 공백인 경우 400에러 방지
         console.log("문장을 입력하세요!");
         alert("문장을 입력하세요!");
-        return;
-      }
-      const response = await axios.post(`/api/v1/stories/images`, {
-        content,
-      });
-      if (response.status === 202) {
-        console.log("이미지 생성 요청 성공!");
+      } else {
+        setIsGenerating(true); // Lottie 보여주기 시작
+        const response = await axios.post(`/api/v1/stories/images`, {
+          content,
+        });
+        if (response.status === 202) {
+          console.log("이미지 생성 요청 성공!");
 
-        // 응답이 성공적인 경우 상태 업데이트
-        setContentValue(content);
-        setTaskID(response.data.task_id);
-        console.log(response.data.task_id);
+          // 응답이 성공적인 경우 상태 업데이트
+          setGenerationCount((count) => count + 1);
+          setContentValue(content);
+          setTaskID(response.data.task_id);
+          console.log(response.data.task_id);
+        }
       }
     } catch (error) {
       console.error("이미지 생성 요청 중 에러: ", error);
@@ -135,28 +137,23 @@ const CreateStoryModal: React.FC<CreateStoryModalProps> = ({
           const newImageUrl = response.data.image_url.image_url;
           console.log("newImageUrl: ", newImageUrl);
 
-          if (response.status === 200) {
-            console.log("이미지 조회 성공!");
-            const newImageUrl = response.data.image_url.image_url;
-            console.log("newImageUrl: ", newImageUrl);
+          if (newImageUrl !== undefined) {
+            // 이전에 생성한 이미지 배열에 추가
+            setImages((prevImages) => [...prevImages, newImageUrl]);
 
-            if (newImageUrl !== undefined) {
-              // 이전에 생성한 이미지 배열에 추가
-              setImages((prevImages) => [...prevImages, newImageUrl]);
+            // setImageUrl(newImageUrl);
+            const imageUrl = response.data.image_url;
+            setImageUrl(imageUrl.image_url);
+            console.log("imageUrl: ", imageUrl.image_url);
 
-              // setImageUrl(newImageUrl);
-              const imageUrl = response.data.image_url;
-              setImageUrl(imageUrl.image_url);
-              console.log("imageUrl: ", imageUrl.image_url);
-
-              // 이미지가 정상적으로 받아졌으므로 타이머 중지
-              clearInterval(intervalId);
-              setIsGenerating(false); // Lottie 숨기기
-              setCurrentImageIndex(0);
-            } else {
-              alert("생성에 실패하였습니다. 다시 시도해주세요.");
-              setIsGenerating(false); // Lottie 숨기기
-            }
+            // 이미지가 정상적으로 받아졌으므로 타이머 중지
+            clearInterval(intervalId);
+            setIsGenerating(false); // Lottie 숨기기
+            setCurrentImageIndex(0);
+          } else {
+            clearInterval(intervalId); // 인터벌 끝내기
+            alert("생성에 실패하였습니다. 다시 시도해주세요.");
+            setIsGenerating(false); // Lottie 숨기기
           }
         }
       } catch (error) {
