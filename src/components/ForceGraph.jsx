@@ -4,7 +4,9 @@ import * as d3 from "d3";
 const ForceGraph = ({ openmodal, scenario }) => {
   const svgRef = useRef(null);
 
-  const handleClickStory = (story_id) => {
+  const handleClickStory = (d) => {
+    console.log("d: ", d);
+    const story_id = d.data.story_id;
     openmodal(story_id);
   };
 
@@ -56,7 +58,7 @@ const ForceGraph = ({ openmodal, scenario }) => {
       const height = document.body.clientHeight;
 
       // Add margins
-      const margin = { top: 380, left: 300, right: 0, bottom: 0 };
+      const margin = { top: 300, left: 350, right: 0, bottom: 0 };
       const innerWidth = width - margin.right - margin.left;
       const innerHeight = height - margin.top - margin.bottom;
 
@@ -67,12 +69,10 @@ const ForceGraph = ({ openmodal, scenario }) => {
         .attr("height", height);
 
       const zoomG = svg.append("g");
-      // const g = zoomG;
 
       const g = zoomG
         .append("g")
-        .attr("transform", `translate( ${margin.left}, ${margin.top})`)
-        .style("transform", "rotateX(20deg) rotateY(8deg) rotateZ(-8deg)");
+        .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
       // tree() sets x and y value
       const tree = d3
@@ -111,6 +111,7 @@ const ForceGraph = ({ openmodal, scenario }) => {
           .attr("stroke-width", 10)
           .style("stroke-dasharray", "10, 5") // dashed 스타일 설정
           .style("filter", "drop-shadow(0 0 8px rgba(255, 255, 255, 0.3))")
+          .style("transform", "rotateX(20deg) rotateY(8deg) rotateZ(-8deg)")
           .attr("fill", "none");
 
         g.selectAll("rect") // 이미지 뒤에 rect를 추가
@@ -121,6 +122,7 @@ const ForceGraph = ({ openmodal, scenario }) => {
           .attr("height", 160)
           .attr("x", (d) => d.y - 80)
           .attr("y", (d) => d.x - 80)
+          .style("transform", "rotateX(20deg) rotateY(8deg) rotateZ(-8deg)")
           .style("fill", "rgba(255, 255, 255, 0.8)")
           .style("filter", "drop-shadow(0 0 10px rgba(255, 255, 255, 0.3))"); // 테두리에 그림자 효과 추가
 
@@ -133,7 +135,9 @@ const ForceGraph = ({ openmodal, scenario }) => {
           .attr("height", 150)
           .attr("x", (d) => d.y - 75)
           .attr("y", (d) => d.x - 75)
-          .on("click", (event, d) => handleClickStory(d.data.story_id)); // 클릭 이벤트 핸들러 추가
+          .style("transform", "rotateX(20deg) rotateY(8deg) rotateZ(-8deg)")
+          .on("click", (event, d) => handleClickStory(d)); // 클릭 이벤트 핸들러 추가
+        // .on("click", (event, d) => handleClickStory(d.data.story_id)); // 클릭 이벤트 핸들러 추가
       }
     }
   }, [scenario]);
