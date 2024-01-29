@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState, ChangeEvent } from "react";
 import axios from "axios";
+import { motion } from "framer-motion";
 import Carousel from "../components/ImgCarousel";
 import Lottie from "lottie-react";
 import lottieData from "../assets/lottie.json";
@@ -10,12 +11,14 @@ interface CreateStoryModalProps {
   parentStoryID: number;
   isOpen: boolean;
   closeModal: () => void;
+  isCreateModalOpen: boolean;
 }
 
 const CreateStoryModal: React.FC<CreateStoryModalProps> = ({
   parentStoryID,
   isOpen,
   closeModal,
+  isCreateModalOpen,
 }) => {
   const modalRef = useRef<HTMLDivElement>(null);
   const userId = useRecoilValue(userState).user_id;
@@ -54,12 +57,14 @@ const CreateStoryModal: React.FC<CreateStoryModalProps> = ({
   const handleBackgroundClick = (e: MouseEvent) => {
     // 배경 클릭 시 모달 닫기\
     if (
+      isOpen &&
       modalRef.current &&
       !modalRef.current.contains(e.target as Node) &&
       !isGenerating
-    ) {
-      closeModal();
-    }
+    )
+      if (!isCreateModalOpen) {
+        closeModal();
+      }
   };
 
   const handleContentChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -208,18 +213,36 @@ const CreateStoryModal: React.FC<CreateStoryModalProps> = ({
 
   return (
     <div
-      className={`flex justify-center items-center fixed top-0 left-0 w-[100vw] h-[100vh] bg-black bg-opacity-50 ${
+      className={`flex justify-center items-center fixed top-0 left-[300px] w-[100vw] h-[100vh]${
         isOpen ? "" : "hidden"
       }`}
     >
-      <div
+      <motion.div
         ref={modalRef}
-        className="z-20 flex flex-col w-[440px] h-[670px] animate-scale-up-ver-center"
+        className={`z-100 flex flex-col w-[440px] h-[670px]`}
+        initial={{ opacity: 0, y: 80, rotateY: 700 }}
+        animate={{
+          opacity: 1,
+          y: 0,
+          rotateY: 0,
+          transition: {
+            rotateY: {
+              duration: 1,
+            },
+            y: {
+              type: "spring",
+              damping: 3,
+              stiffness: 50,
+              restDelta: 0.01,
+              duration: 0.3,
+            },
+          },
+        }}
       >
         <div className="relative flex w-full h-[55px] justify-center items-center pt-[8px] bg-blue-800 border-2 border-white text-green-400 text-[33px] font-Minecraft">
           NEW STORY
           <svg
-            className="h-[20px] absolute right-5"
+            className="h-[20px] absolute right-5 text-white hover:text-green-400"
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             data-slot="icon"
@@ -245,7 +268,7 @@ const CreateStoryModal: React.FC<CreateStoryModalProps> = ({
             (인물, 상황, 장소, 기분 등)
           </div>
         </div>
-        <div className="flex flex-col w-full h-[615px] justify-center items-center gap-[17px] bg-black border-2 border-white text-white">
+        <div className="relative flex flex-col w-full h-[615px] justify-center items-center gap-[17px] bg-black border-2 border-white text-white">
           {isGenerating && (
             <div className="absolute z-50 gap-[10px] p-[70px] bg-gray-500 bg-opacity-50 w-full h-[615px]">
               <Lottie
@@ -301,7 +324,7 @@ const CreateStoryModal: React.FC<CreateStoryModalProps> = ({
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };

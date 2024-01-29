@@ -39,7 +39,7 @@ const ScenarioPage = () => {
     setIsStoryModalOpen(true);
   };
 
-  const closeModal = () => {
+  const closeModals = () => {
     // 둘 다 닫히게
     setIsStoryModalOpen(false);
     setIsCreateModalOpen(false);
@@ -50,7 +50,7 @@ const ScenarioPage = () => {
     if (storyId < 0) {
       if (user.user_id) {
         // 로그인 상태일 때만 시나리오 생성하게 하기
-        setIsStoryModalOpen(false);
+        // setIsStoryModalOpen(false);
         setIsCreateModalOpen(true);
       } else {
         alert("로그인 후 생성이 가능합니다.");
@@ -137,8 +137,9 @@ const ScenarioPage = () => {
           <StoryModal
             storyId={clickStoryId}
             isOpen={isStoryModalOpen}
-            onClose={closeModal}
+            onClose={closeModals}
             handleClickStory={handleClickStory}
+            isCreateModalOpen={isCreateModalOpen}
           />
         </div>
       )}
@@ -147,7 +148,8 @@ const ScenarioPage = () => {
           <CreateStoryModal
             parentStoryID={clickStoryId.storyId}
             isOpen={isCreateModalOpen}
-            closeModal={closeModal}
+            closeModal={closeModals}
+            isCreateModalOpen={isCreateModalOpen}
           />
         </div>
       )}

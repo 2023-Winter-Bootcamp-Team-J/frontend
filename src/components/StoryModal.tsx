@@ -11,6 +11,7 @@ interface StoryModalProps {
   isOpen: boolean;
   onClose: () => void;
   handleClickStory: (storyId: number, page: number) => void;
+  isCreateModalOpen: boolean;
 }
 
 const StoryModal: React.FC<StoryModalProps> = ({
@@ -18,6 +19,7 @@ const StoryModal: React.FC<StoryModalProps> = ({
   isOpen,
   onClose,
   handleClickStory,
+  isCreateModalOpen,
 }) => {
   const [story, setStory] = useState<{
     user_nickname: string;
@@ -27,16 +29,22 @@ const StoryModal: React.FC<StoryModalProps> = ({
     child_content: string[];
   } | null>(null);
   const modalRef = useRef<HTMLDivElement>(null);
-  // const [isFadeOutClicked1, setIsFadeOutClicked1] = useState(false);
-  // const [isFadeOutClicked2, setIsFadeOutClicked2] = useState(false);
   const [isAnimationComplete1, setIsAnimationComplete1] = useState(false);
   const [isAnimationComplete2, setIsAnimationComplete2] = useState(false);
+  const [nextModalKey, setNextModalKey] = useState(0);
+
+  // console.log(storyId);
   console.log("storyId:", storyId);
   // 모달 외부를 클릭했을 때 모달을 닫도록 하는 이벤트 처리
   const handleClickOutside = (e: MouseEvent) => {
-    if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
-      onClose();
-    }
+    if (
+      isOpen &&
+      modalRef.current &&
+      !modalRef.current.contains(e.target as Node)
+    )
+      if (!isCreateModalOpen) {
+        onClose();
+      }
   };
 
   useEffect(() => {
@@ -51,7 +59,7 @@ const StoryModal: React.FC<StoryModalProps> = ({
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [isOpen]);
+  }, [isOpen, isCreateModalOpen]);
 
   useEffect(() => {
     // console.log("**story_id: ", storyId);
@@ -75,7 +83,7 @@ const StoryModal: React.FC<StoryModalProps> = ({
     };
 
     storyAPI();
-  }, [storyId]);
+  }, [storyId, nextModalKey]);
 
   // useEffect(() => {
   //   console.log("story: ", story);
@@ -87,13 +95,33 @@ const StoryModal: React.FC<StoryModalProps> = ({
         isOpen ? "" : "hidden"
       }`}
     >
-      <div ref={modalRef} className="flex gap-[100px]">
-        <div className="flex flex-col w-[420px] h-[670px] z-1">
+      <div ref={modalRef} className="flex gap-[100px] z-10">
+        <motion.div
+          key={`story-modal-${nextModalKey}`}
+          className={`flex flex-col w-[420px] h-[670px] z-1`}
+          initial={{ opacity: 0, y: 80, rotateY: 700 }}
+          animate={{
+            opacity: 1,
+            y: 0,
+            rotateY: 0,
+            transition: {
+              rotateY: {
+                duration: 1,
+              },
+              y: {
+                type: "spring",
+                damping: 3,
+                stiffness: 50,
+                restDelta: 0.01,
+                duration: 0.3,
+              },
+            },
+          }}
+        >
           <div className="flex gap-[15px] w-full h-[55px] justify-center items-center pt-[8px] pl-[35px] bg-blue-800 border-2 border-gray-400 text-green-400 text-[33px] font-Minecraft">
             PAGE {storyId.page}
             <div className="text-gray-400 text-[18px]">
-              @ &nbsp;
-              {story?.user_nickname ? `${story.user_nickname}` : "LOADING..."}
+              @ {story?.user_nickname ? `${story.user_nickname}` : "LOADING..."}
             </div>
           </div>
           <div className="flex flex-col w-full h-[615px] justify-center items-center gap-[16px] bg-black text-white border-2 border-gray-400 ">
@@ -117,53 +145,55 @@ const StoryModal: React.FC<StoryModalProps> = ({
               CLOSE
             </button>
           </div>
-        </div>
+        </motion.div>
         <div className="flex flex-col justify-center gap-[80px] z-1">
-          {/* Child Story Modal1 */}
-          <motion.div
-            onClick={() => {
-              if (isAnimationComplete1) {
-                // 애니메이션이 완료된 상태에서만 클릭 이벤트 처리
-                setIsAnimationComplete1(false);
-                handleClickStory(
-                  story?.child_id && story.child_id[0] ? story.child_id[0] : -1,
-                  storyId.page + 1
-                );
-              }
-            }}
-            className={`flex gap-[40px] `}
-            // initial={{ opacity: 1, x: 0, y: 0, scale: 1 }}
-            initial={{ opacity: 0, x: -600, y: 180, scale: 0.5 }}
-            animate={{
-              opacity: isAnimationComplete1 ? 1 : 0,
-              x: isAnimationComplete1 ? 1 : -600,
-              y: isAnimationComplete1 ? 1 : 180,
-              scale: isAnimationComplete1 ? 1 : 0.5,
-            }}
-            transition={{ duration: isAnimationComplete1 ? 1 : 1 }}
-            onAnimationComplete={() => {
-              setIsAnimationComplete1(true);
-            }}
-          >
-            <img className="w-[60px] h-[60px]" src="/asset/hand.svg" alt="" />
-            <div className="flex flex-col w-[370px] h-[235px] z-1">
-              <div className="flex gap-[15px] w-full h-[40px] justify-center items-center pt-[8px] bg-blue-800 border-2 border-gray-400 text-green-400 text-[23px] font-Minecraft">
-                CHILD
-              </div>
-              <div className="flex flex-col w-full h-[220px] justify-center items-center bg-black text-white border-2 border-gray-400 ">
-                <div className="w-[330px] h-[155px] p-[10px] border-dashed border-2 border-gray-500 hover:border-blue-600 bg-transparent">
-                  {story?.child_content && story.child_content[0] ? (
-                    <p>{story.child_content[0]}</p>
-                  ) : (
-                    <span className="flex justify-center leading-[8rem] text-gray-400 hover:text-white hover:scale-110">
-                      새로운 이야기를 만들어보세요 !
-                    </span>
-                  )}
+          {/* NEXT Story Modal1 */}
+          {story?.child_id && story.child_id[0] !== -1 && (
+            <motion.div
+              onClick={() => {
+                if (isAnimationComplete1) {
+                  // 애니메이션이 완료된 상태에서만 클릭 이벤트 처리
+                  setIsAnimationComplete1(false);
+                  handleClickStory(
+                    story?.child_id && story.child_id[0]
+                      ? story.child_id[0]
+                      : -1,
+                    storyId.page + 1
+                  );
+                  setNextModalKey((prevKey) => prevKey + 1);
+                }
+              }}
+              className={`flex gap-[40px]`}
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{
+                opacity: isAnimationComplete1 && !isCreateModalOpen ? 1 : 0,
+                scale: isAnimationComplete1 ? 1 : 0.5,
+              }}
+              transition={{ duration: isAnimationComplete1 ? 1 : 1 }}
+              onAnimationComplete={() => {
+                setIsAnimationComplete1(true);
+              }}
+            >
+              <img className="w-[60px] h-[60px]" src="/asset/hand.svg" alt="" />
+              <div className="flex flex-col w-[370px] h-[235px] z-1">
+                <div className="flex gap-[15px] w-full h-[40px] justify-center items-center pt-[8px] bg-blue-800 border-2 border-gray-400 text-green-400 hover:bg-green-400 hover:text-blue-800 text-[23px] font-Minecraft">
+                  NEXT
+                </div>
+                <div className="flex flex-col w-full h-[220px] justify-center items-center bg-black text-white border-2 border-gray-400 ">
+                  <div className="w-[330px] h-[155px] p-[10px] border-dashed border-2 border-gray-500 bg-transparent">
+                    {story?.child_content && story.child_content[0] ? (
+                      <p>{story.child_content[0]}</p>
+                    ) : (
+                      <span className="flex justify-center leading-[8rem] text-gray-400 hover:text-white hover:scale-110">
+                        새로운 이야기를 만들어보세요 !
+                      </span>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-          </motion.div>
-          {/* Child Story Modal2 */}
+            </motion.div>
+          )}
+          {/* NEXT Story Modal2 */}
           <motion.div
             onClick={() => {
               if (isAnimationComplete2) {
@@ -173,14 +203,16 @@ const StoryModal: React.FC<StoryModalProps> = ({
                   story?.child_id && story.child_id[1] ? story.child_id[1] : -1,
                   storyId.page + 1
                 );
+                setNextModalKey((prevKey) => prevKey + 1);
               }
             }}
             className={`flex gap-[40px]`}
-            initial={{ opacity: 0, x: -600, y: -180, scale: 0.5 }}
+            style={{
+              opacity: isCreateModalOpen ? 0 : 1,
+            }}
+            initial={{ opacity: 0, scale: 0.5 }}
             animate={{
-              opacity: isAnimationComplete2 ? 1 : 0,
-              x: isAnimationComplete2 ? 1 : -600,
-              y: isAnimationComplete2 ? 1 : -180,
+              opacity: isAnimationComplete2 && !isCreateModalOpen ? 1 : 0,
               scale: isAnimationComplete2 ? 1 : 0.5,
             }}
             transition={{ duration: isAnimationComplete1 ? 1 : 1 }}
@@ -190,11 +222,11 @@ const StoryModal: React.FC<StoryModalProps> = ({
           >
             <img className="w-[60px] h-[60px]" src="/asset/hand.svg" alt="" />
             <div className="flex flex-col w-[370px] h-[235px] z-1">
-              <div className="flex gap-[15px] w-full h-[40px] justify-center items-center pt-[8px] bg-blue-800 border-2 border-gray-400 text-green-400 text-[23px] font-Minecraft">
-                CHILD
+              <div className="flex gap-[15px] w-full h-[40px] justify-center items-center pt-[8px] bg-blue-800 border-2 border-gray-400 text-green-400 hover:text-blue-800 hover:bg-green-400 hover:text-blue-800 text-[23px] font-Minecraft">
+                NEXT
               </div>
               <div className="flex flex-col w-full h-[220px] justify-center items-center bg-black text-white border-2 border-gray-400 ">
-                <div className="w-[330px] h-[155px] p-[10px] border-dashed border-2 border-gray-500 hover:border-blue-600 bg-transparent hover:text-white ">
+                <div className="w-[330px] h-[155px] p-[10px] border-dashed border-2 border-gray-500 bg-transparent hover:text-white ">
                   {story?.child_content && story.child_content[1] ? (
                     <p>{story.child_content[1]}</p>
                   ) : (
