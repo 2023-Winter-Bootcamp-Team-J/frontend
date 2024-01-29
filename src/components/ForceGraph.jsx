@@ -1,63 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import * as d3 from "d3";
 
 const ForceGraph = ({ openmodal, scenario }) => {
   const svgRef = useRef(null);
-
-  const [ratio, setRatio] = useState(0.9); // 줌in/out비율 조작
-  // 초기 위치 및 이동 거리 설정
-  const initialPosition = { left: 0, top: 0 };
-  const moveDistance = 50;
-  // StockContainer의 위치 상태
-  const [position, setPosition] = useState(initialPosition);
-
-  // zoom in/out 기능
-  const wheelHandler = (e) => {
-    if (ratio <= 2.5) {
-      setRatio((ratio) => (ratio >= 0.7 ? ratio + 0.001 * e.deltaY : 0.7));
-    } else {
-      setRatio(2.5);
-    }
-  };
-  // 키보드 이벤트 핸들러
-  const handleKeyDown = (event) => {
-    switch (event.key) {
-      case "ArrowUp":
-        setPosition((prevPosition) => ({
-          ...prevPosition,
-          top: prevPosition.top + moveDistance,
-        }));
-        break;
-      case "ArrowDown":
-        setPosition((prevPosition) => ({
-          ...prevPosition,
-          top: prevPosition.top - moveDistance,
-        }));
-        break;
-      case "ArrowLeft":
-        setPosition((prevPosition) => ({
-          ...prevPosition,
-          left: prevPosition.left + moveDistance,
-        }));
-        break;
-      case "ArrowRight":
-        setPosition((prevPosition) => ({
-          ...prevPosition,
-          left: prevPosition.left - moveDistance,
-        }));
-        break;
-      default:
-        break;
-    }
-  };
-
-  // 키보드 이벤트 리스너 등록
-  useEffect(() => {
-    window.addEventListener("keydown", handleKeyDown);
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, []); // [] 안에 아무 의존성도 없으므로 컴포넌트가 처음 마운트될 때만 실행
 
   const handleClickStory = (story_id) => {
     openmodal(story_id);
@@ -100,127 +45,102 @@ const ForceGraph = ({ openmodal, scenario }) => {
 
   useEffect(() => {
     if (scenario && scenario.length > 0) {
-      // d3.hierarchy()를 사용하기 위해 데이터 구조 변경
-
-      const treeData = transformData(scenario, scenario[0].story.story_id); // 가장 첫번째 데이터를 시작점으로 하는 트리 생성
-      console.log("treeData: ", treeData); // 결과 확인
-
       // Remove any existing SVG
       d3.select(svgRef.current).selectAll("*").remove();
 
+      // d3.hierarchy()를 사용하기 위해 데이터 구조 변경
+      const treeData = transformData(scenario, scenario[0].story.story_id); // 가장 첫번째 데이터를 시작점으로 하는 트리 생성
+
       // 너비와 높이 설정
-      const width = 1700;
-      const height = 3000;
-      let i = 0;
+      const width = document.body.clientWidth;
+      const height = document.body.clientHeight;
 
-      const tree = d3.tree().nodeSize([190, 0]); //각각 노드의 수평 및 수직 크기
-
-      const line = d3
-        .line()
-        .x((d) => d.y)
-        .y((d) => d.x);
+      // Add margins
+      const margin = { top: 380, left: 300, right: 0, bottom: 0 };
+      const innerWidth = width - margin.right - margin.left;
+      const innerHeight = height - margin.top - margin.bottom;
 
       // SVG 요소 생성
       const svg = d3
         .select(svgRef.current)
         .attr("width", width)
-        .attr("height", height)
-        .append("g")
-        .attr("transform", `translate(${width / 8}, ${height / 4})`); // 루트 노드 기준
+        .attr("height", height);
 
-      const root = d3.hierarchy(treeData[0]); // 트리구조
+      const zoomG = svg.append("g");
+      // const g = zoomG;
+
+      const g = zoomG
+        .append("g")
+        .attr("transform", `translate( ${margin.left}, ${margin.top})`)
+        .style("transform", "rotateX(20deg) rotateY(8deg) rotateZ(-8deg)");
+
+      // tree() sets x and y value
+      const tree = d3
+        .tree()
+        .size([innerHeight, innerWidth])
+        .nodeSize([200, 390]); //각각 노드의 수평 및 수직 크기
+
+      // Add Zooming
+      svg.call(
+        d3
+          .zoom()
+          .scaleExtent([0.45, 3.3]) // 최소 스케일과 최대 스케일을 설정
+          .on("zoom", ({ transform }) => {
+            zoomG.attr("transform", transform);
+          })
+      );
 
       update();
 
       // eslint 경고 무시하는 주석
       // eslint-disable-next-line no-inner-declarations
       function update() {
-        const nodes = tree(root).descendants();
+        const root = d3.hierarchy(treeData[0]); // 트리구조
         const links = tree(root).links();
+        const lineGenerator = d3
+          .line()
+          .x((d) => d.y)
+          .y((d) => d.x);
 
-        nodes.forEach((d) => {
-          d.y = d.depth * 300;
-        });
-
-        const node = svg
-          .selectAll("g.node")
-          .data(nodes, (d) => d.id || (d.id = ++i));
-
-        const nodeEnter = node
+        g.selectAll("path")
+          .data(links)
           .enter()
-          .append("g")
-          .attr("class", "node")
-          .attr("transform", (d) => `translate(${d.y},${d.x})`);
+          .append("path")
+          .attr("d", (d) => lineGenerator([d.source, d.target])) // 직선으로 변경
+          .style("stroke", "white")
+          .attr("stroke-width", 10)
+          .style("stroke-dasharray", "10, 5") // dashed 스타일 설정
+          .style("filter", "drop-shadow(0 0 8px rgba(255, 255, 255, 0.3))")
+          .attr("fill", "none");
 
-        nodeEnter
-          .append("rect") // 테두리를 나타낼 사각형을 추가
-          .attr("width", 150) // 노드 이미지의 크기와 일치하는 가로 크기 설정
-          .attr("height", 150) // 노드 이미지의 크기와 일치하는 세로 크기 설정
-          .style("stroke", "white") // 테두리의 색상 설정
-          .style("stroke-width", 10) // 테두리의 두께 설정
-          .style("filter", "drop-shadow(0 0 10px rgba(255, 255, 255, 0.5))") // 테두리에 그림자 효과 추가
-          .on("mouseover", handleNodeHover) // 호버 이벤트 추가
-          .on("mouseout", handleNodeMouseout); // 마우스 아웃 이벤트 추가
+        g.selectAll("rect") // 이미지 뒤에 rect를 추가
+          .data(root.descendants())
+          .enter()
+          .append("rect")
+          .attr("width", 160)
+          .attr("height", 160)
+          .attr("x", (d) => d.y - 80)
+          .attr("y", (d) => d.x - 80)
+          .style("fill", "rgba(255, 255, 255, 0.8)")
+          .style("filter", "drop-shadow(0 0 10px rgba(255, 255, 255, 0.3))"); // 테두리에 그림자 효과 추가
 
-        nodeEnter
+        g.selectAll("image")
+          .data(root.descendants())
+          .enter()
           .append("image")
           .attr("xlink:href", (d) => d.data.image_url)
           .attr("width", 150)
           .attr("height", 150)
+          .attr("x", (d) => d.y - 75)
+          .attr("y", (d) => d.x - 75)
           .on("click", (event, d) => handleClickStory(d.data.story_id)); // 클릭 이벤트 핸들러 추가
-
-        function handleNodeHover(event, d) {
-          console.log("호버");
-          d3.select(this) // 현재 호버된 노드 선택
-            .select("rect") // 노드의 테두리 선택
-            .style("stroke", "red"); // 테두리 색상을 빨간색으로 변경
-        }
-
-        function handleNodeMouseout(event, d) {
-          d3.select(this) // 현재 마우스 아웃된 노드 선택
-            .select("rect") // 노드의 테두리 선택
-            .style("stroke", "white"); // 테두리 색상을 원래 색상으로 변경
-        }
-
-        const link = svg.selectAll("path.link").data(links, (d) => d.target.id);
-
-        link
-          .enter()
-          .insert("path", "g")
-          .attr("class", "link")
-          .attr("d", (d) =>
-            line([
-              { x: d.source.x + 75, y: d.source.y + 75 },
-              { x: d.target.x + 75, y: d.target.y + 75 },
-            ])
-          )
-          .attr("stroke-width", 8)
-          .style("stroke", "white")
-          .style("stroke-dasharray", "8, 5") // dashed 스타일 설정
-          .style("filter", "drop-shadow(0 0 10px rgba(255, 255, 255, 0.5))");
       }
     }
   }, [scenario]);
 
   return (
-    <div
-      className="w-full h-full overflow-hidden transition-all duration-5000"
-      onWheel={wheelHandler}
-    >
-      <svg
-        ref={svgRef}
-        style={{
-          position: "relative",
-          top: "-400px",
-          left: "-150px",
-          width: `${200 / ratio}%`,
-          height: `${200 / ratio}%`,
-          transform: `translate(${position.left}px, ${position.top}px) scale(${ratio}) rotateX(20deg) rotateY(8deg) rotateZ(-8deg)`,
-          // transformOrigin: "left top",
-          // transform: "rotateX(20deg) rotateY(8deg) rotateZ(-8deg)",
-          // perspectiveOrigin: "center",
-        }}
-      />
+    <div className="w-full h-full">
+      <svg ref={svgRef} className="w-full h-full"></svg>
     </div>
   );
 };
