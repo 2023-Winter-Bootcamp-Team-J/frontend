@@ -6,8 +6,10 @@ const ForceGraph = ({ openmodal, scenario }) => {
 
   const handleClickStory = (d) => {
     console.log("d: ", d);
+    console.log("d.depth: ", d.depth);
     const story_id = d.data.story_id;
-    openmodal(story_id);
+    const page = d.depth + 1;
+    openmodal(story_id, page);
   };
 
   function transformData(treeData, startNodeId) {
@@ -72,7 +74,7 @@ const ForceGraph = ({ openmodal, scenario }) => {
 
       const g = zoomG
         .append("g")
-        .attr("transform", `translate(${margin.left}, ${margin.top})`);
+        .attr("transform", `translate(${margin.left}, ${height / 2})`);
 
       // tree() sets x and y value
       const tree = d3
