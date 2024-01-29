@@ -41,10 +41,10 @@ const Navbar = () => {
   const nicknameApi = async () => {
     try {
       const response = await axios.get(`/api/v1/nicknames/${user.user_id}`);
-      console.log("nickname: ", response.data.data.nickname);
+      // console.log("nickname: ", response.data.data.nickname);
       setNickname(response.data.data.nickname);
     } catch (error) {
-      console.error("Error: ", error);
+      // console.error("Error: ", error);
       localStorage.clear();
       setUser({
         user_id: 0,

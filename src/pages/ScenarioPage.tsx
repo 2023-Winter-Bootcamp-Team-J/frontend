@@ -12,7 +12,6 @@ import { userState } from "@/recoil/atoms";
 const ScenarioPage = () => {
   const user = useRecoilValue(userState);
   const { rootId } = useParams() as { rootId: string };
-  console.log("rootId: ", rootId);
   const story_id = parseInt(rootId, 10);
   const navigate = useNavigate(); // 뒤로 가기
 
@@ -20,17 +19,23 @@ const ScenarioPage = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false); // 모달 관리
 
   const [scenario, setScenario] = useState([]); // d3 시나리오
-  const [clickStoryId, setClickStoryId] = useState(story_id); // 클릭한 시나리오 조회
+  const [clickStoryId, setClickStoryId] = useState<{
+    storyId: number;
+    page: number;
+  }>({
+    storyId: story_id,
+    page: 0,
+  }); // 클릭한 시나리오 조회
 
   const handleClickBack = () => {
     // 메인 페이지로 가기
     navigate("/main");
   };
 
-  const openModal = (storyId: number) => {
-    console.log("click_id: ", storyId);
+  const openModal = (storyId: number, page: number) => {
+    // console.log("click_id: ", storyId);
     // 클릭한 스토리 아이디로 모달 열기
-    setClickStoryId(storyId);
+    setClickStoryId({ storyId: storyId, page: page });
     setIsStoryModalOpen(true);
   };
 
@@ -40,7 +45,7 @@ const ScenarioPage = () => {
     setIsCreateModalOpen(false);
   };
 
-  const handleClickStory = (storyId: number) => {
+  const handleClickStory = (storyId: number, page: number) => {
     // 스토리 생성 or 조회
     if (storyId < 0) {
       if (user.user_id) {
@@ -52,7 +57,7 @@ const ScenarioPage = () => {
       }
     } else {
       // 조회
-      setClickStoryId(storyId);
+      setClickStoryId({ storyId: storyId, page: page });
     }
   };
 
@@ -63,7 +68,7 @@ const ScenarioPage = () => {
         const response = await axios.get(
           `/api/v1/stories/branches/${story_id}/`
         );
-        console.log("response: ", response.data.data);
+        // console.log("response: ", response.data.data);
         if (response.status == 200) {
           setScenario(response.data.data);
         }
@@ -84,7 +89,6 @@ const ScenarioPage = () => {
           <ForceGraph openmodal={openModal} scenario={scenario} />
         </div>
       </div>
-      {/* <div className="flex gap-1 text-blue-100 text-[14px] absolute right-10 bottom-8"> */}
       <div className="flex gap-1 text-gray-400 text-[14px] absolute right-10 bottom-8">
         <svg
           className="w-[15px]"

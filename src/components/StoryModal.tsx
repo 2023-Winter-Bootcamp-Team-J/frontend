@@ -4,10 +4,13 @@ import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 
 interface StoryModalProps {
-  storyId: number;
+  storyId: {
+    storyId: number;
+    page: number;
+  };
   isOpen: boolean;
   onClose: () => void;
-  handleClickStory: (storyID: number) => void;
+  handleClickStory: (storyId: number, page: number) => void;
 }
 
 const StoryModal: React.FC<StoryModalProps> = ({
@@ -24,11 +27,11 @@ const StoryModal: React.FC<StoryModalProps> = ({
     child_content: string[];
   } | null>(null);
   const modalRef = useRef<HTMLDivElement>(null);
-  const [isFadeOutClicked1, setIsFadeOutClicked1] = useState(false);
-  const [isFadeOutClicked2, setIsFadeOutClicked2] = useState(false);
+  // const [isFadeOutClicked1, setIsFadeOutClicked1] = useState(false);
+  // const [isFadeOutClicked2, setIsFadeOutClicked2] = useState(false);
   const [isAnimationComplete1, setIsAnimationComplete1] = useState(false);
   const [isAnimationComplete2, setIsAnimationComplete2] = useState(false);
-  // console.log(storyId);
+  console.log("storyId:", storyId);
   // 모달 외부를 클릭했을 때 모달을 닫도록 하는 이벤트 처리
   const handleClickOutside = (e: MouseEvent) => {
     if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
@@ -54,7 +57,7 @@ const StoryModal: React.FC<StoryModalProps> = ({
     // console.log("**story_id: ", storyId);
     const storyAPI = async () => {
       try {
-        const response = await axios.get(`/api/v1/stories/${storyId}/`);
+        const response = await axios.get(`/api/v1/stories/${storyId.storyId}/`);
         // console.log("response: ", response.data.data);
         if (response.data.data) {
           // 데이터가 존재할 때만 state 업데이트
@@ -74,9 +77,9 @@ const StoryModal: React.FC<StoryModalProps> = ({
     storyAPI();
   }, [storyId]);
 
-  useEffect(() => {
-    console.log("story: ", story);
-  }, [story]);
+  // useEffect(() => {
+  //   console.log("story: ", story);
+  // }, [story]);
 
   return (
     <div
@@ -87,7 +90,7 @@ const StoryModal: React.FC<StoryModalProps> = ({
       <div ref={modalRef} className="flex gap-[100px]">
         <div className="flex flex-col w-[420px] h-[670px] z-1">
           <div className="flex gap-[15px] w-full h-[55px] justify-center items-center pt-[8px] pl-[35px] bg-blue-800 border-2 border-gray-400 text-green-400 text-[33px] font-Minecraft">
-            STORY
+            PAGE {storyId.page}
             <div className="text-gray-400 text-[18px]">
               @ &nbsp;
               {story?.user_nickname ? `${story.user_nickname}` : "LOADING..."}
@@ -123,7 +126,8 @@ const StoryModal: React.FC<StoryModalProps> = ({
                 // 애니메이션이 완료된 상태에서만 클릭 이벤트 처리
                 setIsAnimationComplete1(false);
                 handleClickStory(
-                  story?.child_id && story.child_id[0] ? story.child_id[0] : -1
+                  story?.child_id && story.child_id[0] ? story.child_id[0] : -1,
+                  storyId.page + 1
                 );
               }
             }}
@@ -166,7 +170,8 @@ const StoryModal: React.FC<StoryModalProps> = ({
                 // 애니메이션이 완료된 상태에서만 클릭 이벤트 처리
                 setIsAnimationComplete2(false);
                 handleClickStory(
-                  story?.child_id && story.child_id[1] ? story.child_id[1] : -1
+                  story?.child_id && story.child_id[1] ? story.child_id[1] : -1,
+                  storyId.page + 1
                 );
               }
             }}
