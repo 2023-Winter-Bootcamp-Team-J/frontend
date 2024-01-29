@@ -145,7 +145,7 @@ const ScenarioPage = () => {
       {isCreateModalOpen && (
         <div className="z-20">
           <CreateStoryModal
-            parentStoryID={clickStoryId}
+            parentStoryID={clickStoryId.storyId}
             isOpen={isCreateModalOpen}
             closeModal={closeModal}
           />
