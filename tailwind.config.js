@@ -82,6 +82,14 @@ export default {
             transform: "rotateX(180deg)",
           },
         },
+        "flip-vertical-fwd": {
+          "0%": {
+            transform: "translateZ(0) rotateY(0)",
+          },
+          "100%": {
+            transform: "translateZ(160px) rotateY(180deg)",
+          },
+        },
         "scale-up-ver-center": {
           "0%": {
             transform: "scaleY(0.4)",
@@ -118,6 +126,8 @@ export default {
         "scale-up-ver-bottom":
           "scale-up-ver-bottom 1s cubic-bezier(0.390, 0.575, 0.565, 1.000) both",
         "flip-card": "flip-card 5s infinite",
+        "flip-vertical-fwd":
+          "flip-vertical-fwd 0.4s cubic-bezier(0.455, 0.030, 0.515, 0.955) both",
         "slide-fwd-center":
           "slide-fwd-center 0.4s cubic-bezier(0.250, 0.460, 0.450, 0.940) both",
         "scale-up-ver-center":
