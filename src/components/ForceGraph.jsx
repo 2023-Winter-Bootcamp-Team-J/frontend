@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import * as d3 from "d3";
 
 const ForceGraph = ({ openmodal, scenario }) => {
@@ -56,7 +56,7 @@ const ForceGraph = ({ openmodal, scenario }) => {
       const height = document.body.clientHeight;
 
       // Add margins
-      const margin = { top: 0, left: 80, right: 50, bottom: 0 };
+      const margin = { top: 380, left: 300, right: 0, bottom: 0 };
       const innerWidth = width - margin.right - margin.left;
       const innerHeight = height - margin.top - margin.bottom;
 
@@ -67,20 +67,27 @@ const ForceGraph = ({ openmodal, scenario }) => {
         .attr("height", height);
 
       const zoomG = svg.append("g");
+      // const g = zoomG;
 
-      const g = zoomG.attr(
-        "transform",
-        `translate(${margin.left}, ${margin.top})`
-      );
+      const g = zoomG
+        .append("g")
+        .attr("transform", `translate( ${margin.left}, ${margin.top})`)
+        .style("transform", "rotateX(20deg) rotateY(8deg) rotateZ(-8deg)");
 
       // tree() sets x and y value
-      const tree = d3.tree().size([innerHeight, innerWidth]); //각각 노드의 수평 및 수직 크기
+      const tree = d3
+        .tree()
+        .size([innerHeight, innerWidth])
+        .nodeSize([200, 390]); //각각 노드의 수평 및 수직 크기
 
       // Add Zooming
       svg.call(
-        d3.zoom().on("zoom", ({ transform }) => {
-          zoomG.attr("transform", transform);
-        })
+        d3
+          .zoom()
+          .scaleExtent([0.45, 3.3]) // 최소 스케일과 최대 스케일을 설정
+          .on("zoom", ({ transform }) => {
+            zoomG.attr("transform", transform);
+          })
       );
 
       update();
@@ -101,21 +108,21 @@ const ForceGraph = ({ openmodal, scenario }) => {
           .append("path")
           .attr("d", (d) => lineGenerator([d.source, d.target])) // 직선으로 변경
           .style("stroke", "white")
-          .attr("stroke-width", 5)
-          .style("stroke-dasharray", "8, 5") // dashed 스타일 설정
-          .style("filter", "drop-shadow(0 0 10px rgba(255, 255, 255, 0.5))")
+          .attr("stroke-width", 10)
+          .style("stroke-dasharray", "10, 5") // dashed 스타일 설정
+          .style("filter", "drop-shadow(0 0 8px rgba(255, 255, 255, 0.3))")
           .attr("fill", "none");
 
         g.selectAll("rect") // 이미지 뒤에 rect를 추가
           .data(root.descendants())
           .enter()
           .append("rect")
-          .attr("width", 165)
-          .attr("height", 165)
-          .attr("x", (d) => d.y - 82.5)
-          .attr("y", (d) => d.x - 82.5)
-          .style("fill", "white")
-          .style("filter", "drop-shadow(0 0 10px rgba(255, 255, 255, 0.5))"); // 테두리에 그림자 효과 추가
+          .attr("width", 160)
+          .attr("height", 160)
+          .attr("x", (d) => d.y - 80)
+          .attr("y", (d) => d.x - 80)
+          .style("fill", "rgba(255, 255, 255, 0.8)")
+          .style("filter", "drop-shadow(0 0 10px rgba(255, 255, 255, 0.3))"); // 테두리에 그림자 효과 추가
 
         g.selectAll("image")
           .data(root.descendants())
