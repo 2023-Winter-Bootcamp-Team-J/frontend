@@ -33,8 +33,7 @@ const StoryModal: React.FC<StoryModalProps> = ({
   const [isAnimationComplete2, setIsAnimationComplete2] = useState(false);
   const [nextModalKey, setNextModalKey] = useState(0);
 
-  // console.log(storyId);
-  console.log("storyId:", storyId);
+  // console.log("storyId:", storyId);
   // 모달 외부를 클릭했을 때 모달을 닫도록 하는 이벤트 처리
   const handleClickOutside = (e: MouseEvent) => {
     if (
