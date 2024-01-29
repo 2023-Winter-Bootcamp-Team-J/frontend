@@ -79,8 +79,8 @@ const StoryModal: React.FC<StoryModalProps> = ({
         isOpen ? "" : "hidden"
       }`}
     >
-      <div className="flex gap-[100px]">
-        <div ref={modalRef} className="flex flex-col w-[420px] h-[670px] z-1">
+      <div ref={modalRef} className="flex gap-[100px]">
+        <div className="flex flex-col w-[420px] h-[670px] z-1">
           <div className="flex gap-[15px] w-full h-[55px] justify-center items-center pt-[8px] pl-[35px] bg-blue-800 border-2 border-gray-400 text-green-400 text-[33px] font-Minecraft">
             STORY
             <div className="text-gray-400 text-[18px]">
