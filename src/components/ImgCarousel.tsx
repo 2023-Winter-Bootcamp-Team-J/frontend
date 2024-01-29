@@ -35,7 +35,7 @@ const Carousel: React.FC<CarouselProps> = ({
 
   return (
     <div
-      className="relative w-[270px] h-[270px] overflow-hidden"
+      className="relative w-[350px] h-[350px]"
       style={{ filter: "drop-shadow(0px 6px 17px rgba(255, 255, 255, 0.3))" }}
     >
       {images.map((image, index) => (
@@ -56,14 +56,14 @@ const Carousel: React.FC<CarouselProps> = ({
       {images.length > 1 && (
         <>
           <button
-            className="absolute z-10 top-1/2 left-4 transform -translate-y-1/2 text-white text-5xl"
+            className="absolute z-10 top-1/2 left-[-2rem] transform -translate-y-1/2 text-white text-6xl"
             onClick={prevImage}
           >
             &#8249;
           </button>
           <div className="absolute z-10 text-white"></div>
           <button
-            className="absolute z-10  top-1/2 right-4 transform -translate-y-1/2 text-white text-5xl"
+            className="absolute z-10 top-1/2 right-[-2rem] transform -translate-y-1/2 text-white text-6xl"
             onClick={nextImage}
           >
             &#8250;
