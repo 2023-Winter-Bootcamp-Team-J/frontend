@@ -88,9 +88,9 @@ const LandingPage = () => {
             }}
           >
             <span>
-              사용자와 <span className="text-blue-600">AI</span>가 함께
-              <br></br>
-              다음 페이지를 창조해 나가는 서비스
+              " 나만의 <span className="text-blue-600">상상</span>을{" "}
+              <span className="text-green-400">현실</span>로 "<br></br>
+              여러분의 다음 페이지를 만들어보세요
             </span>
           </motion.div>
         </div>

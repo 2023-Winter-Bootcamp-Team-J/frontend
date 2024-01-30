@@ -118,7 +118,7 @@ const Onboarding2 = () => {
           }}
         >
           <div className="translate-x-[60px] transform rotate-[-10deg] hover:text-green-400 hover:scale-110">
-            내 애인이 간첩이라면?
+            내 애인이 스파이라면?
           </div>
         </motion.div>
         <motion.div
@@ -132,7 +132,7 @@ const Onboarding2 = () => {
           }}
         >
           <div className="translate-x-[70px] hover:text-green-400 hover:scale-110">
-            로맨스 소설 속에 들어간다면
+            소설 속 주인공이 된다면?
           </div>
         </motion.div>
         <motion.div
@@ -174,7 +174,7 @@ const Onboarding2 = () => {
           }}
         >
           <div className="translate-x-[-100px] transform rotate-[30deg] hover:text-green-400 hover:scale-110">
-            내가 너라면 아무 말없이
+            스티브 잡스가 살아있었다면?
           </div>
         </motion.div>
       </div>
