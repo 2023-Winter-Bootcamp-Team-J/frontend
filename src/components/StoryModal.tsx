@@ -84,10 +84,6 @@ const StoryModal: React.FC<StoryModalProps> = ({
     storyAPI();
   }, [storyId, nextModalKey]);
 
-  // useEffect(() => {
-  //   console.log("story: ", story);
-  // }, [story]);
-
   return (
     <div
       className={`flex justify-center items-center fixed top-0 left-0 w-[100vw] h-[100vh] bg-black bg-opacity-50 ${
@@ -98,13 +94,6 @@ const StoryModal: React.FC<StoryModalProps> = ({
         <motion.div
           key={`story-modal-${nextModalKey}`}
           className={`flex flex-col w-[420px] h-[670px] z-1`}
-          // initial={{ opacity: 0, scale: 0.5 }}
-          //     animate={{
-          //       opacity: isAnimationComplete1 && !isCreateModalOpen ? 1 : 0,
-          //       scale: isAnimationComplete1 ? 1 : 0.5,
-          //     }}
-          //     transition={{ duration: isAnimationComplete1 ? 1 : 1 }}
-          // initial={{ opacity: 0, y: 80, rotateY: 500 }}
           initial={{
             opacity: isCreateModalOpen ? 1 : 0,
             scale: 1,
@@ -157,7 +146,7 @@ const StoryModal: React.FC<StoryModalProps> = ({
             </div>
             <button
               onClick={onClose}
-              className="flex w-[60px] h-[35px] justify-center items-center bg-zinc-300 border-2 border-gray-500 font-Minecraft font-bold text-black text-[20px] hover:bg-blue-600 hover:text-green-400 hover:shadow-blue-600"
+              className="flex w-[60px] h-[30px] justify-center items-center bg-zinc-300 border-2 border-gray-500 font-Minecraft font-bold text-black text-[20px] hover:bg-blue-600 hover:text-green-400 hover:shadow-blue-600"
             >
               <p className="pt-[4px]">OK</p>
             </button>
@@ -181,12 +170,16 @@ const StoryModal: React.FC<StoryModalProps> = ({
                 }
               }}
               className={`flex gap-[40px]`}
-              initial={{ opacity: 0, scale: 0.5 }}
+              style={{
+                opacity: isCreateModalOpen ? 0 : 1,
+              }}
+              initial={{ opacity: 0, scale: 1.2 }}
               animate={{
                 opacity: isAnimationComplete1 && !isCreateModalOpen ? 1 : 0,
-                scale: isAnimationComplete1 ? 1 : 0.5,
+                scale: isAnimationComplete1 ? 1 : 1.2,
               }}
-              transition={{ duration: isAnimationComplete1 ? 1 : 1 }}
+              whileHover={{ scale: 1.1, transition: { duration: 0.4 } }}
+              transition={{ duration: 0.6 }}
               onAnimationComplete={() => {
                 setIsAnimationComplete1(true);
               }}
@@ -214,8 +207,6 @@ const StoryModal: React.FC<StoryModalProps> = ({
           <motion.div
             onClick={() => {
               if (isAnimationComplete2) {
-                // 애니메이션이 완료된 상태에서만 클릭 이벤트 처리
-                setIsAnimationComplete2(false);
                 handleClickStory(
                   story?.child_id && story.child_id[1] ? story.child_id[1] : -1,
                   storyId.page + 1
@@ -227,12 +218,13 @@ const StoryModal: React.FC<StoryModalProps> = ({
             style={{
               opacity: isCreateModalOpen ? 0 : 1,
             }}
-            initial={{ opacity: 0, scale: 0.5 }}
+            initial={{ opacity: 0, scale: 1.2 }}
             animate={{
               opacity: isAnimationComplete2 && !isCreateModalOpen ? 1 : 0,
-              scale: isAnimationComplete2 ? 1 : 0.5,
+              scale: isAnimationComplete2 ? 1 : 1.2,
             }}
-            transition={{ duration: isAnimationComplete1 ? 1 : 1 }}
+            whileHover={{ scale: 1.1, transition: { duration: 0.4 } }}
+            transition={{ duration: 0.6 }}
             onAnimationComplete={() => {
               setIsAnimationComplete2(true);
             }}
