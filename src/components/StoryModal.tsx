@@ -28,35 +28,40 @@ const StoryModal: React.FC<StoryModalProps> = ({
     child_id: number[];
     child_content: string[];
   } | null>(null);
-  const modalRef = useRef<HTMLDivElement>(null);
+  const modalRefs = [
+    useRef<HTMLDivElement>(null),
+    useRef<HTMLDivElement>(null),
+    useRef<HTMLDivElement>(null),
+  ];
   const [isAnimationComplete1, setIsAnimationComplete1] = useState(false);
   const [isAnimationComplete2, setIsAnimationComplete2] = useState(false);
   const [nextModalKey, setNextModalKey] = useState(0);
 
-  // console.log("storyId:", storyId);
-  // 모달 외부를 클릭했을 때 모달을 닫도록 하는 이벤트 처리
-  const handleClickOutside = (e: MouseEvent) => {
+  const handleBackgroundClick = (e: MouseEvent) => {
+    // 모달 외부를 클릭했을 때 모달을 닫도록 하는 이벤트 처리
     if (
-      isOpen &&
-      modalRef.current &&
-      !modalRef.current.contains(e.target as Node)
-    )
+      modalRefs.every(
+        (modalRef) => !modalRef.current?.contains(e.target as Node)
+      ) &&
+      isOpen
+    ) {
       if (!isCreateModalOpen) {
         onClose();
       }
+    }
   };
 
   useEffect(() => {
     if (isOpen) {
       // 모달이 열릴 때 외부 클릭 이벤트 리스너 등록
-      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener("mousedown", handleBackgroundClick);
     } else {
       // 모달이 닫힐 때 외부 클릭 이벤트 리스너 제거
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("mousedown", handleBackgroundClick);
     }
     // 컴포넌트 언마운트 시에 이벤트 리스너 정리
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("mousedown", handleBackgroundClick);
     };
   }, [isOpen, isCreateModalOpen]);
 
@@ -90,8 +95,9 @@ const StoryModal: React.FC<StoryModalProps> = ({
         isOpen ? "" : "hidden"
       }`}
     >
-      <div ref={modalRef} className="flex gap-[100px] z-20">
+      <div className="flex gap-[100px] z-20">
         <motion.div
+          ref={modalRefs[0]}
           key={`story-modal-${nextModalKey}`}
           className={`flex flex-col w-[420px] h-[670px] z-1`}
           initial={{
@@ -185,7 +191,10 @@ const StoryModal: React.FC<StoryModalProps> = ({
               }}
             >
               <img className="w-[60px] h-[60px]" src="/asset/hand.svg" alt="" />
-              <div className="flex flex-col w-[370px] h-[235px] z-1">
+              <div
+                ref={modalRefs[1]}
+                className="flex flex-col w-[370px] h-[235px] z-1"
+              >
                 <div className="flex gap-[15px] w-full h-[40px] justify-center items-center pt-[8px] bg-blue-800 border-2 border-b-0 border-gray-400 text-green-400 hover:bg-green-400 hover:text-blue-800 text-[23px] font-Minecraft">
                   NEXT
                 </div>
@@ -230,7 +239,10 @@ const StoryModal: React.FC<StoryModalProps> = ({
             }}
           >
             <img className="w-[60px] h-[60px]" src="/asset/hand.svg" alt="" />
-            <div className="flex flex-col w-[370px] h-[235px] z-1">
+            <div
+              ref={modalRefs[2]}
+              className="flex flex-col w-[370px] h-[235px] z-1"
+            >
               <div className="flex gap-[15px] w-full h-[40px] justify-center items-center pt-[8px] bg-blue-800 border-2 border-b-0 border-gray-400 text-green-400 hover:bg-green-400 hover:text-blue-800 text-[23px] font-Minecraft">
                 NEXT
               </div>

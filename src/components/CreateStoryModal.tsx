@@ -215,14 +215,14 @@ const CreateStoryModal: React.FC<CreateStoryModalProps> = ({
 
   return (
     <div
-      className={`flex justify-start items-center fixed top-0 right-[-810px] w-[100vw] h-[100vh]${
+      className={`flex justify-start items-center fixed top-0 pl-[55px] right-[-50%] w-[100vw] h-[100vh]${
         isOpen ? "" : "hidden"
       }`}
     >
       <motion.div
         ref={modalRef}
         className={`z-100 flex flex-col w-[440px] h-[670px]`}
-        initial={{ opacity: 0, y: 80, rotateY: 600 }}
+        initial={{ opacity: 0, y: 80, rotateY: 500 }}
         animate={{
           opacity: 1,
           y: 0,

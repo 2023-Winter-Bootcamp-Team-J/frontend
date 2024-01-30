@@ -22,13 +22,25 @@ const RootModal: React.FC<RootModalProps> = ({
     image_url: string;
     child_content: string[];
   } | null>(null);
+  const modalRefs = [
+    useRef<HTMLDivElement>(null),
+    useRef<HTMLDivElement>(null),
+    useRef<HTMLDivElement>(null),
+  ];
+  const [isAnimationComplete1, setIsAnimationComplete1] = useState(false);
+  const [isAnimationComplete2, setIsAnimationComplete2] = useState(false);
 
   const handleBackgroundClick = (e: MouseEvent) => {
-    // 배경 클릭 시 모달 닫기
-    if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
+    // 모달 외부를 클릭했을 때 모달을 닫도록 하는 이벤트 처리
+    if (
+      modalRefs.every(
+        (modalRef) => !modalRef.current?.contains(e.target as Node)
+      )
+    ) {
       closeStory();
     }
   };
+
   useEffect(() => {
     const ShowRootScenario = async () => {
       try {
@@ -46,6 +58,7 @@ const RootModal: React.FC<RootModalProps> = ({
         console.error(error);
       }
     };
+
     if (isOpen) {
       // isOpen이 true이고 storyId가 존재할 때에만 API 호출
       ShowRootScenario();
@@ -56,11 +69,6 @@ const RootModal: React.FC<RootModalProps> = ({
     const rootId = storyId;
     navigate(`/scenario/${rootId}`);
   };
-
-  const modalRef = useRef<HTMLDivElement>(null);
-  const [isAnimationComplete1, setIsAnimationComplete1] = useState(false);
-  const [isAnimationComplete2, setIsAnimationComplete2] = useState(false);
-  // const [nextModalKey, setNextModalKey] = useState(0);
 
   useEffect(() => {
     if (isOpen) {
@@ -75,17 +83,18 @@ const RootModal: React.FC<RootModalProps> = ({
       document.removeEventListener("mousedown", handleBackgroundClick);
     };
   }, [isOpen]);
+
   return (
     <div
       className={`flex justify-center items-center fixed top-0 left-0 w-[100vw] h-[100vh] bg-black bg-opacity-50 ${
         isOpen ? "" : "hidden"
       }`}
     >
-      <div ref={modalRef} className="flex gap-[100px] z-10">
+      <div className="flex gap-[110px] z-10">
         <motion.div
-          // key={`story-modal-${nextModalKey}`}
+          ref={modalRefs[0]}
           className={`flex flex-col w-[420px] h-[670px] z-1`}
-          initial={{ opacity: 0, y: 80, rotateY: 700 }}
+          initial={{ opacity: 0, y: 80, rotateY: 500 }}
           animate={{
             opacity: 1,
             y: 0,
@@ -137,28 +146,33 @@ const RootModal: React.FC<RootModalProps> = ({
           {story?.child_content && story.child_content[0] && (
             <motion.div
               className={`flex gap-[40px]`}
-              initial={{ opacity: 0, scale: 0.5 }}
+              initial={{ opacity: 0, scale: 1.2 }}
               animate={{
                 opacity: isAnimationComplete1 ? 1 : 0,
-                scale: isAnimationComplete1 ? 1 : 0.5,
+                scale: isAnimationComplete1 ? 1 : 1.2,
               }}
-              whileHover={{ scale: 1.1, transition: { duration: 0.2 } }}
-              transition={{ duration: isAnimationComplete1 ? 1 : 1 }}
+              // whileHover={{ scale: 1.1, transition: { duration: 0.4 } }}
+              transition={{ duration: 0.6 }}
               onAnimationComplete={() => {
                 setIsAnimationComplete1(true);
               }}
             >
-              <img className="w-[60px] h-[60px]" src="/asset/hand.svg" alt="" />
-              <div className="flex flex-col w-[370px] h-[235px] z-1">
-                <div className="flex gap-[15px] w-full h-[40px] justify-center items-center pt-[8px] bg-blue-800 border-2 border-b-0 border-gray-400 text-green-400 hover:bg-green-400 hover:text-blue-800 text-[23px] font-Minecraft">
-                  NEXT
+              {/* <img className="w-[60px] h-[60px]" src="/asset/hand.svg" alt="" /> */}
+              <div
+                ref={modalRefs[1]}
+                className="flex flex-col w-[370px] h-[235px] z-1"
+              >
+                <div className="flex gap-[15px] w-full h-[40px] justify-center items-center pt-[8px] bg-blue-800 border-2 border-b-0 border-gray-400 text-green-400 text-[23px] font-Minecraft">
+                  PREVIEW
                 </div>
                 <div className="flex flex-col w-full h-[220px] justify-center items-center bg-[#000000ae] text-white border-2 border-gray-400 ">
                   <div className="w-[330px] h-[155px] p-[10px] border-dashed border-2 border-gray-500 bg-black">
                     {story?.child_content && story.child_content[0] ? (
                       <p>{story.child_content[0]}</p>
                     ) : (
-                      <span className="flex justify-center leading-[8rem] text-gray-400 hover:text-white hover:scale-110">
+                      <span className="flex justify-center pt-[40px] text-center text-gray-400 hover:text-white hover:scale-110">
+                        GO ! 버튼을 클릭해
+                        <br />
                         새로운 이야기를 만들어보세요 !
                       </span>
                     )}
@@ -173,28 +187,33 @@ const RootModal: React.FC<RootModalProps> = ({
             style={{
               opacity: isOpen ? 0 : 1,
             }}
-            initial={{ opacity: 0, scale: 0.5 }}
+            initial={{ opacity: 0, scale: 1.2 }}
             animate={{
               opacity: isAnimationComplete2 ? 1 : 0,
-              scale: isAnimationComplete2 ? 1 : 0.5,
+              scale: isAnimationComplete2 ? 1 : 1.2,
             }}
-            whileHover={{ scale: 1.1, transition: { duration: 0.2 } }}
-            transition={{ duration: isAnimationComplete1 ? 1 : 1 }}
+            // whileHover={{ scale: 1.1, transition: { duration: 0.4 } }}
+            transition={{ duration: 0.6 }}
             onAnimationComplete={() => {
               setIsAnimationComplete2(true);
             }}
           >
-            <img className="w-[60px] h-[60px]" src="/asset/hand.svg" alt="" />
-            <div className="flex flex-col w-[370px] h-[235px] z-1">
-              <div className="flex gap-[15px] w-full h-[40px] justify-center items-center pt-[8px] bg-blue-800 border-2 border-b-0 border-gray-400 text-green-400 hover:bg-green-400 hover:text-blue-800 text-[23px] font-Minecraft">
-                NEXT
+            {/* <img className="w-[60px] h-[60px]" src="/asset/hand.svg" alt="" /> */}
+            <div
+              ref={modalRefs[2]}
+              className="flex flex-col w-[370px] h-[235px] z-1"
+            >
+              <div className="flex gap-[15px] w-full h-[40px] justify-center items-center pt-[8px] bg-blue-800 border-2 border-b-0 border-gray-400 text-green-400 text-[23px] font-Minecraft">
+                PREVIEW
               </div>
               <div className="flex flex-col w-full h-[220px] justify-center items-center bg-[#000000ae] text-white border-2 border-gray-400 ">
                 <div className="w-[330px] h-[155px] p-[10px] border-dashed border-2 border-gray-500 bg-black hover:text-white ">
                   {story?.child_content && story.child_content[1] ? (
                     <p>{story.child_content[1]}</p>
                   ) : (
-                    <span className="flex justify-center leading-[8rem] text-gray-400">
+                    <span className="flex justify-center pt-[40px] text-center text-gray-400">
+                      GO ! 버튼을 클릭해
+                      <br />
                       새로운 이야기를 만들어보세요 !
                     </span>
                   )}

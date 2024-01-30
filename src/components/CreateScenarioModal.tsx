@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState, ChangeEvent } from "react";
 import axios from "axios";
+import { motion } from "framer-motion";
 import Carousel from "./ImgCarousel";
 import Lottie from "lottie-react";
 import lottieData from "../assets/lottie.json";
@@ -213,7 +214,28 @@ const CreateScenarioModal: React.FC<CreateScenarioModalProps> = ({
         isOpen ? "" : "hidden"
       }`}
     >
-      <div ref={modalRef} className="z-100 flex flex-col w-[440px] h-[670px]">
+      <motion.div
+        ref={modalRef}
+        className="z-100 flex flex-col w-[440px] h-[670px]"
+        initial={{ opacity: 0, y: 80, rotateY: 500 }}
+        animate={{
+          opacity: 1,
+          y: 0,
+          rotateY: 0,
+          transition: {
+            rotateY: {
+              duration: 1,
+            },
+            y: {
+              type: "spring",
+              damping: 3,
+              stiffness: 50,
+              restDelta: 0.01,
+              duration: 0.3,
+            },
+          },
+        }}
+      >
         <div className="flex w-full h-[55px] justify-center items-center pt-[8px] bg-blue-800 border-2 border-white text-green-400 text-[33px] font-Minecraft">
           NEW SCENARIO
         </div>
@@ -304,7 +326,7 @@ const CreateScenarioModal: React.FC<CreateScenarioModalProps> = ({
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };
