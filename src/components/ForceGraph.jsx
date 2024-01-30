@@ -5,8 +5,8 @@ const ForceGraph = ({ openmodal, scenario }) => {
   const svgRef = useRef(null);
 
   const handleClickStory = (d) => {
-    console.log("d: ", d);
-    console.log("d.depth: ", d.depth);
+    // console.log("d: ", d);
+    // console.log("d.depth: ", d.depth);
     const story_id = d.data.story_id;
     const page = d.depth + 1;
     openmodal(story_id, page);
@@ -82,39 +82,58 @@ const ForceGraph = ({ openmodal, scenario }) => {
         .size([innerHeight, innerWidth])
         .nodeSize([200, 390]); //각각 노드의 수평 및 수직 크기
 
+      const root = d3.hierarchy(treeData[0]); // 트리구조
+      const links = tree(root).links();
+      const lineGenerator = d3
+        .line()
+        .x((d) => d.y)
+        .y((d) => d.x);
+
+      // // Add Zooming
+      // svg.call(
+      //   d3
+      //     .zoom()
+      //     .scaleExtent([0.45, 3.3]) // 최소 스케일과 최대 스케일을 설정
+      //     .on("zoom", ({ transform }) => {
+      //       zoomG.attr("transform", transform);
+      //     })
+      // );
+
       // Add Zooming
-      svg.call(
-        d3
-          .zoom()
-          .scaleExtent([0.45, 3.3]) // 최소 스케일과 최대 스케일을 설정
-          .on("zoom", ({ transform }) => {
-            zoomG.attr("transform", transform);
-          })
-      );
+      const zoom = d3
+        .zoom()
+        .scaleExtent([0.45, 3.3]) // 최소 스케일과 최대 스케일을 설정
+        .on("zoom", ({ transform }) => {
+          zoomG.attr("transform", transform);
+        });
+
+      g.call(zoom);
+
+      // Update zoom based on the number of nodes
+      const totalNodes = root.descendants().length;
+      const scale = 2 / Math.log2(totalNodes + 1); // 로그 기반 스케일
+
+      g.transition().call(zoom.scaleTo, scale);
 
       update();
 
       // eslint 경고 무시하는 주석
       // eslint-disable-next-line no-inner-declarations
       function update() {
-        const root = d3.hierarchy(treeData[0]); // 트리구조
-        const links = tree(root).links();
-        const lineGenerator = d3
-          .line()
-          .x((d) => d.y)
-          .y((d) => d.x);
-
         g.selectAll("path")
           .data(links)
           .enter()
           .append("path")
-          .attr("d", (d) => lineGenerator([d.source, d.target])) // 직선으로 변경
+          .attr("d", (d) => lineGenerator(d)) // 직선으로 변경
+          .attr("fill", "none")
           .style("stroke", "white")
           .attr("stroke-width", 18)
           .style("stroke-dasharray", "18, 10") // dashed 스타일 설정
           .style("filter", "drop-shadow(0 0 8px rgba(255, 255, 255, 0.5))")
           .style("transform", "rotateX(20deg) rotateY(8deg) rotateZ(-8deg)")
-          .attr("fill", "none");
+          .transition()
+          .attr("d", (d) => lineGenerator([d.source, d.target])) // 직선으로 변경
+          .delay((d) => 500 + 250 * d.source.depth);
 
         g.selectAll("rect") // 이미지 뒤에 rect를 추가
           .data(root.descendants())
@@ -125,21 +144,27 @@ const ForceGraph = ({ openmodal, scenario }) => {
           .attr("x", (d) => d.y - 80)
           .attr("y", (d) => d.x - 80)
           .style("transform", "rotateX(20deg) rotateY(8deg) rotateZ(-8deg)")
+          .style("fill", "none")
+          .style("filter", "drop-shadow(0 0 10px rgba(255, 255, 255, 0.5))")
+          .transition()
           .style("fill", "rgba(255, 255, 255, 0.9)")
-          .style("filter", "drop-shadow(0 0 10px rgba(255, 255, 255, 0.5))"); // 테두리에 그림자 효과 추가
+          .delay((d) => 250 + 300 * d.depth);
 
         g.selectAll("image")
           .data(root.descendants())
           .enter()
           .append("image")
-          .attr("xlink:href", (d) => d.data.image_url)
           .attr("width", 150)
           .attr("height", 150)
           .attr("x", (d) => d.y - 75)
           .attr("y", (d) => d.x - 75)
           .style("transform", "rotateX(20deg) rotateY(8deg) rotateZ(-8deg)")
-          .on("click", (event, d) => handleClickStory(d)); // 클릭 이벤트 핸들러 추가
-        // .on("click", (event, d) => handleClickStory(d.data.story_id)); // 클릭 이벤트 핸들러 추가
+          .style("fill", "none")
+          .transition()
+          .attr("xlink:href", (d) => d.data.image_url)
+          .delay((d) => 250 + 300 * d.depth);
+
+        g.selectAll("image").on("click", (event, d) => handleClickStory(d)); // 클릭 이벤트 핸들러 추가
       }
     }
   }, [scenario]);
