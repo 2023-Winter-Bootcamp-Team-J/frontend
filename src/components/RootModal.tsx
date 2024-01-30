@@ -22,13 +22,25 @@ const RootModal: React.FC<RootModalProps> = ({
     image_url: string;
     child_content: string[];
   } | null>(null);
+  const modalRefs = [
+    useRef<HTMLDivElement>(null),
+    useRef<HTMLDivElement>(null),
+    useRef<HTMLDivElement>(null),
+  ];
+  const [isAnimationComplete1, setIsAnimationComplete1] = useState(false);
+  const [isAnimationComplete2, setIsAnimationComplete2] = useState(false);
 
   const handleBackgroundClick = (e: MouseEvent) => {
     // 배경 클릭 시 모달 닫기
-    if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
+    if (
+      modalRefs.every(
+        (modalRef) => !modalRef.current?.contains(e.target as Node)
+      )
+    ) {
       closeStory();
     }
   };
+
   useEffect(() => {
     const ShowRootScenario = async () => {
       try {
@@ -46,6 +58,7 @@ const RootModal: React.FC<RootModalProps> = ({
         console.error(error);
       }
     };
+
     if (isOpen) {
       // isOpen이 true이고 storyId가 존재할 때에만 API 호출
       ShowRootScenario();
@@ -56,11 +69,6 @@ const RootModal: React.FC<RootModalProps> = ({
     const rootId = storyId;
     navigate(`/scenario/${rootId}`);
   };
-
-  const modalRef = useRef<HTMLDivElement>(null);
-  const [isAnimationComplete1, setIsAnimationComplete1] = useState(false);
-  const [isAnimationComplete2, setIsAnimationComplete2] = useState(false);
-  // const [nextModalKey, setNextModalKey] = useState(0);
 
   useEffect(() => {
     if (isOpen) {
@@ -75,15 +83,16 @@ const RootModal: React.FC<RootModalProps> = ({
       document.removeEventListener("mousedown", handleBackgroundClick);
     };
   }, [isOpen]);
+
   return (
     <div
       className={`flex justify-center items-center fixed top-0 left-0 w-[100vw] h-[100vh] bg-black bg-opacity-50 ${
         isOpen ? "" : "hidden"
       }`}
     >
-      <div ref={modalRef} className="flex gap-[100px] z-10">
+      <div className="flex gap-[100px] z-10">
         <motion.div
-          // key={`story-modal-${nextModalKey}`}
+          ref={modalRefs[0]}
           className={`flex flex-col w-[420px] h-[670px] z-1`}
           initial={{ opacity: 0, y: 80, rotateY: 700 }}
           animate={{
@@ -148,7 +157,10 @@ const RootModal: React.FC<RootModalProps> = ({
               }}
             >
               <img className="w-[60px] h-[60px]" src="/asset/hand.svg" alt="" />
-              <div className="flex flex-col w-[370px] h-[235px] z-1">
+              <div
+                ref={modalRefs[1]}
+                className="flex flex-col w-[370px] h-[235px] z-1"
+              >
                 <div className="flex gap-[15px] w-full h-[40px] justify-center items-center pt-[8px] bg-blue-800 border-2 border-b-0 border-gray-400 text-green-400 hover:bg-green-400 hover:text-blue-800 text-[23px] font-Minecraft">
                   NEXT
                 </div>
@@ -183,7 +195,10 @@ const RootModal: React.FC<RootModalProps> = ({
             }}
           >
             <img className="w-[60px] h-[60px]" src="/asset/hand.svg" alt="" />
-            <div className="flex flex-col w-[370px] h-[235px] z-1">
+            <div
+              ref={modalRefs[2]}
+              className="flex flex-col w-[370px] h-[235px] z-1"
+            >
               <div className="flex gap-[15px] w-full h-[40px] justify-center items-center pt-[8px] bg-blue-800 border-2 border-b-0 border-gray-400 text-green-400 hover:bg-green-400 hover:text-blue-800 text-[23px] font-Minecraft">
                 NEXT
               </div>
