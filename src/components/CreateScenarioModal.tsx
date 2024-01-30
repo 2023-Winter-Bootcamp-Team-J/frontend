@@ -111,7 +111,7 @@ const CreateScenarioModal: React.FC<CreateScenarioModalProps> = ({
   };
 
   useEffect(() => {
-    console.log("currentIndex: ", currentImageIndex);
+    // console.log("currentIndex: ", currentImageIndex);
   }, [currentImageIndex]);
 
   useEffect(() => {
@@ -213,14 +213,11 @@ const CreateScenarioModal: React.FC<CreateScenarioModalProps> = ({
         isOpen ? "" : "hidden"
       }`}
     >
-      <div
-        ref={modalRef}
-        className="z-100 flex flex-col w-[440px] h-[670px] animate-scale-up-ver-center"
-      >
+      <div ref={modalRef} className="z-100 flex flex-col w-[440px] h-[670px]">
         <div className="flex w-full h-[55px] justify-center items-center pt-[8px] bg-blue-800 border-2 border-white text-green-400 text-[33px] font-Minecraft">
           NEW SCENARIO
         </div>
-        <div className="relative flex flex-col w-full h-full justify-center items-center gap-[17px] bg-black border-2 border-t-0 border-white text-white">
+        <div className="relative flex flex-col w-full h-full justify-center items-center gap-[17px] bg-[#000000d2] border-2 border-t-0 border-white text-white">
           {isGenerating && (
             <div className="absolute z-50 gap-[10px] p-[70px] bg-gray-500 bg-opacity-50 w-full h-[615px]">
               <Lottie
@@ -277,7 +274,7 @@ const CreateScenarioModal: React.FC<CreateScenarioModalProps> = ({
               <div className="flex flex-col gap-1 items-end text-white">
                 <textarea
                   placeholder="Write your own scenario!"
-                  className="focus:outline-none font-['DungGeunMo'] w-[350px] h-[140px] p-[7px] border-dashed border-2 border-gray-500 bg-transparent focus:border-white"
+                  className="focus:outline-none font-['DungGeunMo'] w-[350px] h-[140px] p-[7px] border-dashed border-2 border-gray-500 bg-black focus:border-white"
                   value={content}
                   onChange={handleContentChange}
                   maxLength={100}

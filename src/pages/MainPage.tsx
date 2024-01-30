@@ -92,7 +92,7 @@ const MainPage = () => {
               <hr className="border-white w-[600px]" />
             </motion.div>
           </div>
-          <div className="flex justify-center">
+          <div className="z-1 flex justify-center">
             <SwiperComponent
               stories={stories}
               modalOpen={modalOpen}

@@ -242,13 +242,13 @@ const CreateStoryModal: React.FC<CreateStoryModalProps> = ({
         }}
       >
         <div className="flex w-full h-[55px] justify-center items-center pt-[8px] bg-blue-800 border-2 border-white text-green-400 text-[33px] font-Minecraft">
-          {/* NEXT PAGE */}
-          <span className="text-white">
-            <span className="text-blue-600">N</span>EXT{" "}
-            <span className="text-green-400">P</span>AGE
-          </span>
+          NEXT PAGE
+          {/* <span className="text-green-400">
+            <span className="text-white">N</span>EXT{" "}
+            <span className="text-white">P</span>AGE
+          </span> */}
         </div>
-        <div className="relative flex flex-col w-full h-full justify-center items-center gap-[17px] bg-black border-2 border-t-0 border-white text-white">
+        <div className="relative flex flex-col w-full h-full justify-center items-center gap-[17px] bg-[#000000ae] border-2 border-t-0 border-white text-white">
           {isGenerating && (
             <div className="absolute z-50 gap-[10px] p-[70px] bg-gray-500 bg-opacity-50 w-full h-[615px]">
               <Lottie
@@ -276,7 +276,7 @@ const CreateStoryModal: React.FC<CreateStoryModalProps> = ({
             />
           </svg>
           <div
-            className="w-[185px] absolute z-20 top-[45px] right-[30px] text-[13px] bg-[#3e4646c0] text-green-400 p-2 text-left"
+            className="w-[185px] absolute z-20 top-[45px] right-[15px] text-[13px] bg-[#3e4646c0] text-green-400 p-2 text-left"
             style={{ display: isHovered ? "block" : "none" }}
           >
             장면을 자세히 묘사하면
@@ -304,8 +304,8 @@ const CreateStoryModal: React.FC<CreateStoryModalProps> = ({
               </div>
               <div className="flex flex-col gap-1 items-end text-white">
                 <textarea
-                  placeholder="Write your own next page!"
-                  className="focus:outline-none font-['DungGeunMo'] w-[350px] h-[140px] p-[7px] border-dashed border-2 border-gray-500 bg-transparent focus:border-white"
+                  placeholder="Write your next page!"
+                  className="focus:outline-none font-['DungGeunMo'] w-[350px] h-[140px] p-[7px] border-dashed border-2 border-gray-500 bg-black focus:border-white"
                   value={content}
                   onChange={handleContentChange}
                   maxLength={100}

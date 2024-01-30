@@ -2,6 +2,7 @@ import React from "react";
 import axios from "axios";
 import { useRef, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 interface RootModalProps {
   isOpen: boolean;
@@ -57,6 +58,10 @@ const RootModal: React.FC<RootModalProps> = ({
   };
 
   const modalRef = useRef<HTMLDivElement>(null);
+  const [isAnimationComplete1, setIsAnimationComplete1] = useState(false);
+  const [isAnimationComplete2, setIsAnimationComplete2] = useState(false);
+  // const [nextModalKey, setNextModalKey] = useState(0);
+
   useEffect(() => {
     if (isOpen) {
       // 모달이 열릴 때 외부 클릭 이벤트 리스너 등록
@@ -76,118 +81,126 @@ const RootModal: React.FC<RootModalProps> = ({
         isOpen ? "" : "hidden"
       }`}
     >
-      <div
-        ref={modalRef}
-        className="flex flex-col w-[800px] h-[450px] z-1 animate-scale-up-ver-center"
-      >
-        <div className="flex w-full h-[55px] justify-center items-center pt-[8px] bg-blue-800 border-2 border-white text-green-400 text-[33px] font-Minecraft">
-          SCENARIO
-          <div className="text-gray-400 text-[18px] ml-[20px]">
-            by {story?.user_nickname}
-          </div>
-        </div>
-
-        {/* 변경 */}
-        <div className="flex flex-col w-full h-[395px] justify-center items-center gap-[10px] bg-black text-white border-2 border-gray-400 ">
-          <div className="flex justify-center w-full h-[270px] gap-[80px]">
-            <div className="w-[270px] bg-gray-500">
-              <img className="flex" src={story?.image_url} alt="Loading..." />
-            </div>
-            <div className="flex flex-col justify-center w-[300px] gap-[10px]">
-              <div className="flex items-center w-[300px] gap-[20px]">
-                <div className="w-[300px] h-[130px] p-[10px] mb-[5px] border-dashed border-2 border-gray-500 bg-transparent ">
-                  {story?.content ? story.content : "LOADING..."}
-                </div>
-              </div>
-              <div className="flex items-center w-[300px] h-[60px] gap-[10px] p-2">
-                <img className="flex w-[40px]" src="/asset/hand.svg" alt="손" />
-                <div className="w-full">
-                  {story?.child_content && story.child_content[0] ? (
-                    <p className="w-[240px] text-[1rem] ellipsis2 ">
-                      {story.child_content[0]}
-                    </p>
-                  ) : (
-                    <span className="text-gray-400">
-                      새로운 이야기를 만들어보세요!
-                    </span>
-                  )}
-                </div>
-              </div>
-              <div className="flex items-center w-[300px] h-[60px] gap-[10px] p-2">
-                <img className="flex w-[40px]" src="/asset/hand.svg" alt="손" />
-                <div className="w-full">
-                  {story?.child_content && story.child_content[1] ? (
-                    <p className="w-[240px] text-[1rem] ellipsis2 ">
-                      {story.child_content[1]}
-                    </p>
-                  ) : (
-                    <span className="text-gray-400">
-                      새로운 이야기를 만들어보세요!
-                    </span>
-                  )}
-                </div>
-              </div>
+      <div ref={modalRef} className="flex gap-[100px] z-10">
+        <motion.div
+          // key={`story-modal-${nextModalKey}`}
+          className={`flex flex-col w-[420px] h-[670px] z-1`}
+          initial={{ opacity: 0, y: 80, rotateY: 700 }}
+          animate={{
+            opacity: 1,
+            y: 0,
+            rotateY: 0,
+            transition: {
+              rotateY: {
+                duration: 1,
+              },
+              y: {
+                type: "spring",
+                damping: 3,
+                stiffness: 50,
+                restDelta: 0.01,
+                duration: 0.3,
+              },
+            },
+          }}
+        >
+          <div className="relative flex gap-[15px] w-full h-[55px] justify-center items-center pt-[8px] bg-blue-800 border-2 border-b-0 border-gray-400 text-green-400 text-[33px] font-Minecraft">
+            <span>SCENARIO</span>
+            <div className="text-gray-400 text-[14px] absolute bottom-[8px] right-[32px]">
+              @ {story?.user_nickname ? `${story.user_nickname}` : "LOADING..."}
             </div>
           </div>
-          <button
-            className="flex w-[55px] justify-center mt-[10px] pt-[3px] bg-zinc-300 border-2 border-gray-500 font-Minecraft font-bold text-black text-[20px] hover:bg-blue-600 hover:text-green-400 hover:shadow-blue-600"
-            onClick={handleOkButtonClick}
+          <div className="flex flex-col w-full h-[615px] justify-center items-center gap-[16px] bg-[#000000ae] text-white border-2 border-gray-400 ">
+            <img
+              className="block w-[350px] bg-gray-500"
+              style={{
+                filter: "drop-shadow(0px 0px 6px rgba(255, 255, 255, 0.615))",
+              }}
+              src={story?.image_url ? `${story.image_url}` : ""}
+              alt="Image"
+            />
+            <div className="flex flex-col items-center w-[330px] gap-[10px]">
+              <div className="w-[350px] h-[155px] p-[10px] border-dashed border-2 border-gray-500 bg-black ">
+                {story?.content ? `${story.content}` : "LOADING..."}
+              </div>
+            </div>
+            <button
+              onClick={handleOkButtonClick}
+              className="flex w-[70px] h-[35px] justify-center items-center bg-zinc-300 border-2 border-gray-500 font-Minecraft font-bold text-black text-[20px] hover:bg-blue-600 hover:text-green-400 hover:shadow-blue-600"
+            >
+              <p className="pt-[4px]">GO !</p>
+            </button>
+          </div>
+        </motion.div>
+        <div className="flex flex-col justify-center gap-[80px] z-1">
+          {/* NEXT Story Modal1 */}
+          {story?.child_content && story.child_content[0] && (
+            <motion.div
+              className={`flex gap-[40px]`}
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{
+                opacity: isAnimationComplete1 ? 1 : 0,
+                scale: isAnimationComplete1 ? 1 : 0.5,
+              }}
+              transition={{ duration: isAnimationComplete1 ? 1 : 1 }}
+              onAnimationComplete={() => {
+                setIsAnimationComplete1(true);
+              }}
+            >
+              <img className="w-[60px] h-[60px]" src="/asset/hand.svg" alt="" />
+              <div className="flex flex-col w-[370px] h-[235px] z-1">
+                <div className="flex gap-[15px] w-full h-[40px] justify-center items-center pt-[8px] bg-blue-800 border-2 border-b-0 border-gray-400 text-green-400 hover:bg-green-400 hover:text-blue-800 text-[23px] font-Minecraft">
+                  NEXT
+                </div>
+                <div className="flex flex-col w-full h-[220px] justify-center items-center bg-[#000000ae] text-white border-2 border-gray-400 ">
+                  <div className="w-[330px] h-[155px] p-[10px] border-dashed border-2 border-gray-500 bg-black">
+                    {story?.child_content && story.child_content[0] ? (
+                      <p>{story.child_content[0]}</p>
+                    ) : (
+                      <span className="flex justify-center leading-[8rem] text-gray-400 hover:text-white hover:scale-110">
+                        새로운 이야기를 만들어보세요 !
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+          {/* NEXT Story Modal2 */}
+          <motion.div
+            className={`flex gap-[40px]`}
+            style={{
+              opacity: isOpen ? 0 : 1,
+            }}
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{
+              opacity: isAnimationComplete2 ? 1 : 0,
+              scale: isAnimationComplete2 ? 1 : 0.5,
+            }}
+            transition={{ duration: isAnimationComplete1 ? 1 : 1 }}
+            onAnimationComplete={() => {
+              setIsAnimationComplete2(true);
+            }}
           >
-            GO!
-          </button>
-        </div>
-        {/* <div className="flex flex-col w-full h-[395px] justify-center items-center gap-[10px] bg-black border-2 border-white text-white">
-          <div className="flex justify-center w-full h-[270px] gap-[80px]">
-            <div className="w-[270px]">
-              <img
-                className="flex"
-                src={story?.image_url}
-                alt="Loading..."
-              ></img>
-            </div>
-            <div className="flex flex-col justify-center w-[300px] gap-[17px] text-center text-white">
-              <div className="flex items-center w-[300px] gap-[20px]">
-                <div className="flex items-center w-[300px] h-[120px] p-[5px] mb-[20px] border-dashed border-2 border-gray-500 bg-transparent ">
-                  {story?.content}
-                </div>
+            <img className="w-[60px] h-[60px]" src="/asset/hand.svg" alt="" />
+            <div className="flex flex-col w-[370px] h-[235px] z-1">
+              <div className="flex gap-[15px] w-full h-[40px] justify-center items-center pt-[8px] bg-blue-800 border-2 border-b-0 border-gray-400 text-green-400 hover:bg-green-400 hover:text-blue-800 text-[23px] font-Minecraft">
+                NEXT
               </div>
-              <div className="flex items-center w-[300px] gap-[20px]">
-                <img className="flex w-[40px]" src="/asset/hand.svg" alt="손" />
-                <div className="w-full">
-                  {story?.child_content && story.child_content[0] ? (
-                    <p className="w-[240px] text-[1rem] ellipsis2 ">
-                      {story.child_content[0]}
-                    </p>
-                  ) : (
-                    <span className="text-gray-400">
-                      새로운 이야기를 만들어보세요!
-                    </span>
-                  )}
-                </div>
-              </div>
-              <div className="flex items-center w-[300px] gap-[20px]">
-                <img className="flex w-[40px]" src="/asset/hand.svg" alt="손" />
-                <div className="w-full">
+              <div className="flex flex-col w-full h-[220px] justify-center items-center bg-[#000000ae] text-white border-2 border-gray-400 ">
+                <div className="w-[330px] h-[155px] p-[10px] border-dashed border-2 border-gray-500 bg-black hover:text-white ">
                   {story?.child_content && story.child_content[1] ? (
-                    <p className="w-[240px] text-[1rem] ellipsis2 ">
-                      {story.child_content[1]}
-                    </p>
+                    <p>{story.child_content[1]}</p>
                   ) : (
-                    <span className="text-gray-400">
-                      새로운 이야기를 만들어보세요!
+                    <span className="flex justify-center leading-[8rem] text-gray-400">
+                      새로운 이야기를 만들어보세요 !
                     </span>
                   )}
                 </div>
               </div>
             </div>
-          </div>
-          <button
-            className="flex w-[55px] justify-center mt-[10px] pt-[3px] bg-zinc-300 border-2 border-gray-500 font-Minecraft font-bold text-black text-[20px] hover:bg-blue-600 hover:text-green-400 hover:shadow-blue-600"
-            onClick={handleOkButtonClick}
-          >
-            GO!
-          </button>
-        </div> */}
+          </motion.div>
+        </div>
       </div>
     </div>
   );
