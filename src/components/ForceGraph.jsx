@@ -110,9 +110,9 @@ const ForceGraph = ({ openmodal, scenario }) => {
           .append("path")
           .attr("d", (d) => lineGenerator([d.source, d.target])) // 직선으로 변경
           .style("stroke", "white")
-          .attr("stroke-width", 10)
-          .style("stroke-dasharray", "10, 5") // dashed 스타일 설정
-          .style("filter", "drop-shadow(0 0 8px rgba(255, 255, 255, 0.3))")
+          .attr("stroke-width", 18)
+          .style("stroke-dasharray", "18, 10") // dashed 스타일 설정
+          .style("filter", "drop-shadow(0 0 8px rgba(255, 255, 255, 0.5))")
           .style("transform", "rotateX(20deg) rotateY(8deg) rotateZ(-8deg)")
           .attr("fill", "none");
 
@@ -125,8 +125,8 @@ const ForceGraph = ({ openmodal, scenario }) => {
           .attr("x", (d) => d.y - 80)
           .attr("y", (d) => d.x - 80)
           .style("transform", "rotateX(20deg) rotateY(8deg) rotateZ(-8deg)")
-          .style("fill", "rgba(255, 255, 255, 0.8)")
-          .style("filter", "drop-shadow(0 0 10px rgba(255, 255, 255, 0.3))"); // 테두리에 그림자 효과 추가
+          .style("fill", "rgba(255, 255, 255, 0.9)")
+          .style("filter", "drop-shadow(0 0 10px rgba(255, 255, 255, 0.5))"); // 테두리에 그림자 효과 추가
 
         g.selectAll("image")
           .data(root.descendants())

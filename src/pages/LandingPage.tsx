@@ -40,7 +40,6 @@ const LandingPage = () => {
       <div className="fixed">
         <ThreeParticles />
       </div>
-      {/* <div className="flex gap-1 text-blue-100 text-[14px] absolute left-8 top-8"> */}
       <div className="flex gap-1 text-gray-400 text-[14px] absolute left-8 top-8">
         <svg
           className="w-[15px]"
