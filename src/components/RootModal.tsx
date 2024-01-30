@@ -151,6 +151,7 @@ const RootModal: React.FC<RootModalProps> = ({
                 opacity: isAnimationComplete1 ? 1 : 0,
                 scale: isAnimationComplete1 ? 1 : 0.5,
               }}
+              whileHover={{ scale: 1.1, transition: { duration: 0.2 } }}
               transition={{ duration: isAnimationComplete1 ? 1 : 1 }}
               onAnimationComplete={() => {
                 setIsAnimationComplete1(true);
@@ -189,6 +190,7 @@ const RootModal: React.FC<RootModalProps> = ({
               opacity: isAnimationComplete2 ? 1 : 0,
               scale: isAnimationComplete2 ? 1 : 0.5,
             }}
+            whileHover={{ scale: 1.1, transition: { duration: 0.2 } }}
             transition={{ duration: isAnimationComplete1 ? 1 : 1 }}
             onAnimationComplete={() => {
               setIsAnimationComplete2(true);

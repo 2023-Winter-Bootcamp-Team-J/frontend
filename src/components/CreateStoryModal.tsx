@@ -215,14 +215,14 @@ const CreateStoryModal: React.FC<CreateStoryModalProps> = ({
 
   return (
     <div
-      className={`flex justify-center items-center fixed top-0 left-[300px] w-[100vw] h-[100vh]${
+      className={`flex justify-start items-center fixed top-0 right-[-810px] w-[100vw] h-[100vh]${
         isOpen ? "" : "hidden"
       }`}
     >
       <motion.div
         ref={modalRef}
         className={`z-100 flex flex-col w-[440px] h-[670px]`}
-        initial={{ opacity: 0, y: 80, rotateY: 700 }}
+        initial={{ opacity: 0, y: 80, rotateY: 600 }}
         animate={{
           opacity: 1,
           y: 0,
@@ -243,10 +243,6 @@ const CreateStoryModal: React.FC<CreateStoryModalProps> = ({
       >
         <div className="flex w-full h-[55px] justify-center items-center pt-[8px] bg-blue-800 border-2 border-white text-green-400 text-[33px] font-Minecraft">
           NEXT PAGE
-          {/* <span className="text-green-400">
-            <span className="text-white">N</span>EXT{" "}
-            <span className="text-white">P</span>AGE
-          </span> */}
         </div>
         <div className="relative flex flex-col w-full h-full justify-center items-center gap-[17px] bg-[#000000ae] border-2 border-t-0 border-white text-white">
           {isGenerating && (
@@ -258,7 +254,7 @@ const CreateStoryModal: React.FC<CreateStoryModalProps> = ({
             </div>
           )}
           <svg
-            className="h-[20px] absolute right-[15px] top-[24px] text-white hover:text-green-400"
+            className="h-[20px] absolute right-[13px] top-[24px] text-white hover:text-green-400"
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             data-slot="icon"
@@ -317,16 +313,16 @@ const CreateStoryModal: React.FC<CreateStoryModalProps> = ({
               </div>
               <div className="flex justify-between gap-3 w-[350px] h-[30px]">
                 <button
-                  className="w-[250px] text-center bg-green-400 border-2 border-gray-500 text-black hover:bg-blue-600 hover:text-white hover:shadow-blue-600"
+                  className="relative w-[250px] text-center text-[18px] bg-green-400 border-2 border-gray-500 text-black hover:bg-blue-600 hover:text-white hover:shadow-blue-600"
                   onClick={handleClick}
                 >
                   사진 생성하기&nbsp;
-                  <span className="font-['DungGeunMo'] text-[13px] text-gray-600">
+                  <span className="absolute bottom-[5px] font-['DungGeunMo'] text-[11px] text-gray-600">
                     ({3 - generationCount}회 남음)
                   </span>
                 </button>
                 <button
-                  className="w-[100px] text-center leading-[1.8rem] bg-zinc-300 border-2 border-gray-500 font-Minecraft font-bold text-black text-[17px] hover:bg-blue-600 hover:text-green-400 hover:shadow-blue-600"
+                  className="w-[100px] text-center pt-[1px] bg-zinc-300 border-2 border-gray-500 font-Minecraft font-bold text-black text-[18px] hover:bg-blue-600 hover:text-green-400 hover:shadow-blue-600"
                   onClick={handleClickOk}
                 >
                   SAVE
