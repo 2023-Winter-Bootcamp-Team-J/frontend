@@ -31,13 +31,13 @@ const Onboarding4: React.FC<Onboaring4Props> = ({ topScroll }) => {
           }}
         >
           <div
-            className="animate-flip-card relative"
+            className="animate-flip-vertical-fwd relative"
             style={{
               transformStyle: "preserve-3d", // 양면이 있는 3d 박스임을 명시
             }}
           >
             <img
-              className="w-[520px] z-1"
+              className="w-[400px] z-1"
               style={{
                 backfaceVisibility: "hidden", // 뒷면이 보이지 않게
               }}
@@ -45,9 +45,9 @@ const Onboarding4: React.FC<Onboaring4Props> = ({ topScroll }) => {
               alt="생성 모달"
             />
             <img
-              className="w-[520px] absolute top-0 left-0"
+              className="w-[400px] absolute top-0 left-0"
               style={{
-                transform: "rotateX(180deg) translateZ(1px)", // 미리 뒤집어 놓기
+                transform: "rotateY(180deg) translateZ(1px)", // 미리 뒤집어 놓기
                 filter: "drop-shadow(0 0 12px rgba(255, 255, 255, 0.424))",
               }}
               src={storyModal}
