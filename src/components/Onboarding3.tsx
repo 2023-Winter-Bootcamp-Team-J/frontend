@@ -1,4 +1,4 @@
-import d3ver5 from "../../public/asset/d3ver5.svg";
+import d3 from "../../public/asset/d3.svg";
 import { motion } from "framer-motion";
 
 const Onboarding3 = () => {
@@ -46,11 +46,11 @@ const Onboarding3 = () => {
         >
           <img
             // className="absolute top-[-360px] left-[400px] w-[1000px] animate-slide-left"
-            className="absolute top-[-360px] left-[400px] w-[1000px] animate-slide-bl"
+            className="absolute top-[-360px] left-[440px] w-[1000px] animate-slide-bl"
             style={{
               filter: "drop-shadow(0 0 14px rgba(255, 255, 255, 0.424))",
             }}
-            src={d3ver5}
+            src={d3}
             alt="d3"
           />
         </motion.div>
