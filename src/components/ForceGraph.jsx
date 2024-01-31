@@ -5,7 +5,7 @@ const ForceGraph = ({ openmodal, scenario }) => {
   const svgRef = useRef(null);
 
   const handleClickStory = (d) => {
-    // console.log("d: ", d);
+    console.log("d: ", d);
     // console.log("d.depth: ", d.depth);
     const story_id = d.data.story_id;
     const page = d.depth + 1;
@@ -60,21 +60,9 @@ const ForceGraph = ({ openmodal, scenario }) => {
       const height = document.body.clientHeight;
 
       // Add margins
-      const margin = { top: 300, left: 350, right: 0, bottom: 0 };
+      const margin = { top: 300, left: 600, right: 0, bottom: 0 };
       const innerWidth = width - margin.right - margin.left;
       const innerHeight = height - margin.top - margin.bottom;
-
-      // SVG 요소 생성
-      const svg = d3
-        .select(svgRef.current)
-        .attr("width", width)
-        .attr("height", height);
-
-      const zoomG = svg.append("g");
-
-      const g = zoomG
-        .append("g")
-        .attr("transform", `translate(${margin.left}, ${height / 2})`);
 
       // tree() sets x and y value
       const tree = d3
@@ -88,6 +76,26 @@ const ForceGraph = ({ openmodal, scenario }) => {
         .line()
         .x((d) => d.y)
         .y((d) => d.x);
+
+      // Update zoom based on the number of nodes
+      // const totalNodes = root.descendants().length;
+      const totalHeight = root.descendants()[0].height;
+      const scale = 1.5 / Math.log2(totalHeight + 1.7); // 로그 기반 스케일
+
+      // SVG 요소 생성
+      const svg = d3
+        .select(svgRef.current)
+        .attr("width", width)
+        .attr("height", height);
+
+      const zoomG = svg.append("g");
+
+      const g = zoomG
+        .append("g")
+        .attr(
+          "transform",
+          `translate(${margin.left - 180 * totalHeight}, ${height / 2})`
+        );
 
       // // Add Zooming
       // svg.call(
@@ -107,13 +115,9 @@ const ForceGraph = ({ openmodal, scenario }) => {
           zoomG.attr("transform", transform);
         });
 
-      g.call(zoom);
+      svg.call(zoom);
 
-      // Update zoom based on the number of nodes
-      const totalNodes = root.descendants().length;
-      const scale = 2 / Math.log2(totalNodes + 1); // 로그 기반 스케일
-
-      g.transition().call(zoom.scaleTo, scale);
+      svg.transition().call(zoom.scaleTo, scale);
 
       update();
 
@@ -127,11 +131,12 @@ const ForceGraph = ({ openmodal, scenario }) => {
           .attr("d", (d) => lineGenerator(d)) // 직선으로 변경
           .attr("fill", "none")
           .style("stroke", "white")
+          .style("transform", "rotateX(20deg) rotateY(8deg) rotateZ(-8deg)")
+          .transition()
+          .duration(500)
           .attr("stroke-width", 18)
           .style("stroke-dasharray", "18, 10") // dashed 스타일 설정
           .style("filter", "drop-shadow(0 0 8px rgba(255, 255, 255, 0.5))")
-          .style("transform", "rotateX(20deg) rotateY(8deg) rotateZ(-8deg)")
-          .transition()
           .attr("d", (d) => lineGenerator([d.source, d.target])) // 직선으로 변경
           .delay((d) => 500 + 250 * d.source.depth);
 
@@ -139,14 +144,16 @@ const ForceGraph = ({ openmodal, scenario }) => {
           .data(root.descendants())
           .enter()
           .append("rect")
-          .attr("width", 160)
-          .attr("height", 160)
+
           .attr("x", (d) => d.y - 80)
           .attr("y", (d) => d.x - 80)
           .style("transform", "rotateX(20deg) rotateY(8deg) rotateZ(-8deg)")
           .style("fill", "none")
-          .style("filter", "drop-shadow(0 0 10px rgba(255, 255, 255, 0.5))")
           .transition()
+          .duration(400)
+          .attr("width", 160)
+          .attr("height", 160)
+          .style("filter", "drop-shadow(0 0 10px rgba(255, 255, 255, 0.5))")
           .style("fill", "rgba(255, 255, 255, 0.9)")
           .delay((d) => 250 + 300 * d.depth);
 
@@ -154,14 +161,15 @@ const ForceGraph = ({ openmodal, scenario }) => {
           .data(root.descendants())
           .enter()
           .append("image")
-          .attr("width", 150)
-          .attr("height", 150)
           .attr("x", (d) => d.y - 75)
           .attr("y", (d) => d.x - 75)
           .style("transform", "rotateX(20deg) rotateY(8deg) rotateZ(-8deg)")
           .style("fill", "none")
           .transition()
+          .duration(400)
           .attr("xlink:href", (d) => d.data.image_url)
+          .attr("width", 150)
+          .attr("height", 150)
           .delay((d) => 250 + 300 * d.depth);
 
         g.selectAll("image").on("click", (event, d) => handleClickStory(d)); // 클릭 이벤트 핸들러 추가

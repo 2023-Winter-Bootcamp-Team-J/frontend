@@ -88,9 +88,11 @@ const LandingPage = () => {
             }}
           >
             <span>
-              " 나만의 <span className="text-blue-600">상상</span>을{" "}
-              <span className="text-green-400">현실</span>로 "<br></br>
-              여러분의 다음 페이지를 만들어보세요
+              <span className="font-['DungGeunMo']">"</span>{" "}
+              <span className="text-blue-600">상상</span>을{" "}
+              <span className="text-green-400">현실</span>로{" "}
+              <span className="font-['DungGeunMo']">"</span>
+              <br />손 끝에서 펼쳐지는 우리만의 세계
             </span>
           </motion.div>
         </div>
