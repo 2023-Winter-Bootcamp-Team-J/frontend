@@ -60,7 +60,7 @@ const ForceGraph = ({ openmodal, scenario }) => {
       const height = document.body.clientHeight;
 
       // Add margins
-      const margin = { top: 300, left: 600, right: 0, bottom: 0 };
+      const margin = { top: 300, left: 700, right: 0, bottom: 0 };
       const innerWidth = width - margin.right - margin.left;
       const innerHeight = height - margin.top - margin.bottom;
 
@@ -78,9 +78,10 @@ const ForceGraph = ({ openmodal, scenario }) => {
         .y((d) => d.x);
 
       // Update zoom based on the number of nodes
-      // const totalNodes = root.descendants().length;
-      const totalHeight = root.descendants()[0].height;
-      const scale = 1.5 / Math.log2(totalHeight + 1.7); // 로그 기반 스케일
+      const totalNodes = root.descendants().length;
+      // const totalHeight = root.descendants()[0].height;
+      // const scale = 1.5 / Math.log2(totalHeight + 1.7); // 로그 기반 스케일
+      const scale = 2 / Math.log2(totalNodes + 1.5); // 로그 기반 스케일
 
       // SVG 요소 생성
       const svg = d3
@@ -90,12 +91,11 @@ const ForceGraph = ({ openmodal, scenario }) => {
 
       const zoomG = svg.append("g");
 
-      const g = zoomG
-        .append("g")
-        .attr(
-          "transform",
-          `translate(${margin.left - 180 * totalHeight}, ${height / 2})`
-        );
+      const g = zoomG.append("g").attr(
+        "transform",
+        `translate(${margin.left - 70 * totalNodes}, ${height / 2})`
+        // `translate(${margin.left - 180 * totalHeight}, ${height / 2})`
+      );
 
       // // Add Zooming
       // svg.call(
@@ -119,7 +119,7 @@ const ForceGraph = ({ openmodal, scenario }) => {
       // Add Zooming
       const zoom = d3
         .zoom()
-        .scaleExtent([0.4, 3.3]) // 최소 스케일과 최대 스케일을 설정
+        .scaleExtent([0.3, 3.3]) // 최소 스케일과 최대 스케일을 설정
         .on("zoom", ({ transform }) => {
           zoomG.attr("transform", transform);
         });
@@ -148,23 +148,23 @@ const ForceGraph = ({ openmodal, scenario }) => {
       //     .attr("transform", `translate(${-treeX}, ${height / 2 - treeY})`);
       // });
 
-      // 마우스 위치에 따라 일정한 속도로 트리 이동
-      let mouseX = 0;
-      let mouseY = 0;
+      // // 마우스 위치에 따라 일정한 속도로 트리 이동
+      // let mouseX = 0;
+      // let mouseY = 0;
 
-      svg.on("mousemove", (event) => {
-        const [newMouseX, newMouseY] = d3.pointer(event);
+      // svg.on("mousemove", (event) => {
+      //   const [newMouseX, newMouseY] = d3.pointer(event);
 
-        // 일정한 비율로 이동
-        const speed = 0.03;
-        mouseX += (newMouseX - mouseX) * speed;
-        mouseY += (newMouseY - mouseY) * speed;
+      //   // 일정한 비율로 이동
+      //   const speed = 0.03;
+      //   mouseX += (newMouseX - mouseX) * speed;
+      //   mouseY += (newMouseY - mouseY) * speed;
 
-        const treeX = (mouseX - margin.left) / scale;
-        const treeY = (mouseY - margin.top) / scale;
+      //   const treeX = (mouseX - margin.left) / scale;
+      //   const treeY = (mouseY - margin.top) / scale;
 
-        g.attr("transform", `translate(${-treeX}, ${height / 2 - treeY})`);
-      });
+      //   g.attr("transform", `translate(${-treeX}, ${height / 2 - treeY})`);
+      // });
 
       update();
 
