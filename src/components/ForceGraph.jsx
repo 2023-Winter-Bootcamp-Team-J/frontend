@@ -107,17 +107,64 @@ const ForceGraph = ({ openmodal, scenario }) => {
       //     })
       // );
 
+      // // 마우스 이동에 따라 트리 이동
+      // svg.call(
+      //   d3.drag().on("drag", (event) => {
+      //     const newX = event.x - margin.left;
+      //     const newY = event.y - margin.top;
+      //     g.attr("transform", `translate(${newX}, ${newY})`);
+      //   })
+      // );
+
       // Add Zooming
       const zoom = d3
         .zoom()
-        .scaleExtent([0.45, 3.3]) // 최소 스케일과 최대 스케일을 설정
+        .scaleExtent([0.4, 3.3]) // 최소 스케일과 최대 스케일을 설정
         .on("zoom", ({ transform }) => {
           zoomG.attr("transform", transform);
         });
 
+      svg.transition().call(zoom.scaleTo, scale);
+
       svg.call(zoom);
 
-      svg.transition().call(zoom.scaleTo, scale);
+      // // 마우스 위치에 따라 트리 이동
+      // svg.on("mousemove", (event) => {
+      //   const [mouseX, mouseY] = d3.pointer(event);
+      //   const treeX = (mouseX - margin.left) / scale;
+      //   const treeY = (mouseY - margin.top) / scale;
+
+      //   g.attr("transform", `translate(${-treeX}, ${height / 2 - treeY})`);
+      // });
+
+      // // 마우스 위치에 따라 부드럽게 트리 이동
+      // svg.on("mousemove", (event) => {
+      //   const [mouseX, mouseY] = d3.pointer(event);
+      //   const treeX = (mouseX - margin.left) / scale;
+      //   const treeY = (mouseY - margin.top) / scale;
+
+      //   g.transition()
+      //     .duration(300) // 이동에 걸리는 시간 (밀리초)
+      //     .attr("transform", `translate(${-treeX}, ${height / 2 - treeY})`);
+      // });
+
+      // 마우스 위치에 따라 일정한 속도로 트리 이동
+      let mouseX = 0;
+      let mouseY = 0;
+
+      svg.on("mousemove", (event) => {
+        const [newMouseX, newMouseY] = d3.pointer(event);
+
+        // 일정한 비율로 이동
+        const speed = 0.03;
+        mouseX += (newMouseX - mouseX) * speed;
+        mouseY += (newMouseY - mouseY) * speed;
+
+        const treeX = (mouseX - margin.left) / scale;
+        const treeY = (mouseY - margin.top) / scale;
+
+        g.attr("transform", `translate(${-treeX}, ${height / 2 - treeY})`);
+      });
 
       update();
 

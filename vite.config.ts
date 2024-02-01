@@ -8,7 +8,7 @@ import svgrPlugin from "vite-plugin-svgr";
 export default defineConfig({
   plugins: [react(), svgrPlugin(), vue()],
   server: {
-    port: 3000,
+    port: 3001,
     host: true,
     proxy: {
       "/api": "http://localhost",
